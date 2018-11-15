@@ -8,6 +8,6 @@ swarm:
     data-sources:
       gastosoDS:
         driver-name: org.postgresql
-        connection-url: ${JDBC_DATABASE_URL_FAIL_TEST}
+        connection-url: ${JDBC_DATABASE_URL}
         user-name: ${JDBC_DATABASE_USERNAME}
         password: ${JDBC_DATABASE_PASSWORD}
