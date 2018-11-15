@@ -8,6 +8,6 @@ swarm:
     data-sources:
       gastosoDS:
         driver-name: org.postgresql
-        connection-url: jdbc:postgresql://${planinha.db.server}:${db.port}/gastosoDB
-        user-name: ${db.user}
-        password: ${db.password}
+        connection-url: ${JDBC_DATABASE_URL}
+        user-name: ${JDBC_DATABASE_USERNAME}
+        password: ${JDBC_DATABASE_PASSWORD}
