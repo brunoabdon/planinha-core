@@ -37,9 +37,6 @@
       </resource>
     </resources>
 
-    <filters>
-      <filter>planinha-build.properties</filter>
-    </filters>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
