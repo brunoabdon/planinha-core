@@ -8,6 +8,6 @@ swarm:
     data-sources:
       planinhaDS:
         driver-name: org.postgresql
-        connection-url: ${planinha.database.url}
-        user-name: ${planinha.database.user}
-        password: ${planinha.database.password}
+        connection-url: ${env.DATABASE_URL}
+        user-name: ${env.JDBC_DATABASE_USERNAME}
+        password: ${env.JDBC_DATABASE_PASSWORD}
