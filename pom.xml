@@ -62,44 +62,16 @@
               </goals>
             </execution>
           </executions>
+          <configuration>
+                <!--
+                  ensure a custom WildFly Swarm container is started (the one containing a datasource pointing to a Heroku managed database)
+                -->
+                <mainClass>com.github.brunoabdon.planinha.planinhacore.heroku.HerokuThornTailBootstrapper</mainClass>
+            </configuration>
       </plugin>
     </plugins>
   </build>
   
-      <profiles>
-        <profile>
-            <!--
-              used for running the application on Heroku cloud platform
-            -->
-            <id>heroku</id>
-            <properties>
-                <environment>heroku</environment>
-            </properties>
-
-            <build>
-                <plugins>
-                    <plugin>
-					  <groupId>io.thorntail</groupId>
-					  <artifactId>thorntail-maven-plugin</artifactId>
-					  <version>${version.thorntail}</version>
-                      <configuration>
-                            <!--
-                              ensure a custom WildFly Swarm container is started (the one containing a datasource pointing to a Heroku managed database)
-                            -->
-                            <mainClass>com.github.brunoabdon.planinha.planinhacore.heroku.HerokuThornTailBootstrapper</mainClass>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>package</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        </profiles>
   <dependencies>
     
     <dependency>
