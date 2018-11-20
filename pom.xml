@@ -15,9 +15,6 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<planinha.database.url>${env.DATABASE_URL}</planinha.database.url>
-	<planinha.database.user>${env.JDBC_DATABASE_USERNAME}</planinha.database.user>
-	<planinha.database.password>${env.JDBC_DATABASE_PASSWORD}</planinha.database.password>
   </properties>
 
   <dependencyManagement>
