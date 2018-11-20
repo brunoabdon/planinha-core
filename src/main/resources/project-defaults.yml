@@ -6,7 +6,7 @@ swarm:
         xa-datasource-class-name: org.postgresql.xa.PGXADataSource
         driver-module-name: org.postgresql
     data-sources:
-      gastosoDS:
+      planinhaDS:
         driver-name: org.postgresql
         connection-url: ${planinha.database.url}
         user-name: ${planinha.database.user}
