@@ -11,8 +11,8 @@ public class HerokuThornTailBootstrapper  {
 
     private static final String ENV_VARIABLE_DATABASE_URL = "DATABASE_URL";
     private static final String POSTGRESQL_JDBC_PREFIX = "jdbc:postgresql://";
-    private static final String POSTGRESQL_JDBC_DRIVER_NAME = "postgresql";
-    private static final String POSTGRESQL_DATASOURCE_NAME = "HerokuDS";
+    private static final String POSTGRESQL_JDBC_DRIVER_NAME = "org.postgresql";
+    private static final String POSTGRESQL_DATASOURCE_NAME = "planinhaDS";
     
     public static void main(String[] args) throws Exception {
           final Swarm container = new Swarm(args);
