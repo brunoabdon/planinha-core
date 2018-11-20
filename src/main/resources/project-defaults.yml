@@ -1,4 +1,4 @@
-swarm:
+thorntail:
   datasources:
     jdbc-drivers:
       org.postgresql:
@@ -13,4 +13,5 @@ swarm:
 #        password: ${env.JDBC_DATABASE_PASSWORD}
   http:
     port:  ${env.PORT}
+    
         
