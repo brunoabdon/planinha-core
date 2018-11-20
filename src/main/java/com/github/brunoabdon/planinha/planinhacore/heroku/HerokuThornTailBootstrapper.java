@@ -21,8 +21,10 @@ public class HerokuThornTailBootstrapper  {
             //ensure the Heroku datasource is deployed before the JEE 
             //application, so that the latter's persistence unit will be able 
             //to find a suitable datasource
-            container.deploy(buildDatasourceArchive(
-        		System.getenv(ENV_VARIABLE_DATABASE_URL))
+            container.deploy(
+        		buildDatasourceArchive(
+    				System.getenv(ENV_VARIABLE_DATABASE_URL)
+				)
     		);
 
             //deploy the JEE 7 application
