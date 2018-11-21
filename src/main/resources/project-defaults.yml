@@ -14,4 +14,7 @@ thorntail:
   http:
     port:  ${env.PORT}
     
-        
+  logging:
+      loggers:
+        com.github.brunoabdon:
+          level: DEBUG
