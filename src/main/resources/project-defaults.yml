@@ -5,12 +5,12 @@ thorntail:
         driver-class-name: org.postgresql.Driver
         xa-datasource-class-name: org.postgresql.xa.PGXADataSource
         driver-module-name: org.postgresql
-#    data-sources:
-#      planinhaDS:
-#        driver-name: org.postgresql
-#        connection-url: ${env.DATABASE_URL}
-#        user-name: ${env.JDBC_DATABASE_USERNAME}
-#        password: ${env.JDBC_DATABASE_PASSWORD}
+    data-sources:
+      planinhaDS:
+        driver-name: org.postgresql
+        connection-url: ${herokuds.connectionURL}
+        user-name: ${herokuds.username}
+        password: ${herokuds.password}
   http:
     port:  ${env.PORT}
     

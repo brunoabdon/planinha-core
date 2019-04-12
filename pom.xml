@@ -15,6 +15,9 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <herokuds.databas_url>${env.DATABASE_URL}</herokuds.databas_url>
+    
   </properties>
 
   <dependencyManagement>
@@ -38,6 +41,19 @@
     </resources>
 
     <plugins>
+      <plugin>
+        <groupId>com.github.brunoabdon.m2.herokuds</groupId>
+        <artifactId>herokuds-maven-plugin</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>parse</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin> 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -79,7 +95,42 @@
             </configuration>
       </plugin>
     </plugins>
-  </build>
+    <pluginManagement>
+        <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+            <plugin>
+                <groupId>org.eclipse.m2e</groupId>
+                <artifactId>lifecycle-mapping</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <lifecycleMappingMetadata>
+                        <pluginExecutions>
+                            <pluginExecution>
+                                <pluginExecutionFilter>
+                                    <groupId>
+                                        com.github.brunoabdon.m2.herokuds
+                                    </groupId>
+                                    <artifactId>
+                                        herokuds-maven-plugin
+                                    </artifactId>
+                                    <versionRange>
+                                        [0.0.1-SNAPSHOT,)
+                                    </versionRange>
+                                    <goals>
+                                        <goal>parse</goal>
+                                    </goals>
+                                </pluginExecutionFilter>
+                                <action>
+                                    <ignore></ignore>
+                                </action>
+                            </pluginExecution>
+                        </pluginExecutions>
+                    </lifecycleMappingMetadata>
+                </configuration>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+ </build>
   
   <dependencies>
     
