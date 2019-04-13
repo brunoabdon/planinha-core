@@ -44,7 +44,7 @@
       <plugin>
         <groupId>com.github.brunoabdon.m2.herokuds</groupId>
         <artifactId>herokuds-maven-plugin</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
         <executions>
           <execution>
             <phase>validate</phase>
