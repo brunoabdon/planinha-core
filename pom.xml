@@ -76,12 +76,6 @@
             </execution>
           </executions>
           <configuration>
-                <!--
-                  ensure a custom WildFly Swarm container is started (the one 
-                  containing a datasource pointing to a Heroku managed database)
-                -->
-                <mainClass>com.github.brunoabdon.planinha.planinhacore.heroku.HerokuThornTailBootstrapper</mainClass>
-                
                 <!--  
                     The artifact will be named the same as the primary project 
                     artifact (according to ${project.finalName}), unless a 
