@@ -12,7 +12,7 @@ thorntail:
         user-name: ${herokuds.username}
         password: ${herokuds.password}
   http:
-    port:  ${env.PORT}
+    port:  8080
     
   logging:
       loggers:
