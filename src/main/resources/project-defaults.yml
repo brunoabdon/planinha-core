@@ -12,9 +12,11 @@ thorntail:
         user-name: ${herokuds.username}
         password: ${herokuds.password}
   http:
-    port:  8080
+    port:  ${env.PORT}
     
   logging:
       loggers:
         com.github.brunoabdon:
           level: DEBUG
+resteasy:
+   preferJacksonOverJsonB: true
