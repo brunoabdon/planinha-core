@@ -19,6 +19,7 @@
     <herokuds.database_url>${env.DATABASE_URL}</herokuds.database_url>
     
     <abd-commons.version>2.0.0-SNAPSHOT</abd-commons.version>
+    <gastoso.version>2.0.0-SNAPSHOT</gastoso.version>
     
   </properties>
 
@@ -169,9 +170,13 @@
 	<dependency>
         <groupId>com.github.brunoabdon.gastoso</groupId>
         <artifactId>gastoso-core</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>${gastoso.version}</version>
     </dependency>
-    
+    <dependency>
+         <groupId>com.github.brunoabdon.gastoso</groupId>
+         <artifactId>gastoso-dal</artifactId>
+         <version>${gastoso.version}</version>
+    </dependency>
     <dependency>
          <groupId>com.github.brunoabdon.commons</groupId>
          <artifactId>abd-commons-rest</artifactId>
@@ -180,6 +185,11 @@
      <dependency>
          <groupId>com.github.brunoabdon.commons</groupId>
          <artifactId>abd-commons-util</artifactId>
+         <version>${abd-commons.version}</version>
+     </dependency>
+     <dependency>
+         <groupId>com.github.brunoabdon.commons</groupId>
+         <artifactId>abd-commons-dal</artifactId>
          <version>${abd-commons.version}</version>
      </dependency>
   </dependencies>
