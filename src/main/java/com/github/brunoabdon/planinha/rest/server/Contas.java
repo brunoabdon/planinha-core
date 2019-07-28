@@ -42,6 +42,4 @@ public class Contas extends AbstractRestCrud<Conta, Integer> {
 
         return super.buildResponse(request,httpHeaders,contas);
     }
-
-
 }
