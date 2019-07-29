@@ -1,5 +1,7 @@
 package com.github.brunoabdon.planinha.rest.server;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
@@ -21,6 +23,7 @@ public class ObjectMapperContextResolver
     	LOGGER.info("Registrando ObjectMapper.");
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
+        this.mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     @Override
