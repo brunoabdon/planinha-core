@@ -11,6 +11,8 @@
   <properties>
     <version.thorntail>2.5.0.Final</version.thorntail>
     <version.postgresql>42.2.5</version.postgresql>
+    <version.jackson>2.9.9</version.jackson>
+    
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -165,6 +167,12 @@
 	    <groupId>org.postgresql</groupId>
 	    <artifactId>postgresql</artifactId>
 	    <version>${version.postgresql}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+	    <version>${version.jackson}</version>
 	</dependency>
 	
 	<dependency>
