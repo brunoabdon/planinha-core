@@ -20,10 +20,8 @@ import org.jboss.logging.Logger;
 @Path("/hello")
 public class HelloWorldEndpoint {
 
-	@PersistenceContext
 	private EntityManager em;
 
-    @Inject
     private Logger logger;
     
 	@GET
@@ -41,4 +39,16 @@ public class HelloWorldEndpoint {
 
 		return Response.ok("Veja o log").build();
 	}
+
+	
+	@Inject
+	void setLogger(final Logger logger) {
+        this.logger = logger;
+    }
+
+	@PersistenceContext
+	void setEm(final EntityManager em) {
+        this.em = em;
+    }
+
 }
