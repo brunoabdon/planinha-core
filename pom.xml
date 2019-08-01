@@ -5,13 +5,15 @@
   <groupId>com.github.brunoabdon.planinha</groupId>
   <artifactId>planinha-core</artifactId>
   <name>Planinha - Core</name>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <version>0.1.0-SNAPSHOT</version>
 
   <properties>
+  
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <quarkus.version>0.20.0</quarkus.version>
+  
     <version.thorntail>2.5.0.Final</version.thorntail>
     <version.postgresql>42.2.5</version.postgresql>
-    <version.jackson>2.9.9</version.jackson>
     
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -28,11 +30,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.thorntail</groupId>
-        <artifactId>bom-all</artifactId>
-        <version>${version.thorntail}</version>
-        <scope>import</scope>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-bom</artifactId>
+        <version>${quarkus.version}</version>
         <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -46,10 +48,10 @@
     </resources>
 
     <plugins>
-      <plugin>
+     <plugin>
         <groupId>com.github.brunoabdon.m2.herokuds</groupId>
         <artifactId>herokuds-maven-plugin</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -57,41 +59,19 @@
               <goal>parse</goal>
             </goals>
           </execution>
-        </executions>
-      </plugin> 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
+        </executions>        
       </plugin>
       <plugin>
-        <groupId>io.thorntail</groupId>
-        <artifactId>thorntail-maven-plugin</artifactId>
-        <version>${version.thorntail}</version>
-
-         <executions>
-            <execution>
-              <id>package</id>
-              <goals>
-                <goal>package</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-                <!--  
-                    The artifact will be named the same as the primary project 
-                    artifact (according to ${project.finalName}), unless a 
-                    plugin configuration of <finalName>…​</finalName> or a 
-                    property of thorntail.finalName is provided.
-                    
-                    https://docs.thorntail.io/4.0.0-SNAPSHOT/#_other_configuration
-                    
-                 -->
-                <finalName>${project.artifactId}</finalName>
-            </configuration>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${quarkus.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
@@ -130,50 +110,77 @@
         </plugins>
     </pluginManagement>
  </build>
-  
+  <profiles>
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-maven-plugin</artifactId>
+            <version>${quarkus.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+                <configuration>
+                  <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${surefire-plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <systemProperties>
+                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                  </systemProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <dependencies>
-    
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
     </dependency>
     
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>cdi</artifactId>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-hibernate-orm</artifactId>
     </dependency>
-
+    
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jpa</artifactId>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>ejb</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>logging</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>transactions</artifactId>
-    </dependency>
-
-	<dependency>
-	    <groupId>org.postgresql</groupId>
-	    <artifactId>postgresql</artifactId>
-	    <version>${version.postgresql}</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>com.fasterxml.jackson.datatype</groupId>
-	    <artifactId>jackson-datatype-jsr310</artifactId>
-	    <version>${version.jackson}</version>
-	</dependency>
 	
 	<dependency>
         <groupId>com.github.brunoabdon.gastoso</groupId>

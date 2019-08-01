@@ -2,7 +2,6 @@ package com.github.brunoabdon.planinha.rest.server;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
@@ -15,7 +14,6 @@ import com.github.brunoabdon.commons.rest.AbstractRestCrud;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.dal.ContasDao;
 
-@Stateless
 @Path(Contas.PATH)
 public class Contas extends AbstractRestCrud<Conta, Integer> {
 

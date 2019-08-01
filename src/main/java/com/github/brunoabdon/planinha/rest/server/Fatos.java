@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,7 +23,6 @@ import com.github.brunoabdon.gastoso.system.FiltroFatos;
  *
  * @author bruno
  */
-@Stateless
 @Path(Fatos.PATH)
 public class Fatos extends AbstractRestCrud<Fato,Integer>{
 
