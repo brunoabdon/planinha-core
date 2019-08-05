@@ -1,10 +1,18 @@
 package com.github.brunoabdon.planinha;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 import com.github.brunoabdon.gastoso.Conta;
 
+@Entity
 public class Movimentacao {
 
-	private Conta conta;
+	@ManyToOne
+    private Conta conta;
+	
+	@Column(insertable = false, updatable = false)
 	private int valor; 
 
 	public Movimentacao() {
