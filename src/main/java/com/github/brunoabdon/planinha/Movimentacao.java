@@ -18,13 +18,13 @@ public class Movimentacao {
 	public int getValor() {
 		return valor;
 	}
-	public void setValor(int valor) {
+	public void setValor(final int valor) {
 		this.valor = valor;
 	}
 	public Conta getConta() {
 		return conta;
 	}
-	public void setConta(Conta conta) {
+	public void setConta(final Conta conta) {
 		this.conta = conta;
 	}
 }
