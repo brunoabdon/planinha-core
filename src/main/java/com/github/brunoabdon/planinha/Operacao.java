@@ -2,6 +2,8 @@ package com.github.brunoabdon.planinha;
 
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbTransient;
+
 import com.github.brunoabdon.commons.modelo.Entidade;
 import com.github.brunoabdon.gastoso.Fato;
 
@@ -12,7 +14,9 @@ public class Operacao implements Entidade<Fato> {
 	private Fato fato;
 	private List<Movimentacao> movimentacoes;
 	
+	
 	@Override
+	@JsonbTransient
 	public Fato getId() {
 		return this.getFato();
 	}
