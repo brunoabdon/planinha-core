@@ -64,7 +64,7 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
             dataMinima = dataMaxima.minusMonths(1);
         }
             
-        FiltroFatos filtroFatos = new FiltroFatos();
+        final FiltroFatos filtroFatos = new FiltroFatos();
         filtroFatos.setDataMaxima(dataMaxima);
         filtroFatos.setDataMinima(dataMinima);
         
