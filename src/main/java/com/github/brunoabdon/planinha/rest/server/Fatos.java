@@ -48,7 +48,7 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
         @QueryParam("dataMin") LocalDate dataMinima,
         @QueryParam("dataMax") LocalDate dataMaxima){
 
-        final List<Fato> fatosNormais;
+        final List<Fato> fatos;
 
         
         //mudar pra usar hibernate validation
@@ -68,9 +68,9 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
         filtroFatos.setDataMaxima(dataMaxima);
         filtroFatos.setDataMinima(dataMinima);
         
-        fatosNormais = dao.listar(entityManager, filtroFatos);
+        fatos = dao.listar(entityManager, filtroFatos);
         
-        fatosNormais.sort(
+        fatos.sort(
             (f1,f2) -> {
                 int diff = f1.getDia().compareTo(f2.getDia());
                 if(diff == 0) diff = f1.getId() - f2.getId();
@@ -78,7 +78,7 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
             });
             
 
-        return buildResponse(request, httpHeaders, fatosNormais);
+        return buildResponse(request, httpHeaders, fatos);
     }
 
     @Override
