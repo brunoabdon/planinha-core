@@ -2,31 +2,28 @@ package com.github.brunoabdon.planinha;
 
 import java.util.List;
 
-import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import com.github.brunoabdon.commons.modelo.Entidade;
+import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 import com.github.brunoabdon.gastoso.Fato;
 
-public class Operacao implements Entidade<Fato> {
+@Entity
+public class Operacao extends EntidadeBaseInt {
 
 	private static final long serialVersionUID = 7410023178167290123L;
 
+	@MapsId
+	@OneToOne
 	private Fato fato;
-	private List<Movimentacao> movimentacoes;
+
+	@OneToMany
+	@JoinColumn(name="fato_id")  //fato_id em "movimentacao"
+    private List<Movimentacao> movimentacoes;
 	
-	
-	@Override
-	@JsonbTransient
-	public Fato getId() {
-		return this.getFato();
-	}
-
-	@Override
-	public void setId(final Fato id) {
-		this.setFato(id);
-
-	}
-
 	public Fato getFato() {
 		return fato;
 	}
