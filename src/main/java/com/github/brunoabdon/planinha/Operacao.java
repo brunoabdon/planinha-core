@@ -60,5 +60,10 @@ public class Operacao implements Entidade<Fato> {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return "[Operacao:"+ fato + "]";
+	}
 
 }
