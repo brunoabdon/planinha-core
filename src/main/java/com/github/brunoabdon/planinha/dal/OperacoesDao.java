@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha;
+package com.github.brunoabdon.planinha.dal;
 
 import javax.persistence.EntityManager;
 
@@ -8,13 +8,15 @@ import com.github.brunoabdon.gastoso.Fato;
 import com.github.brunoabdon.gastoso.Lancamento;
 import com.github.brunoabdon.gastoso.dal.FatosDao;
 import com.github.brunoabdon.gastoso.dal.LancamentosDao;
+import com.github.brunoabdon.planinha.Movimentacao;
+import com.github.brunoabdon.planinha.Operacao;
 
-public class OperacaoDao extends AbstractDao<Operacao, Integer> {
+public class OperacoesDao extends AbstractDao<Operacao, Integer> {
 
     private final FatosDao fatosDao;
     private final LancamentosDao lancamentosDao;
     
-    public OperacaoDao() {
+    public OperacoesDao() {
         super(Operacao.class);
         this.fatosDao = new FatosDao(); //pq não são singletons?
         this.lancamentosDao = new LancamentosDao();
