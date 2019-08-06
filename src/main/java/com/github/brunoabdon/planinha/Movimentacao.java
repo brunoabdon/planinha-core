@@ -30,11 +30,6 @@ public class Movimentacao implements Serializable {
 	public Movimentacao() {
 	}
 	
-	public Movimentacao(final Conta conta, final int valor) {
-		this.conta = conta;
-		this.valor = valor;
-	}
-
 	public int getValor() {
 		return valor;
 	}
