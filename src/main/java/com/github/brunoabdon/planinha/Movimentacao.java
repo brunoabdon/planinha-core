@@ -1,5 +1,7 @@
 package com.github.brunoabdon.planinha;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -7,7 +9,9 @@ import javax.persistence.ManyToOne;
 import com.github.brunoabdon.gastoso.Conta;
 
 @Entity
-public class Movimentacao {
+public class Movimentacao implements Serializable {
+
+	private static final long serialVersionUID = 8987967033928269546L;
 
 	@ManyToOne
     private Conta conta;
