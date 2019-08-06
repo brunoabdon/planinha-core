@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response.Status;
 import com.github.brunoabdon.commons.dal.Dao;
 import com.github.brunoabdon.commons.rest.AbstractRestCrud;
 import com.github.brunoabdon.planinha.Operacao;
-import com.github.brunoabdon.planinha.OperacaoDao;
+import com.github.brunoabdon.planinha.dal.OperacoesDao;
 
 @Path(Operacoes.PATH)
 public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
@@ -18,11 +18,11 @@ public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
 
     protected static final String PATH = "operacoes";
 
-	private final OperacaoDao operacoesDao;
+	private final OperacoesDao operacoesDao;
     
     public Operacoes() {
         super(PATH);
-    	this.operacoesDao = new OperacaoDao();
+    	this.operacoesDao = new OperacoesDao();
 	}
 
     @Override
