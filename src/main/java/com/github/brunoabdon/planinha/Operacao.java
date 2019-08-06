@@ -18,6 +18,7 @@ public class Operacao extends EntidadeBaseInt {
 
 	@MapsId
 	@OneToOne
+	@JoinColumn(name = "id")
 	private Fato fato;
 
 	@OneToMany
@@ -66,5 +67,4 @@ public class Operacao extends EntidadeBaseInt {
 	public String toString() {
 		return "[Operacao:"+ fato + "]";
 	}
-
 }
