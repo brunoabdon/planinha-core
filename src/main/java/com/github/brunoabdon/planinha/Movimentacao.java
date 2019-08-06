@@ -2,9 +2,12 @@ package com.github.brunoabdon.planinha;
 
 import java.io.Serializable;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 import com.github.brunoabdon.gastoso.Conta;
 
@@ -13,6 +16,11 @@ public class Movimentacao implements Serializable {
 
 	private static final long serialVersionUID = 8987967033928269546L;
 
+	@Id
+	@JsonbTransient
+	private Integer id;
+	
+	@MapsId
 	@ManyToOne
     private Conta conta;
 	
