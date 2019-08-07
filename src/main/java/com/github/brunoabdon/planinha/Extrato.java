@@ -1,7 +1,12 @@
 package com.github.brunoabdon.planinha;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import javax.json.bind.annotation.JsonbTransient;
 
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 import com.github.brunoabdon.commons.util.modelo.Periodo;
@@ -74,9 +79,10 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
         }
     }
     
+    @JsonbTransient
     private Id id;
     
-    private int saldoAnterior;
+    private Number saldoAnterior;
     
     private List<Item> items;
     
@@ -86,7 +92,7 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
 
     public Extrato(
             final Id id, 
-            final int saldoAnterior, 
+            final Number saldoAnterior, 
             final List<Item> itens) {
         this(id);
         this.saldoAnterior = saldoAnterior;
@@ -107,11 +113,36 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
         this.items = items;
     }
 
-    public int getSaldoAnterior() {
+    public Number getSaldoAnterior() {
         return saldoAnterior;
     }
 
-    public void setSaldoAnterior(int saldoAnterior) {
+    public void setSaldoAnterior(final Number saldoAnterior) {
         this.saldoAnterior = saldoAnterior;
     }
+    
+    public Conta getConta(){
+    	return getOptionalAttr(Id::getConta).orElse(null);
+    }
+    
+    public LocalDate getDataInicio() {
+    	return getData(Periodo::getDataMinima);
+    }
+
+    public LocalDate getDataFim() {
+		return getData(Periodo::getDataMaxima);
+    }
+
+	private LocalDate getData(final Function<Periodo, LocalDate> dateMapper) {
+		return getOptionalAttr(Id::getPeriodo).map(dateMapper).orElse(null);
+	}
+
+	private <T> Optional<? extends T> getOptionalAttr(
+			final Function<? super Id, ? extends T> getter) {
+		return optionalId().map(getter);
+	}
+    
+	private Optional<Id> optionalId() {
+		return Optional.of(id);
+	}
 }
