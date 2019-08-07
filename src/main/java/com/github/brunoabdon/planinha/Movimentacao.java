@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.Table;
 
 import com.github.brunoabdon.gastoso.Conta;
 
 @Entity
+@Table(name = "lancamento")
 public class Movimentacao implements Serializable {
 
 	private static final long serialVersionUID = 8987967033928269546L;
