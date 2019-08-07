@@ -51,6 +51,7 @@ public class ExtratosDao implements Dao<Extrato, Id> {
         final FiltroFatos filtroFatos = new FiltroFatos();
         filtroFatos.setDataMinima(periodo.getDataMinima());
         filtroFatos.setDataMaxima(periodo.getDataMaxima());
+        filtroLancamentos.setFiltroFatos(filtroFatos);
         
         final List<Lancamento> lancamentos = 
             this.lancamentosDao.listar(em, filtroLancamentos);
