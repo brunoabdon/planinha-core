@@ -14,7 +14,7 @@ public class Extratos extends AbstractRestReadOnlyResource<Extrato, Id> {
     protected static final String PATH = "extratos";
 
     private ExtratosDao extratosDao;
-    
+
     public Extratos() {
         this.extratosDao = new ExtratosDao();
     }
@@ -23,5 +23,4 @@ public class Extratos extends AbstractRestReadOnlyResource<Extrato, Id> {
     protected Dao<Extrato, Id> getDao() {
         return this.extratosDao;
     }
-
 }
