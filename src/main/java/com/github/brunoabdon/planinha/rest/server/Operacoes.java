@@ -1,6 +1,8 @@
 package com.github.brunoabdon.planinha.rest.server;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -11,6 +13,7 @@ import com.github.brunoabdon.planinha.Operacao;
 import com.github.brunoabdon.planinha.dal.OperacoesDao;
 
 @Path(Operacoes.PATH)
+@Produces(MediaType.APPLICATION_JSON)
 public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
 
     private static final ResponseBuilder NOT_ALLOWED = 

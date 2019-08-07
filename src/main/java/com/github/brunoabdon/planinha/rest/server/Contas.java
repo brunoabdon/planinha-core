@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
@@ -15,6 +17,7 @@ import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.dal.ContasDao;
 
 @Path(Contas.PATH)
+@Produces(MediaType.APPLICATION_JSON)
 public class Contas extends AbstractRestCrud<Conta, Integer> {
 
 	public static final String PATH = "contas";
