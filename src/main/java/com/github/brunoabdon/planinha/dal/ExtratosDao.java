@@ -61,7 +61,11 @@ public class ExtratosDao implements Dao<Extrato, Id> {
                 .stream()
                 .map(l -> new Item(l.getFato(), l.getValor()))
                 .collect(toList());
-            
+
+        //recarregando
+        final Conta contaExtrato = em.find(Conta.class,conta.getId());
+        id.setConta(contaExtrato);
+        
         return new Extrato(id,valorSaldo,itens);
     }
 
