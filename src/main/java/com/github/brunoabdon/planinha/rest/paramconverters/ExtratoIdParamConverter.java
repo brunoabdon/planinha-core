@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.rest.json;
+package com.github.brunoabdon.planinha.rest.paramconverters;
 
 import static java.time.LocalDate.parse;
 import static java.time.Period.between;
@@ -10,18 +10,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.json.bind.adapter.JsonbAdapter;
+import javax.ws.rs.ext.ParamConverter;
 
 import com.github.brunoabdon.commons.util.modelo.Periodo;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.planinha.Extrato;
 import com.github.brunoabdon.planinha.Extrato.Id;
 
-public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
+public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
 
-    
+	public static final ExtratoIdParamConverter INSTANCE = 
+		new ExtratoIdParamConverter();
+	
     public static final Pattern EXTRADO_ID_REGEXP =
-        Pattern.compile("^\\d+-\\d+(-(\\d){2}){2}-\\d+");
+        Pattern.compile("^(\\d+)-(\\d+(-(\\d){2}){2})-(\\d+)");
     
     /**
      * Formata um {@link Id} como a string {@code ccc-YYYY-MM-DD-dd} onde:
@@ -35,8 +37,8 @@ public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
      * 
      * @return O id formatado como uma string.
      */
-    @Override
-    public String adaptToJson(final Id id) throws Exception {
+	@Override
+	public String toString(final Id id) {
         
         final Integer idConta = id.getConta().getId();
         
@@ -57,8 +59,8 @@ public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
                 .toString();
     }
 
-    @Override
-    public Id adaptFromJson(final String str) throws Exception {
+	@Override
+	public Id fromString(final String str) {
         final Matcher matcher = EXTRADO_ID_REGEXP.matcher(str);
         
         if(!matcher.matches()) {
@@ -66,7 +68,6 @@ public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
                 "Não segue " + EXTRADO_ID_REGEXP + ": \"" + str + "\"."
             );
         }
-        
         
         final Periodo periodo = getPeriodo(matcher);
 
@@ -81,7 +82,7 @@ public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
         
         final LocalDate inicio = parseData(strDataInicio);
         
-        final String strQuantosDias = matcher.group(3);
+        final String strQuantosDias = matcher.group(5);
         final int quantosDias = 
             parseNumero(strQuantosDias, "uma quantidade de dias");
         
@@ -109,7 +110,7 @@ public class ExtradoIdAdapter implements JsonbAdapter<Extrato.Id, String>{
         return new Conta(contaId);
     }
 
-    int parseNumero(final String strConta, final String desc) {
+    private int parseNumero(final String strConta, final String desc) {
         final int contaId;
         try {
             contaId = Integer.parseInt(strConta);

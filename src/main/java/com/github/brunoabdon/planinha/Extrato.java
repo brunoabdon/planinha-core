@@ -3,19 +3,15 @@ package com.github.brunoabdon.planinha;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.json.bind.annotation.JsonbTypeAdapter;
-
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 import com.github.brunoabdon.commons.util.modelo.Periodo;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.Fato;
-import com.github.brunoabdon.planinha.rest.json.ExtradoIdAdapter;
 
 public class Extrato implements Identifiable<Extrato.Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;
 
-    @JsonbTypeAdapter(ExtradoIdAdapter.class)
     public static class Id implements Serializable{
         
         private static final long serialVersionUID = 3587349119460038562L;
