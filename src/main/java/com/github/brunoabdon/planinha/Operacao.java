@@ -7,11 +7,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 import com.github.brunoabdon.gastoso.Fato;
 
 @Entity
+@Table(name = "fato")
 public class Operacao extends EntidadeBaseInt {
 
 	private static final long serialVersionUID = 7410023178167290123L;
