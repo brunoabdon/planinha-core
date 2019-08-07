@@ -39,8 +39,8 @@ public class ExtratosDao implements Dao<Extrato, Id> {
     		.setParameter("conta", conta)
     		.setParameter("dia", periodo.getDataMinima())
     		.getSingleResult();
-
-        final int valorSaldo = result == null ? 0 : (Integer)result;
+        
+        final Number valorSaldo = result == null ? 0 : (Number)result;
         
         final FiltroContas filtroContas = new FiltroContas();
         filtroContas.setConta(conta);
