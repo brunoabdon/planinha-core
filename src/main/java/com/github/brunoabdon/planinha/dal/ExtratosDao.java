@@ -18,7 +18,6 @@ import com.github.brunoabdon.gastoso.system.FiltroLancamentos;
 import com.github.brunoabdon.planinha.Extrato;
 import com.github.brunoabdon.planinha.Extrato.Id;
 import com.github.brunoabdon.planinha.Extrato.Item;
-import com.github.brunoabdon.planinha.SaldoInicial;
 
 public class ExtratosDao implements Dao<Extrato, Id> {
 
@@ -35,14 +34,14 @@ public class ExtratosDao implements Dao<Extrato, Id> {
         final  Conta conta = id.getConta();
         final Periodo periodo = id.getPeriodo();
 
-        final SaldoInicial.Id saldoId = 
-            new SaldoInicial.Id(conta,periodo.getDataMinima());
-        
-        final SaldoInicial saldoIncial = em.find(SaldoInicial.class, saldoId);
-        
-        final int valorSaldo = 
-            saldoIncial == null ? 0 : saldoIncial.getValor(); 
+        final Object result =
+    		em.createNamedQuery("saldoDaContaNoInicioDoDia")
+    		.setParameter("conta", conta)
+    		.setParameter("dia", periodo.getDataMinima())
+    		.getSingleResult();
 
+        final int valorSaldo = result == null ? 0 : (Integer)result;
+        
         final FiltroContas filtroContas = new FiltroContas();
         filtroContas.setConta(conta);
         

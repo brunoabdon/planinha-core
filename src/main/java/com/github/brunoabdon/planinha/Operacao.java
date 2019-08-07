@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -12,6 +13,12 @@ import javax.persistence.Table;
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 import com.github.brunoabdon.gastoso.Fato;
 
+@NamedQuery(
+	name = "saldoDaContaNoInicioDoDia",
+	query = 
+		"SELECT SUM(l.valor) FROM Lancamento l "
+		+ "WHERE l.conta = :conta AND l.fato.dia <:dia "
+)
 @Entity
 @Table(name = "fato")
 public class Operacao extends EntidadeBaseInt {
