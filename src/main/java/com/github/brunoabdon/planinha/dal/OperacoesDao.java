@@ -53,14 +53,4 @@ public class OperacoesDao extends AbstractDao<Operacao, Integer> {
         
         this.fatosDao.deletar(em, key);
     }
-    
-    @Override
-    @SuppressWarnings("unused")
-    protected void validarPraAtualizacao(
-            final EntityManager em, 
-            final Operacao entity)
-                throws DalException {
-        
-        throw new DalException("Atualização não é suportada.");
-    }    
 }
