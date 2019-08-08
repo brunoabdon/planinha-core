@@ -73,12 +73,14 @@ public class ExtratosDao implements Dao<Extrato, Id> {
     @SuppressWarnings("unused")
     public void criar(final EntityManager em, final Extrato e) {
         throw new UnsupportedOperationException("Não se criam Extratos.");
-
     }
 
     @Override
     @SuppressWarnings("unused")
-    public Extrato atualizar(final EntityManager em, final Extrato e)
+    public Extrato atualizar(
+            final EntityManager em, 
+            final Extrato.Id id,
+            final Extrato e)
             throws DalException {
         throw new UnsupportedOperationException("Não se atualizam Extratos.");
     }
@@ -88,5 +90,4 @@ public class ExtratosDao implements Dao<Extrato, Id> {
     public void deletar(final EntityManager em, final Id key) {
         throw new UnsupportedOperationException("Não se deletam Extratos.");
     }
-
 }
