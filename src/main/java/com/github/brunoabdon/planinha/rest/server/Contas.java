@@ -43,11 +43,4 @@ public class Contas extends AbstractRestCrud<Conta, Integer> {
 
         return super.buildResponse(request,httpHeaders,contas);
     }
-    
-    @Override
-    protected void prencheValoresAtualizacao(
-            final Conta contaPraAtualizar,
-            final Conta contaValoresNovos) {
-        contaPraAtualizar.setNome(contaValoresNovos.getNome());
-    }
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -78,17 +79,27 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
                 if(diff == 0) diff = f1.getId() - f2.getId();
                 return diff;
             });
+            
 
         return buildResponse(request, httpHeaders, fatos);
     }
 
     @Override
-    protected void prencheValoresAtualizacao(
-            final Fato fatoPraAtualizar,
-            final Fato fatoValoresNovos) {
-
-        fatoPraAtualizar.setDia(fatoValoresNovos.getDia());
-        fatoPraAtualizar.setDescricao(fatoValoresNovos.getDescricao());
+    protected Fato prepararAtualizacao(
+            final EntityManager entityManager, 
+            final Fato fato, 
+            final Integer id) {
         
-    }
+        final Fato fatoOriginal = entityManager.find(Fato.class, id);
+        
+        if(fato.getDia() == null) 
+            fato.setDia(fatoOriginal.getDia());
+        
+        if(fato.getDescricao() == null) 
+            fato.setDescricao(fatoOriginal.getDescricao());
+        
+        fato.setId(id);
+        
+        return fato;
+    }    
 }
