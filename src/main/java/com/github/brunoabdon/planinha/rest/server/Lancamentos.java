@@ -30,10 +30,5 @@ public class Lancamentos extends AbstractRestCrud<Lancamento, Integer> {
         return dao;
     }
     
-    @Override
-    protected void prencheValoresAtualizacao(
-            final Lancamento lancamentoPraAtualizar,
-            final Lancamento lancamentoValoresNovos) {
-        lancamentoPraAtualizar.setValor(lancamentoValoresNovos.getValor());
-    }
+    
 }
