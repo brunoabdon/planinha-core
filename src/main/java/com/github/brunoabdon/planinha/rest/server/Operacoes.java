@@ -9,13 +9,13 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import com.github.brunoabdon.commons.dal.Dao;
-import com.github.brunoabdon.commons.rest.AbstractRestCrud;
+import com.github.brunoabdon.commons.rest.AbstractRootResource;
 import com.github.brunoabdon.planinha.Operacao;
 import com.github.brunoabdon.planinha.dal.OperacoesDao;
 
 @Path("operacoes")
 @Produces(MediaType.APPLICATION_JSON)
-public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
+public class Operacoes extends AbstractRootResource<Operacao, Integer>{
 
     private static final ResponseBuilder NOT_ALLOWED = 
         Response.status(Status.METHOD_NOT_ALLOWED);

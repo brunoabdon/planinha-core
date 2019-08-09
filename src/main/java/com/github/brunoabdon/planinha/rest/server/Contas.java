@@ -13,13 +13,13 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 import com.github.brunoabdon.commons.dal.Dao;
-import com.github.brunoabdon.commons.rest.AbstractRestCrud;
+import com.github.brunoabdon.commons.rest.AbstractRootResource;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.dal.ContasDao;
 
 @Path("contas")
 @Produces(MediaType.APPLICATION_JSON)
-public class Contas extends AbstractRestCrud<Conta, Integer> {
+public class Contas extends AbstractRootResource<Conta, Integer> {
 
     @Inject
 	private ContasDao dao;

@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
-import com.github.brunoabdon.commons.rest.AbstractRestCrud;
+import com.github.brunoabdon.commons.rest.AbstractRootResource;
 import com.github.brunoabdon.gastoso.Fato;
 import com.github.brunoabdon.gastoso.dal.FatosDao;
 import com.github.brunoabdon.gastoso.system.FiltroFatos;
@@ -27,7 +27,7 @@ import com.github.brunoabdon.gastoso.system.FiltroFatos;
  */
 @Path("fatos")
 @Produces(MediaType.APPLICATION_JSON)
-public class Fatos extends AbstractRestCrud<Fato,Integer>{
+public class Fatos extends AbstractRootResource<Fato,Integer>{
 
     @Inject
     private FatosDao dao;
