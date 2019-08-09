@@ -24,16 +24,13 @@ import com.github.brunoabdon.gastoso.system.FiltroFatos;
  *
  * @author bruno
  */
-@Path(Fatos.PATH)
+@Path("fatos")
 @Produces(MediaType.APPLICATION_JSON)
 public class Fatos extends AbstractRestCrud<Fato,Integer>{
 
-    protected static final String PATH = "fatos";
-    
     private final FatosDao dao;
 
     public Fatos() {
-        super(PATH);
         this.dao = new FatosDao();
     }
 

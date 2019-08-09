@@ -12,19 +12,16 @@ import com.github.brunoabdon.commons.rest.AbstractRestCrud;
 import com.github.brunoabdon.planinha.Operacao;
 import com.github.brunoabdon.planinha.dal.OperacoesDao;
 
-@Path(Operacoes.PATH)
+@Path("operacoes")
 @Produces(MediaType.APPLICATION_JSON)
 public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
 
     private static final ResponseBuilder NOT_ALLOWED = 
         Response.status(Status.METHOD_NOT_ALLOWED);
 
-    protected static final String PATH = "operacoes";
-
 	private final OperacoesDao operacoesDao;
     
     public Operacoes() {
-        super(PATH);
     	this.operacoesDao = new OperacoesDao();
 	}
 

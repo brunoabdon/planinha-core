@@ -10,11 +10,9 @@ import com.github.brunoabdon.planinha.Extrato;
 import com.github.brunoabdon.planinha.Extrato.Id;
 import com.github.brunoabdon.planinha.dal.ExtratosDao;
 
-@Path(Extratos.PATH)
+@Path("extratos")
 @Produces(MediaType.APPLICATION_JSON)
 public class Extratos extends AbstractRestReadOnlyResource<Extrato, Id> {
-
-    protected static final String PATH = "extratos";
 
     private ExtratosDao extratosDao;
 

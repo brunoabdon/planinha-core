@@ -12,16 +12,13 @@ import com.github.brunoabdon.gastoso.dal.LancamentosDao;
  *
  * @author bruno
  */
-@Path(Lancamentos.PATH)
+@Path("lancamentos")
 @Produces(MediaType.APPLICATION_JSON)
 public class Lancamentos extends AbstractRestCrud<Lancamento, Integer> {
 
-    protected static final String PATH = "lancamentos";
-            
     private final LancamentosDao dao;
 
     public Lancamentos() {
-        super(PATH);
         this.dao = new LancamentosDao();
     }
 
