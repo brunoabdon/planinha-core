@@ -4,13 +4,9 @@ import static java.time.LocalDate.now;
 import static java.time.Period.between;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.YearMonth;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
