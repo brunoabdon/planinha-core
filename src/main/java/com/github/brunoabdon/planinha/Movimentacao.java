@@ -10,11 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import com.github.brunoabdon.commons.util.modelo.Identifiable;
 import com.github.brunoabdon.gastoso.Conta;
 
 @Entity
 @Table(name = "lancamento")
-public class Movimentacao implements Serializable {
+public class Movimentacao implements Identifiable<Integer>, Serializable {
 
 	private static final long serialVersionUID = 8987967033928269546L;
 
@@ -30,6 +31,11 @@ public class Movimentacao implements Serializable {
 	private int valor; 
 
 	public Movimentacao() {
+	}
+	
+	@Override
+	public Integer getId() {
+	    return id;
 	}
 	
 	public int getValor() {
