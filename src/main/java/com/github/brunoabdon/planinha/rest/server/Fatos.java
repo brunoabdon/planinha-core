@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,11 +29,8 @@ import com.github.brunoabdon.gastoso.system.FiltroFatos;
 @Produces(MediaType.APPLICATION_JSON)
 public class Fatos extends AbstractRestCrud<Fato,Integer>{
 
-    private final FatosDao dao;
-
-    public Fatos() {
-        this.dao = new FatosDao();
-    }
+    @Inject
+    private FatosDao dao;
 
     @Override
     public FatosDao getDao() {
@@ -67,7 +65,7 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
         filtroFatos.setDataMaxima(dataMaxima);
         filtroFatos.setDataMinima(dataMinima);
         
-        fatos = dao.listar(entityManager, filtroFatos);
+        fatos = dao.listar(filtroFatos);
         
         fatos.sort(
             (f1,f2) -> {
@@ -75,7 +73,6 @@ public class Fatos extends AbstractRestCrud<Fato,Integer>{
                 if(diff == 0) diff = f1.getId() - f2.getId();
                 return diff;
             });
-            
 
         return buildResponse(request, httpHeaders, fatos);
     }

@@ -1,5 +1,6 @@
 package com.github.brunoabdon.planinha.rest.server;
 
+import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -19,12 +20,9 @@ public class Operacoes extends AbstractRestCrud<Operacao, Integer>{
     private static final ResponseBuilder NOT_ALLOWED = 
         Response.status(Status.METHOD_NOT_ALLOWED);
 
-	private final OperacoesDao operacoesDao;
+	@Inject
+    private OperacoesDao operacoesDao;
     
-    public Operacoes() {
-    	this.operacoesDao = new OperacoesDao();
-	}
-
     @Override
     protected Dao<Operacao, Integer> getDao() {
         return this.operacoesDao;

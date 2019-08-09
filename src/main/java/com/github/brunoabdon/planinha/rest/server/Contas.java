@@ -2,6 +2,7 @@ package com.github.brunoabdon.planinha.rest.server;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,12 +21,9 @@ import com.github.brunoabdon.gastoso.dal.ContasDao;
 @Produces(MediaType.APPLICATION_JSON)
 public class Contas extends AbstractRestCrud<Conta, Integer> {
 
+    @Inject
 	private ContasDao dao;
 	
-	public Contas() {
-		this.dao = new ContasDao();
-	}
-
 	@Override
 	protected Dao<Conta, Integer> getDao() {
 		return this.dao;
@@ -36,7 +34,7 @@ public class Contas extends AbstractRestCrud<Conta, Integer> {
             final @Context Request request,
             final @Context HttpHeaders httpHeaders) {
         
-        final List<Conta> contas = dao.listar(entityManager);
+        final List<Conta> contas = dao.listar();
 
         return super.buildResponse(request,httpHeaders,contas);
     }

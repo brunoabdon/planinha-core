@@ -4,7 +4,10 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
@@ -19,17 +22,17 @@ import com.github.brunoabdon.planinha.Extrato;
 import com.github.brunoabdon.planinha.Extrato.Id;
 import com.github.brunoabdon.planinha.Extrato.Item;
 
+@ApplicationScoped
 public class ExtratosDao implements Dao<Extrato, Id> {
-
+    
+    @PersistenceContext
+    private EntityManager em;
+    
+    @Inject
     private LancamentosDao lancamentosDao;
     
-    public ExtratosDao() {
-        this.lancamentosDao = new LancamentosDao();
-    }
-    
     @Override
-    public Extrato find(final EntityManager em, final Id id) 
-            throws DalException {
+    public Extrato find(final Id id) throws DalException {
         
         final  Conta conta = id.getConta();
         final Periodo periodo = id.getPeriodo();
@@ -54,7 +57,7 @@ public class ExtratosDao implements Dao<Extrato, Id> {
         filtroLancamentos.setFiltroFatos(filtroFatos);
         
         final List<Lancamento> lancamentos = 
-            this.lancamentosDao.listar(em, filtroLancamentos);
+            this.lancamentosDao.listar(filtroLancamentos);
         
         final List<Item> itens = 
             lancamentos
@@ -71,23 +74,20 @@ public class ExtratosDao implements Dao<Extrato, Id> {
 
     @Override
     @SuppressWarnings("unused")
-    public void criar(final EntityManager em, final Extrato e) {
+    public void criar(final Extrato e) {
         throw new UnsupportedOperationException("Não se criam Extratos.");
     }
 
     @Override
     @SuppressWarnings("unused")
-    public Extrato atualizar(
-            final EntityManager em, 
-            final Extrato.Id id,
-            final Extrato e)
+    public Extrato atualizar(final Extrato.Id id, final Extrato e)
             throws DalException {
         throw new UnsupportedOperationException("Não se atualizam Extratos.");
     }
 
     @Override
     @SuppressWarnings("unused")
-    public void deletar(final EntityManager em, final Id key) {
+    public void deletar(final Id key) {
         throw new UnsupportedOperationException("Não se deletam Extratos.");
     }
 }

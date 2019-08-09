@@ -1,6 +1,7 @@
 package com.github.brunoabdon.planinha.dal;
 
-import javax.persistence.EntityManager;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.github.brunoabdon.commons.dal.AbstractDao;
 import com.github.brunoabdon.commons.dal.DalException;
@@ -11,23 +12,24 @@ import com.github.brunoabdon.gastoso.dal.LancamentosDao;
 import com.github.brunoabdon.planinha.Movimentacao;
 import com.github.brunoabdon.planinha.Operacao;
 
+@ApplicationScoped
 public class OperacoesDao extends AbstractDao<Operacao, Integer> {
 
-    private final FatosDao fatosDao;
-    private final LancamentosDao lancamentosDao;
+    @Inject
+    private FatosDao fatosDao;
+    
+    @Inject
+    private LancamentosDao lancamentosDao;
     
     public OperacoesDao() {
         super(Operacao.class);
-        this.fatosDao = new FatosDao(); //pq não são singletons?
-        this.lancamentosDao = new LancamentosDao();
     }
     
     @Override
-    public void criar(final EntityManager em, final Operacao operacao) 
-            throws DalException {
+    public void criar(final Operacao operacao) throws DalException {
 
         final Fato fato = operacao.getFato();
-        this.fatosDao.criar(em, fato);
+        this.fatosDao.criar(fato);
         
         for (final Movimentacao movimentacao:operacao.getMovimentacoes()){
             final Lancamento lancamento = 
@@ -36,7 +38,7 @@ public class OperacoesDao extends AbstractDao<Operacao, Integer> {
                     movimentacao.getConta(), 
                     movimentacao.getValor()
                 );
-            this.lancamentosDao.criar(em, lancamento);
+            this.lancamentosDao.criar(lancamento);
         }
         
         operacao.setId(fato.getId());
@@ -44,13 +46,13 @@ public class OperacoesDao extends AbstractDao<Operacao, Integer> {
 
     
     @Override
-    public void deletar(final EntityManager em, final Integer key) 
-            throws DalException {
+    public void deletar(final Integer key) throws DalException {
         
-        em.createNamedQuery("Lancamento.deletarPorFato")
+        getEntityManager()
+          .createNamedQuery("Lancamento.deletarPorFato")
           .setParameter("fato", new Fato(key))
           .executeUpdate();
         
-        this.fatosDao.deletar(em, key);
+        this.fatosDao.deletar(key);
     }
 }
