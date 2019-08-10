@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import com.github.brunoabdon.commons.dal.Dao;
 import com.github.brunoabdon.commons.rest.AbstractRestCrud;
 import com.github.brunoabdon.gastoso.Lancamento;
+import com.github.brunoabdon.gastoso.Lancamento.Id;
 import com.github.brunoabdon.gastoso.dal.LancamentosDao;
 
 /**
@@ -38,4 +39,10 @@ public class Movimentacoes
         
         return new Lancamento.Id(fatoId,contaId); 
     }
+    
+    @Override
+	protected void defineChave(final Lancamento lancamento, final Id id) {
+		lancamento.setId(id);
+	}
+    
 }
