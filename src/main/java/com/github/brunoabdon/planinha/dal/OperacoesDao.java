@@ -35,7 +35,7 @@ public class OperacoesDao extends AbstractDao<Operacao, Integer> {
             final Lancamento lancamento = 
                 new Lancamento(
                     fato,
-                    movimentacao.getConta(), 
+                    movimentacao.getConta(),
                     movimentacao.getValor()
                 );
             this.lancamentosDao.criar(lancamento);
