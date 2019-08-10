@@ -33,6 +33,11 @@ public class Movimentacao implements Identifiable<Integer>, Serializable {
 	public Movimentacao() {
 	}
 	
+	public Movimentacao(final Conta conta, final int valor){
+		this.conta = conta;
+		this.valor = valor;
+	}
+	
 	@Override
 	public Integer getId() {
 	    return id;
