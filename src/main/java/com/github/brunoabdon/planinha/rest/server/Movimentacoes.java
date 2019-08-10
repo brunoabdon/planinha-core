@@ -2,14 +2,15 @@ package com.github.brunoabdon.planinha.rest.server;
 
 import static java.lang.Integer.parseInt;
 
+import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.github.brunoabdon.commons.dal.Dao;
 import com.github.brunoabdon.commons.rest.AbstractRestCrud;
-import com.github.brunoabdon.planinha.Movimentacao;
-import com.github.brunoabdon.planinha.dal.MovimentacoesDao;
+import com.github.brunoabdon.gastoso.Lancamento;
+import com.github.brunoabdon.gastoso.dal.LancamentosDao;
 
 /**
  *
@@ -18,26 +19,23 @@ import com.github.brunoabdon.planinha.dal.MovimentacoesDao;
 @Path("operacoes/{operacaoId}/movimentacoes")
 @Produces(MediaType.APPLICATION_JSON)
 public class Movimentacoes 
-        extends AbstractRestCrud<Movimentacao, Integer, Integer> {
+        extends AbstractRestCrud<Lancamento, Lancamento.Id, Integer> {
 
-    private final MovimentacoesDao dao;
+	@Inject
+    private LancamentosDao dao;
 
-    public Movimentacoes() {
-        this.dao = new MovimentacoesDao();
-    }
-    
     @Override
-    protected Dao<Movimentacao, Integer> getDao() {
+    protected Dao<Lancamento, Lancamento.Id> getDao() {
         return this.dao;
     }
 
     @Override
-    protected Integer getFullId(final Integer contaId) {
+    protected Lancamento.Id getFullId(final Integer contaId) {
         final String operacaoIdParam = 
             uriInfo.getPathParameters().getFirst("operacaoId");
         
-        final Integer opId = parseInt(operacaoIdParam);
+        final Integer fatoId = parseInt(operacaoIdParam);
         
-        return contaId + opId; //construir chave composta 
+        return new Lancamento.Id(fatoId,contaId); 
     }
 }
