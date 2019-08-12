@@ -21,7 +21,7 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
 
 	public static final ExtratoIdParamConverter INSTANCE = 
 		new ExtratoIdParamConverter();
-	
+
     public static final Pattern EXTRADO_ID_REGEXP =
         Pattern.compile("^(\\d+)-(\\d+(-(\\d){2}){2})-(\\d+)");
     
@@ -34,6 +34,8 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
      *   <li><em>dd</em> é a quantidade de dias entre a data inicio e a data
      *   fim do Id (inclusivamente).;</li> 
      * </ul>
+     * 
+     * @param id O id a ser convertido.
      * 
      * @return O id formatado como uma string.
      */
