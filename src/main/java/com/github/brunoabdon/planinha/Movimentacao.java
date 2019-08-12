@@ -6,25 +6,26 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 import com.github.brunoabdon.gastoso.Conta;
+import com.github.brunoabdon.gastoso.Lancamento;
 
 @Entity
 @Table(name = "lancamento")
-public class Movimentacao implements Identifiable<Integer>, Serializable {
+public class Movimentacao implements Identifiable<Lancamento.Id>, Serializable {
 
 	private static final long serialVersionUID = 8987967033928269546L;
 
 	@Id
 	@JsonbTransient
-	private Integer id;
+	private Lancamento.Id id;
 	
-	@MapsId
 	@ManyToOne
+	@JoinColumn(insertable = false, updatable = false)
     private Conta conta;
 	
 	@Column(insertable = false, updatable = false)
@@ -39,7 +40,7 @@ public class Movimentacao implements Identifiable<Integer>, Serializable {
 	}
 	
 	@Override
-	public Integer getId() {
+	public Lancamento.Id getId() {
 	    return id;
 	}
 	
