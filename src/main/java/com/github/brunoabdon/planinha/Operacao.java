@@ -38,7 +38,7 @@ public class Operacao extends EntidadeBaseInt {
 		return fato;
 	}
 
-	public void setFato(Fato fato) {
+	public void setFato(final Fato fato) {
 		this.fato = fato;
 	}
 
@@ -46,7 +46,7 @@ public class Operacao extends EntidadeBaseInt {
 		return movimentacoes;
 	}
 
-	public void setMovimentacoes(List<Movimentacao> movimentacoes) {
+	public void setMovimentacoes(final List<Movimentacao> movimentacoes) {
 		this.movimentacoes = movimentacoes;
 	}
 
@@ -56,7 +56,7 @@ public class Operacao extends EntidadeBaseInt {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
