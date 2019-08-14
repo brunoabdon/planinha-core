@@ -24,7 +24,7 @@ public class Movimentacoes
 
 	@Inject
     private LancamentosDao dao;
-
+	
     @Override
     protected Dao<Lancamento, Lancamento.Id> getDao() {
         return this.dao;
@@ -39,10 +39,9 @@ public class Movimentacoes
         
         return new Lancamento.Id(fatoId,contaId); 
     }
-    
+
     @Override
-	protected void defineChave(final Lancamento lancamento, final Id id) {
-		lancamento.setId(id);
+    protected void defineChave(final Lancamento lancamento, final Id id) {
+    	lancamento.setId(id);
 	}
-    
 }
