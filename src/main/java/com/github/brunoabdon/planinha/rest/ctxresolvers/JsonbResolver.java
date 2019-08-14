@@ -11,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.logging.Logger;
 
-import com.github.brunoabdon.planinha.rest.adapter.LancamentoAdapter;
+import com.github.brunoabdon.planinha.rest.serializers.LancamentoSerializer;
 
 @Provider
 public class JsonbResolver implements ContextResolver<Jsonb> {
@@ -23,7 +23,7 @@ public class JsonbResolver implements ContextResolver<Jsonb> {
 	public Jsonb getContext(final Class<?> type) {
 		LOGGER.log(INFO, "Criando Jsonb.");
 		final JsonbConfig config = new JsonbConfig();
-        config.withAdapters(new LancamentoAdapter());
+		config.withSerializers(new LancamentoSerializer());
         return JsonbBuilder.create(config);	
     }
 
