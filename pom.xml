@@ -10,7 +10,7 @@
   <properties>
   
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>0.20.0</quarkus.version>
+    <quarkus.version>0.21.1</quarkus.version>
   
     <version.postgresql>42.2.5</version.postgresql>
     
