@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: Planinha
+  description: API do Planinha.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/planinha/
+  description: localhost
+- url: http://planinha.herokuapp.com/v1.0
+  description: herokuapp
+- url: https://virtserver.swaggerhub.com/brunoabdon/planinha/1.0.0
+  description: SwaggerHub API Auto Mocking
+security:
+- accessCode:
+  - read
+  - write
+paths:
+  /contas:
+    get:
+      summary: Lista as contas
+      description: Lista as contas existentes.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conta'
+  /contas/{id}:
+    get:
+      summary: Recupera uma Conta
+      description: Recupera uma Conta.
+      parameters:
+      - name: id
+        in: path
+        description: o id da Conta.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conta'
+        404:
+          description: A conta não exsite.
+components:
+  schemas:
+    Id:
+      minimum: 0
+      type: integer
+      format: int64
+    Conta:
+      required:
+      - id
+      - nome
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
