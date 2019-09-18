@@ -32,7 +32,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContaExistente'
+              $ref: '#/components/schemas/ContaPatch'
         required: true
       responses:
         204:
@@ -78,7 +78,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContaExistente'
+              $ref: '#/components/schemas/ContaPatch'
         required: true
       responses:
         201:
@@ -87,6 +87,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Conta'
+        404:
+          description: A conta não exsite.
     delete:
       summary: Deleta uma conta.
       parameters:
@@ -103,6 +105,136 @@ paths:
           description: Deletado
         404:
           description: A conta não exsite.
+  /fatos:
+    get:
+      summary: Lista fatos
+      description: Lista fatos.
+      parameters:
+      - name: mes
+        in: query
+        description: |
+          Mês e ano, no formato MM-YYYY, dos fatos a serem retornados.
+
+          É equivalente a passar o parâmetro dataMinima com o primeiro dia desse mes e dataMaxima com o último.
+
+          Esse parâmetro não pode ser usando em conjunto com dataMinima ou dataMaxima.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: dataMinima
+        in: query
+        description: |
+          Retornar apenas fatos cujo dia seja essa data ou mais recente.
+
+          Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      - name: dataMaxima
+        in: query
+        description: |
+          Retornar apenas fatos cujo dia não seja posterior a essa data.
+
+          Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Fato'
+    post:
+      summary: Cria um fato
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FatoPatch'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fato'
+  /fatos/{id}:
+    get:
+      summary: Recupera um Fato
+      description: Recupera um Fato.
+      parameters:
+      - name: id
+        in: path
+        description: o id do fato.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fato'
+        404:
+          description: O Fato não exsite.
+    post:
+      summary: Altera o dia e/ou a descricao de um fato
+      parameters:
+      - name: id
+        in: path
+        description: o id do fato.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FatoPatch'
+        required: true
+      responses:
+        200:
+          description: Fato alterado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fato'
+        404:
+          description: A conta não exsite.
+    delete:
+      summary: Deleta um fato.
+      parameters:
+      - name: id
+        in: path
+        description: o id do fato.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        204:
+          description: Deletado
+        404:
+          description: O fato não existe.
 components:
   schemas:
     Id:
@@ -123,10 +255,32 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Conta'
-    ContaExistente:
+    ContaPatch:
       required:
       - nome
       type: object
       properties:
+        nome:
+          type: string
+    Fato:
+      required:
+      - descricao
+      - dia
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+        dia:
+          type: string
+          format: date
+        descricao:
+          type: string
+    FatoPatch:
+      type: object
+      properties:
+        dia:
+          type: string
+          format: date
         nome:
           type: string
