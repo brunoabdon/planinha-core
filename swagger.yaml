@@ -25,6 +25,21 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ArrayDeConta'
+    post:
+      summary: Cria uma conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContaExistente'
+        required: true
+      responses:
+        204:
+          description: Created
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/Conta'
   /contas/{id}:
     get:
@@ -48,6 +63,46 @@ paths:
                 $ref: '#/components/schemas/Conta'
         404:
           description: A conta não exsite.
+    post:
+      summary: Altera o nome de uma conta
+      parameters:
+      - name: id
+        in: path
+        description: o id da Conta.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContaExistente'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conta'
+    delete:
+      summary: Deleta uma conta.
+      parameters:
+      - name: id
+        in: path
+        description: o id da Conta.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        204:
+          description: Deletado
+        404:
+          description: A conta não exsite.
 components:
   schemas:
     Id:
@@ -58,8 +113,20 @@ components:
       required:
       - id
       - nome
+      type: object
       properties:
         id:
           type: integer
+        nome:
+          type: string
+    ArrayDeConta:
+      type: array
+      items:
+        $ref: '#/components/schemas/Conta'
+    ContaExistente:
+      required:
+      - nome
+      type: object
+      properties:
         nome:
           type: string
