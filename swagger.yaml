@@ -235,6 +235,50 @@ paths:
           description: Deletado
         404:
           description: O fato não existe.
+  /contas/{id}/extratos:
+    get:
+      summary: Retorna os extratos de uma conta
+      parameters:
+      - name: id
+        in: path
+        description: o id da conta de que se quer o extrato.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExtratoResumido'
+        404:
+          description: A conta não exsite.
+  /extratos/{id}:
+    get:
+      summary: Retorna um extrato específico
+      parameters:
+      - name: id
+        in: path
+        description: o id do extrato.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Extrato'
+        404:
+          description: O extrato não exsite.
 components:
   schemas:
     Id:
@@ -284,3 +328,40 @@ components:
           format: date
         nome:
           type: string
+    Extrato:
+      type: object
+      properties:
+        saldoAnterior:
+          type: integer
+        dataInicio:
+          type: string
+          format: date
+        dataFim:
+          type: string
+          format: date
+        conta:
+          $ref: '#/components/schemas/Conta'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extrato_items'
+    ExtratoResumido:
+      type: object
+      properties:
+        id:
+          type: string
+        dataInicio:
+          type: string
+          format: date
+        dataFim:
+          type: string
+          format: date
+        conta:
+          $ref: '#/components/schemas/Conta'
+    Extrato_items:
+      type: object
+      properties:
+        fato:
+          $ref: '#/components/schemas/Fato'
+        valor:
+          type: integer
