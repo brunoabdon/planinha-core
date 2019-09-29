@@ -6,21 +6,26 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 
 import com.github.brunoabdon.commons.util.modelo.Identifiable;
 import com.github.brunoabdon.commons.util.modelo.Periodo;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.Fato;
+import com.github.brunoabdon.planinha.rest.paramconverters.ExtratoIdParamConverter;
 
 public class Extrato implements Identifiable<Extrato.Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;
 
+    private static final ExtratoIdParamConverter EXTRATO_ID_SERIALIZER = 
+        new ExtratoIdParamConverter();
+
     public static class Id implements Serializable{
         
         private static final long serialVersionUID = 3587349119460038562L;
-        
+
         private Conta conta;
         private Periodo periodo;
 
@@ -45,7 +50,7 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
             this.conta = conta;
         }
     }
-    
+
     public static class Item implements Serializable{
 
         private static final long serialVersionUID = 7915709116381425166L;
@@ -78,13 +83,16 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
             this.valor = valor;
         }
     }
-    
+
     @JsonbTransient
     private Id id;
-    
+
+    private String serialId;
+
     private Number saldoAnterior;
     
     private List<Item> items;
+
     
     public Extrato(final Id id) {
         this.id = id;
@@ -122,27 +130,35 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
     }
     
     public Conta getConta(){
-    	return getOptionalAttr(Id::getConta).orElse(null);
+        return getOptionalAttr(Id::getConta).orElse(null);
     }
     
     public LocalDate getDataInicio() {
-    	return getData(Periodo::getDataMinima);
+        return getData(Periodo::getDataMinima);
     }
 
     public LocalDate getDataFim() {
-		return getData(Periodo::getDataMaxima);
+        return getData(Periodo::getDataMaxima);
     }
 
-	private LocalDate getData(final Function<Periodo, LocalDate> dateMapper) {
-		return getOptionalAttr(Id::getPeriodo).map(dateMapper).orElse(null);
-	}
+    private LocalDate getData(final Function<Periodo, LocalDate> dateMapper) {
+        return getOptionalAttr(Id::getPeriodo).map(dateMapper).orElse(null);
+    }
 
-	private <T> Optional<? extends T> getOptionalAttr(
-			final Function<? super Id, ? extends T> getter) {
-		return optionalId().map(getter);
-	}
+    private <T> Optional<? extends T> getOptionalAttr(
+            final Function<? super Id, ? extends T> getter) {
+        return optionalId().map(getter);
+    }
     
-	private Optional<Id> optionalId() {
-		return Optional.of(id);
-	}
+    private Optional<Id> optionalId() {
+        return Optional.of(id);
+    }
+    
+    @JsonbProperty("id")
+    public String getSerialId() {
+        if(this.serialId == null) {
+            this.serialId = EXTRATO_ID_SERIALIZER.toString(getId());
+        }
+        return serialId;
+    }
 }
