@@ -49,7 +49,7 @@ public class ExtratosDaConta {
         return        
             Stream
                 .iterate(dataIncial, d -> d.plusMonths(1))
-                .limit(between(dataIncial, now().plusMonths(1)).toTotalMonths())
+                .limit(between(dataIncial,now().plusMonths(1)).toTotalMonths())
                 .map(d -> new Periodo(d, d.plusMonths(1).minusDays(1)))
                 .map(p -> new Extrato.Id(conta, p))
                 .map(Extrato::new)
