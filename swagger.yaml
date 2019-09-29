@@ -19,6 +19,8 @@ paths:
     get:
       summary: Lista as contas
       description: Lista as contas existentes.
+      tags:
+        - Conta
       responses:
         200:
           description: OK
@@ -28,6 +30,8 @@ paths:
                 $ref: '#/components/schemas/ArrayDeConta'
     post:
       summary: Cria uma conta
+      tags:
+        - Conta
       requestBody:
         content:
           application/json:
@@ -45,6 +49,8 @@ paths:
     get:
       summary: Recupera uma Conta
       description: Recupera uma Conta.
+      tags:
+        - Conta
       parameters:
       - name: id
         in: path
@@ -65,6 +71,8 @@ paths:
           description: A conta não exsite.
     post:
       summary: Altera o nome de uma conta
+      tags:
+        - Conta
       parameters:
       - name: id
         in: path
@@ -91,6 +99,8 @@ paths:
           description: A conta não exsite.
     delete:
       summary: Deleta uma conta.
+      tags:
+        - Conta
       parameters:
       - name: id
         in: path
@@ -109,6 +119,8 @@ paths:
     get:
       summary: Lista fatos
       description: Lista fatos.
+      tags:
+        - Fato
       parameters:
       - name: mes
         in: query
@@ -158,6 +170,8 @@ paths:
                   $ref: '#/components/schemas/Fato'
     post:
       summary: Cria um fato
+      tags:
+        - Fato
       requestBody:
         content:
           application/json:
@@ -175,6 +189,8 @@ paths:
     get:
       summary: Recupera um Fato
       description: Recupera um Fato.
+      tags:
+        - Fato
       parameters:
       - name: id
         in: path
@@ -195,6 +211,8 @@ paths:
           description: O Fato não exsite.
     post:
       summary: Altera o dia e/ou a descricao de um fato
+      tags:
+        - Fato
       parameters:
       - name: id
         in: path
@@ -221,6 +239,8 @@ paths:
           description: A conta não exsite.
     delete:
       summary: Deleta um fato.
+      tags:
+        - Fato
       parameters:
       - name: id
         in: path
@@ -238,6 +258,8 @@ paths:
   /contas/{id}/extratos:
     get:
       summary: Retorna os extratos de uma conta
+      tags:
+        - Extrato
       parameters:
       - name: id
         in: path
@@ -257,10 +279,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/ExtratoResumido'
         404:
-          description: A conta não exsite.
+          description: O extrato (ou a conta) não existe.
   /extratos/{id}:
     get:
       summary: Retorna um extrato específico
+      tags:
+        - Extrato
       parameters:
       - name: id
         in: path
@@ -331,6 +355,8 @@ components:
     Extrato:
       type: object
       properties:
+        id:
+          type: string
         saldoAnterior:
           type: integer
         dataInicio:
