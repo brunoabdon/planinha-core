@@ -1,0 +1,22 @@
+Fato:
+  required:
+  - descricao
+  - dia
+  - id
+  type: object
+  properties:
+    id:
+      $ref: '#'
+    dia:
+      type: string
+      format: date
+    descricao:
+      type: string
+FatoPatch:
+  type: object
+  properties:
+    dia:
+      type: string
+      format: date
+    nome:
+      type: string

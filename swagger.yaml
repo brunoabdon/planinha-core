@@ -306,88 +306,18 @@ paths:
 components:
   schemas:
     Id:
-      minimum: 0
-      type: integer
-      format: int64
+      $ref: "types.yaml#/Id"
     Conta:
-      required:
-      - id
-      - nome
-      type: object
-      properties:
-        id:
-          type: integer
-        nome:
-          type: string
+      $ref: "conta.yaml#/Conta"
     ArrayDeConta:
-      type: array
-      items:
-        $ref: '#/components/schemas/Conta'
+      $ref: "conta.yaml#/ArrayDeConta"
     ContaPatch:
-      required:
-      - nome
-      type: object
-      properties:
-        nome:
-          type: string
+      $ref: "conta.yaml#/ContaPatch"
     Fato:
-      required:
-      - descricao
-      - dia
-      - id
-      type: object
-      properties:
-        id:
-          type: integer
-        dia:
-          type: string
-          format: date
-        descricao:
-          type: string
+      $ref: "fato.yaml#/Fato"
     FatoPatch:
-      type: object
-      properties:
-        dia:
-          type: string
-          format: date
-        nome:
-          type: string
+      $ref: "fato.yaml#/FatoPatch"
     Extrato:
-      type: object
-      properties:
-        id:
-          type: string
-        saldoAnterior:
-          type: integer
-        dataInicio:
-          type: string
-          format: date
-        dataFim:
-          type: string
-          format: date
-        conta:
-          $ref: '#/components/schemas/Conta'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Extrato_items'
+      $ref: "extrato.yaml#/Extrato"
     ExtratoResumido:
-      type: object
-      properties:
-        id:
-          type: string
-        dataInicio:
-          type: string
-          format: date
-        dataFim:
-          type: string
-          format: date
-        conta:
-          $ref: '#/components/schemas/Conta'
-    Extrato_items:
-      type: object
-      properties:
-        fato:
-          $ref: '#/components/schemas/Fato'
-        valor:
-          type: integer
+      $ref: "extrato.yaml#/ExtratoResumido"

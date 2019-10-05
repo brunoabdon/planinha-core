@@ -1,0 +1,21 @@
+Conta:
+  required:
+  - id
+  - nome
+  type: object
+  properties:
+    id:
+      type: integer
+    nome:
+      type: string
+ArrayDeConta:
+  type: array
+  items:
+    $ref: '#/Conta'
+ContaPatch:
+  required:
+  - nome
+  type: object
+  properties:
+    nome:
+      type: string

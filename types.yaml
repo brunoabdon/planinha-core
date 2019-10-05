@@ -1,0 +1,4 @@
+Id:
+  minimum: 0
+  type: integer
+  format: int64

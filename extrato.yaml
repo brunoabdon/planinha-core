@@ -1,0 +1,39 @@
+Extrato:
+  type: object
+  properties:
+    id:
+      type: string
+    saldoAnterior:
+      type: integer
+    dataInicio:
+      type: string
+      format: date
+    dataFim:
+      type: string
+      format: date
+    conta:
+      $ref: "conta.yaml#/Conta"
+    items:
+      type: array
+      items:
+        $ref: '#/ItemDeExtrato'
+ExtratoResumido:
+  type: object
+  properties:
+    id:
+      type: string
+    dataInicio:
+      type: string
+      format: date
+    dataFim:
+      type: string
+      format: date
+    conta:
+      $ref: "conta.yaml#/Conta"
+ItemDeExtrato:
+  type: object
+  properties:
+    fato:
+      $ref: "conta.yaml#/Conta"
+    valor:
+      type: integer
