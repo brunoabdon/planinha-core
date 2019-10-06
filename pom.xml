@@ -10,7 +10,7 @@
   <properties>
   
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>0.21.1</quarkus.version>
+    <quarkus.version>0.23.2</quarkus.version>
   
     <version.postgresql>42.2.5</version.postgresql>
     
@@ -21,8 +21,8 @@
     
     <herokuds.database_url>${env.DATABASE_URL}</herokuds.database_url>
     
-    <abd-commons.version>2.1.0-SNAPSHOT</abd-commons.version>
-    <gastoso.version>2.1.0-SNAPSHOT</gastoso.version>
+    <abd-commons.version>2.1.1-SNAPSHOT</abd-commons.version>
+    <gastoso.version>2.1.1-SNAPSHOT</gastoso.version>
     
   </properties>
 
