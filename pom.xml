@@ -12,18 +12,12 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>0.25.0</quarkus.version>
   
-    <version.postgresql>42.2.5</version.postgresql>
-    
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-    <herokuds.database_url>${env.DATABASE_URL}</herokuds.database_url>
-    
     <abd-commons.version>2.1.1-SNAPSHOT</abd-commons.version>
-    <gastoso.version>2.1.1-SNAPSHOT</gastoso.version>
-    
   </properties>
 
   <dependencyManagement>
@@ -39,27 +33,8 @@
   </dependencyManagement>
 
  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
 
     <plugins>
-     <plugin>
-        <groupId>com.github.brunoabdon.m2.herokuds</groupId>
-        <artifactId>herokuds-maven-plugin</artifactId>
-        <version>0.0.4</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>parse</goal>
-            </goals>
-          </execution>
-        </executions>        
-      </plugin>
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
@@ -73,41 +48,6 @@
         </executions>
       </plugin>
     </plugins>
-    <pluginManagement>
-        <plugins>
-            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-            <plugin>
-                <groupId>org.eclipse.m2e</groupId>
-                <artifactId>lifecycle-mapping</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <lifecycleMappingMetadata>
-                        <pluginExecutions>
-                            <pluginExecution>
-                                <pluginExecutionFilter>
-                                    <groupId>
-                                        com.github.brunoabdon.m2.herokuds
-                                    </groupId>
-                                    <artifactId>
-                                        herokuds-maven-plugin
-                                    </artifactId>
-                                    <versionRange>
-                                        [0.0.1-SNAPSHOT,)
-                                    </versionRange>
-                                    <goals>
-                                        <goal>parse</goal>
-                                    </goals>
-                                </pluginExecutionFilter>
-                                <action>
-                                    <ignore></ignore>
-                                </action>
-                            </pluginExecution>
-                        </pluginExecutions>
-                    </lifecycleMappingMetadata>
-                </configuration>
-            </plugin>
-        </plugins>
-    </pluginManagement>
  </build>
   <profiles>
     <profile>
@@ -134,23 +74,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${surefire-plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                  <systemProperties>
-                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                  </systemProperties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -160,55 +83,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-resteasy-jsonb</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-hibernate-orm</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-jdbc-postgresql</artifactId>
-    </dependency>
-	
-	<!--  dependency>
-        <groupId>com.github.brunoabdon.gastoso</groupId>
-        <artifactId>gastoso-core</artifactId>
-        <version>${gastoso.version}</version>
-    </dependency>
-    <dependency>
-         <groupId>com.github.brunoabdon.gastoso</groupId>
-         <artifactId>gastoso-dal</artifactId>
-         <version>${gastoso.version}</version>
-    </dependency-->
+
     <dependency>
          <groupId>com.github.brunoabdon.commons</groupId>
          <artifactId>abd-commons-rest</artifactId>
          <version>${abd-commons.version}</version>
      </dependency>
-     <dependency>
-         <groupId>com.github.brunoabdon.commons</groupId>
-         <artifactId>abd-commons-util</artifactId>
-         <version>${abd-commons.version}</version>
-     </dependency>
-     <!--  dependency>
-         <groupId>com.github.brunoabdon.commons</groupId>
-         <artifactId>abd-commons-dal</artifactId>
-         <version>${abd-commons.version}</version>
-     </dependency-->
   </dependencies>
 </project>
