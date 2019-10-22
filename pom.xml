@@ -10,7 +10,7 @@
   <properties>
   
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>0.23.2</quarkus.version>
+    <quarkus.version>0.25.0</quarkus.version>
   
     <version.postgresql>42.2.5</version.postgresql>
     
@@ -185,7 +185,7 @@
         <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
 	
-	<dependency>
+	<!--  dependency>
         <groupId>com.github.brunoabdon.gastoso</groupId>
         <artifactId>gastoso-core</artifactId>
         <version>${gastoso.version}</version>
@@ -194,7 +194,7 @@
          <groupId>com.github.brunoabdon.gastoso</groupId>
          <artifactId>gastoso-dal</artifactId>
          <version>${gastoso.version}</version>
-    </dependency>
+    </dependency-->
     <dependency>
          <groupId>com.github.brunoabdon.commons</groupId>
          <artifactId>abd-commons-rest</artifactId>
@@ -205,10 +205,10 @@
          <artifactId>abd-commons-util</artifactId>
          <version>${abd-commons.version}</version>
      </dependency>
-     <dependency>
+     <!--  dependency>
          <groupId>com.github.brunoabdon.commons</groupId>
          <artifactId>abd-commons-dal</artifactId>
          <version>${abd-commons.version}</version>
-     </dependency>
+     </dependency-->
   </dependencies>
 </project>
