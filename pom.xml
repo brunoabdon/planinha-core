@@ -49,11 +49,5 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
-
-    <dependency>
-		  <groupId>com.github.brunoabdon.quarkus-test</groupId>
-		  <artifactId>quarkus-test-dependency</artifactId>
-		  <version>0.0.1-SNAPSHOT</version>
-     </dependency>
   </dependencies>
 </project>
