@@ -6,7 +6,7 @@ Fato:
   type: object
   properties:
     id:
-      $ref: '#'
+      $ref: 'types.yaml#/Id'
     dia:
       type: string
       format: date
