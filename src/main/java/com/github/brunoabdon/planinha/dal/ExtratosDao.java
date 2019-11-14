@@ -11,9 +11,11 @@ import javax.persistence.PersistenceContext;
 
 import com.github.brunoabdon.commons.dal.DalException;
 import com.github.brunoabdon.commons.dal.Dao;
+import com.github.brunoabdon.commons.dal.EntityNotFoundException;
 import com.github.brunoabdon.commons.util.modelo.Periodo;
 import com.github.brunoabdon.gastoso.Conta;
 import com.github.brunoabdon.gastoso.Lancamento;
+import com.github.brunoabdon.gastoso.dal.ContasDao;
 import com.github.brunoabdon.gastoso.dal.LancamentosDao;
 import com.github.brunoabdon.gastoso.system.FiltroContas;
 import com.github.brunoabdon.gastoso.system.FiltroFatos;
@@ -31,6 +33,9 @@ public class ExtratosDao implements Dao<Extrato, Id> {
     @Inject
     private LancamentosDao lancamentosDao;
     
+    @Inject
+    private ContasDao contasDao;
+    
     @Override
     public Extrato find(final Id id) throws DalException {
         
@@ -42,6 +47,18 @@ public class ExtratosDao implements Dao<Extrato, Id> {
     		.setParameter("conta", conta)
     		.setParameter("dia", periodo.getDataMinima())
     		.getSingleResult();
+        
+        if(result == null) {
+            //pode ser que a conta não exista - que implica que o extrato não 
+            //deve existir - ou a conta exista mas não tenha lancamentos no
+            //período consultado - o que implica um extrato sem itens.
+            
+            try {
+                contasDao.find(conta.getId());
+            } catch (final EntityNotFoundException e) {
+                throw new EntityNotFoundException(e,id);
+            }
+        }
         
         final Number valorSaldo = result == null ? 0 : (Number)result;
         
