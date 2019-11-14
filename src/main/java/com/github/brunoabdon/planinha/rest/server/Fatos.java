@@ -51,6 +51,10 @@ public class Fatos extends AbstractRootResource<Fato,Integer>{
         //mudar pra usar hibernate validation
         if((mes == null && dataMaxima == null)
             || (mes != null && (dataMaxima != null || dataMinima != null))){
+                //TODO permitir essa combinação. 
+                //A dataMinima seria a maior entre a informada e o 
+                //início do mes, e a máxima a menor entre as duas.
+                //pode acontecer max < min, então nem consulta.
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
         
