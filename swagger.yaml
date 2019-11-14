@@ -129,7 +129,7 @@ paths:
 
           É equivalente a passar o parâmetro dataMinima com o primeiro dia desse mes e dataMaxima com o último.
 
-          Esse parâmetro não pode ser usando em conjunto com dataMinima ou dataMaxima.
+          Esse parâmetro não pode ser usado em conjunto com dataMinima ou dataMaxima.
         required: false
         style: form
         explode: true
@@ -138,24 +138,24 @@ paths:
       - name: dataMinima
         in: query
         description: |
-          Retornar apenas fatos cujo dia seja essa data ou mais recente.
+          A menor data aceitável para os fatos retornados. Fatos anteriores a
+          esta data não são retornados.
 
-          Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
+          Esse parâmetro não pode ser usado em conjunto com o parâmero mes.
         required: false
-        style: form
-        explode: true
+        explode: false
         schema:
           type: string
           format: date
       - name: dataMaxima
         in: query
         description: |
-          Retornar apenas fatos cujo dia não seja posterior a essa data.
+          A maior data aceitável para os fatos retornados. Fatos posteriores a
+          esta data não são retornados.
 
           Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
         required: false
-        style: form
-        explode: true
+        explode: false
         schema:
           type: string
           format: date
