@@ -112,7 +112,7 @@ paths:
             removida.
   /fatos:
     get:
-      summary: Lista fatos
+      summary: Lista fatos, de acordo com as restrições específicadas.
       tags:
         - Fato
       parameters:
@@ -199,7 +199,7 @@ paths:
           description: O Fato nem existe.
   /operacoes/:
     get:
-      summary: Lista operações que se adequam aos critérios definidos.
+      summary: Lista operações, de acordo com as restrições específicadas.
       tags:
         - Operação
       parameters:
