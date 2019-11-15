@@ -24,7 +24,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayDeConta'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conta"
     post:
       summary: Cria uma conta.
       tags:
@@ -393,8 +395,6 @@ components:
       $ref: "types.yaml#/Id"
     Conta:
       $ref: "conta.yaml#/Conta"
-    ArrayDeConta:
-      $ref: "conta.yaml#/ArrayDeConta"
     ContaPatch:
       $ref: "conta.yaml#/ContaPatch"
     Fato:

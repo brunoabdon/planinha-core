@@ -8,10 +8,6 @@ Conta:
       $ref: 'types.yaml#/Id'
     nome:
       type: string
-ArrayDeConta:
-  type: array
-  items:
-    $ref: '#/Conta'
 ContaPatch:
   required:
   - nome
