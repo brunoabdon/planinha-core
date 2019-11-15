@@ -43,15 +43,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Conta'
-  /contas/{id}:
+  /contas/{conta_id}:
     get:
       summary: Recupera uma Conta
       tags:
         - Conta
       parameters:
-      - name: id
+      - name: conta_id
         in: path
-        description: o id da Conta.
+        description: O id da Conta.
         required: true
         schema:
           $ref: '#/components/schemas/Id'
@@ -69,12 +69,10 @@ paths:
       tags:
         - Conta
       parameters:
-      - name: id
+      - name: conta_id
         in: path
-        description: o id da Conta.
+        description: O id da Conta.
         required: true
-        style: simple
-        explode: false
         schema:
           $ref: '#/components/schemas/Id'
       requestBody:
@@ -84,8 +82,8 @@ paths:
               $ref: '#/components/schemas/ContaPatch'
         required: true
       responses:
-        201:
-          description: Created
+        200:
+          description: Conta alterada com sucesso.
           content:
             application/json:
               schema:
@@ -97,19 +95,21 @@ paths:
       tags:
         - Conta
       parameters:
-      - name: id
+      - name: conta_id
         in: path
-        description: o id da Conta.
+        description: O id da Conta a ser deletada.
         required: true
-        style: simple
-        explode: false
         schema:
           $ref: '#/components/schemas/Id'
       responses:
         204:
           description: Deletado
         404:
-          description: A conta não existe.
+          description: A conta nem existe.
+        409:
+           description: |
+            Existem operações referenciando esta conta e ela não pode ser 
+            removida.
   /fatos:
     get:
       summary: Lista fatos
@@ -175,19 +175,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Fato'
-  /fatos/{id}:
+  /fatos/{fato_id}:
     get:
       summary: Recupera um Fato
       description: Recupera um Fato.
       tags:
         - Fato
       parameters:
-      - name: id
+      - name: fato_id
         in: path
-        description: o id do fato.
+        description: O id do fato.
         required: true
-        style: simple
-        explode: false
         schema:
           $ref: '#/components/schemas/Id'
       responses:
@@ -198,9 +196,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fato'
         404:
-          description: O Fato não exsite.
-
-
+          description: O Fato nem existe.
   /operacoes/:
     get:
       summary: Lista operações que se adequam aos critérios definidos.
@@ -391,4 +387,3 @@ components:
       $ref: "operacao.yaml#/Operacao" 
     OperacaoCrua:
       $ref: "operacao.yaml#/OperacaoCrua"
-
