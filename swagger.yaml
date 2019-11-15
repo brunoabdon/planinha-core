@@ -15,8 +15,7 @@ security:
 paths:
   /contas:
     get:
-      summary: Lista as contas
-      description: Lista as contas existentes.
+      summary: Lista as contas existentes.
       tags:
         - Conta
       responses:
@@ -27,7 +26,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArrayDeConta'
     post:
-      summary: Cria uma conta
+      summary: Cria uma conta.
       tags:
         - Conta
       requestBody:
@@ -45,7 +44,7 @@ paths:
                 $ref: '#/components/schemas/Conta'
   /contas/{conta_id}:
     get:
-      summary: Recupera uma Conta
+      summary: Recupera uma Conta.
       tags:
         - Conta
       parameters:
@@ -65,7 +64,7 @@ paths:
         404:
           description: A conta não exsite.
     put:
-      summary: Altera o nome de uma conta
+      summary: Altera o nome de uma conta.
       tags:
         - Conta
       parameters:
@@ -177,8 +176,7 @@ paths:
                 $ref: '#/components/schemas/Fato'
   /fatos/{fato_id}:
     get:
-      summary: Recupera um Fato
-      description: Recupera um Fato.
+      summary: Recupera um Fato.
       tags:
         - Fato
       parameters:
@@ -311,7 +309,7 @@ paths:
           description: A operação nem existe.
   /contas/{id}/extratos:
     get:
-      summary: Retorna os extratos de uma conta
+      summary: Retorna os extratos de uma conta.
       tags:
         - Extrato
       parameters:
@@ -334,7 +332,7 @@ paths:
           description: O extrato (ou a conta) não existe.
   /contas/{idConta}/extratos/{id}:
     get:
-      summary: Retorna um extrato específico
+      summary: Retorna um extrato específico.
       tags:
         - Extrato
       parameters:
