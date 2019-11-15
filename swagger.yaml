@@ -319,8 +319,6 @@ paths:
         in: path
         description: o id da conta de que se quer o extrato.
         required: true
-        style: simple
-        explode: false
         schema:
           $ref: '#/components/schemas/Id'
       responses:
@@ -350,8 +348,6 @@ paths:
         in: path
         description: o id do extrato.
         required: true
-        style: simple
-        explode: false
         schema:
           type: string
       responses:
