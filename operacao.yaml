@@ -1,0 +1,15 @@
+Operacao:
+  required:
+    - id
+    - fato
+    - movimentacoes
+  type: object
+  properties:
+    id:
+      $ref: "types.yaml#/Id"
+    fato:
+      $ref: "fato.yaml#/Fato"
+    movimentacoes:
+      type: array
+      items:
+        $ref: "movimentacao.yaml#/Movimentacao"
