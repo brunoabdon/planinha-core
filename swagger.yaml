@@ -380,6 +380,6 @@ components:
     Movimentacao:
       $ref: "movimentacao.yaml#/Movimentacao"
     Operacao:
-      $ref: "operacao.yaml#/Operacao" 
+      $ref: "operacao.yaml#/Operacao"
     OperacaoCrua:
       $ref: "operacao.yaml#/OperacaoCrua"
