@@ -44,6 +44,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Conta'
+        409:
+          description: A conta não foi criada pois existe outra com o seu nome.
   /contas/{conta_id}:
     parameters:
     - name: conta_id
@@ -84,6 +86,8 @@ paths:
                 $ref: '#/components/schemas/Conta'
         404:
           description: A conta nem existe.
+        409:
+          description: A conta não foi criada pois existe outra com o seu nome.
     delete:
       summary: Deleta uma conta.
       tags:
