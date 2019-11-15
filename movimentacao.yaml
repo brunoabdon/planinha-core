@@ -1,0 +1,10 @@
+Movimentacao:
+  required:
+    - conta
+    - valor
+  type: object
+  properties:
+    conta:
+      $ref: 'conta.yaml#/Conta'
+    valor:
+      type: number
