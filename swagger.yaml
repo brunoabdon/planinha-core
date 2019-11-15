@@ -255,6 +255,25 @@ paths:
                 $ref: '#/components/schemas/Fato'
         404:
           description: A operação nem existe.
+    put:
+      summary: Altera um fato.
+      tags:
+        - Fato
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FatoPatch'
+        required: true
+      responses:
+        200:
+          description: O fato foi alterado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fato'
+        404:
+          description: A operação nem existe.
   /operacoes/{operacao_id}/movimentacoes:
     parameters:
     - name: operacao_id
