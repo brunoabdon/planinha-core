@@ -255,6 +255,30 @@ paths:
           description: Deletado
         404:
           description: O fato não existe.
+  /operacoes/{operacao_id}/movimentacoes:
+    get:
+      summary: Lista as movimentaçoes de uma dada operação.
+      tags:
+        - Operação
+      parameters:
+      - name: operacao_id
+        in: path
+        description: A operação da qual as movimentações fazem parte.
+        required: true
+        schema:
+          $ref: "#/components/schemas/Id"
+      responses:
+        200:
+          description: |
+            A lista, possivelmente vazia, foi recuperada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movimentacao'
+        404:
+          description: A operação nem existe.
   /contas/{id}/extratos:
     get:
       summary: Retorna os extratos de uma conta
@@ -327,3 +351,5 @@ components:
       $ref: "extrato.yaml#/Extrato"
     ExtratoResumido:
       $ref: "extrato.yaml#/ExtratoResumido"
+    Movimentacao:
+      $ref: "movimentacao.yaml#/Movimentacao"
