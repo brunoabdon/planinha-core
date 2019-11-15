@@ -280,12 +280,18 @@ paths:
                   $ref: '#/components/schemas/ExtratoResumido'
         404:
           description: O extrato (ou a conta) não existe.
-  /extratos/{id}:
+  /contas/{idConta}/extratos/{id}:
     get:
       summary: Retorna um extrato específico
       tags:
         - Extrato
       parameters:
+      - name: idConta
+        in: path
+        description: O id da conta a que esse extrato pertence
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
       - name: id
         in: path
         description: o id do extrato.
