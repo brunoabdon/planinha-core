@@ -285,7 +285,7 @@ paths:
           description: Essa operação nem existe.
   /operacoes/{operacao_id}/movimentacoes:
     get:
-      summary: Lista as movimentaçoes de uma dada operação.
+      summary: Lista as movimentações de uma dada operação.
       tags:
         - Operação
       parameters:
