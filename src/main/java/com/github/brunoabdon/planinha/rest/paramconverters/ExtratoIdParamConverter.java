@@ -13,17 +13,15 @@ import java.util.regex.Pattern;
 import javax.ws.rs.ext.ParamConverter;
 
 import com.github.brunoabdon.commons.util.modelo.Periodo;
-import com.github.brunoabdon.gastoso.Conta;
-import com.github.brunoabdon.planinha.Extrato;
 import com.github.brunoabdon.planinha.Extrato.Id;
 
-public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
+public class ExtratoIdParamConverter implements ParamConverter<Periodo>{
 
 	public static final ExtratoIdParamConverter INSTANCE = 
 		new ExtratoIdParamConverter();
 
     public static final Pattern EXTRADO_ID_REGEXP =
-        Pattern.compile("^(\\d+)-(\\d+(-(\\d){2}){2})-(\\d+)");
+        Pattern.compile("^(\\d+(-(\\d){2}){2})-(\\d+)");
     
     /**
      * Formata um {@link Id} como a string {@code ccc-YYYY-MM-DD-dd} onde:
@@ -40,11 +38,8 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
      * @return O id formatado como uma string.
      */
 	@Override
-	public String toString(final Id id) {
+	public String toString(final Periodo periodo) {
         
-        final Integer idConta = id.getConta().getId();
-        
-        final Periodo periodo = id.getPeriodo();
         final LocalDate inicio = periodo.getDataMinima();
         final LocalDate fim = periodo.getDataMaxima();
         
@@ -53,8 +48,6 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
         
         return
             new StringBuilder(16)
-                .append(idConta)
-                .append("-")
                 .append(inicioFormatado)
                 .append("-")
                 .append(quantosDias)
@@ -62,7 +55,7 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
     }
 
 	@Override
-	public Id fromString(final String str) {
+	public Periodo fromString(final String str) {
         final Matcher matcher = EXTRADO_ID_REGEXP.matcher(str);
         
         if(!matcher.matches()) {
@@ -71,20 +64,15 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
             );
         }
         
-        final Periodo periodo = getPeriodo(matcher);
-
-        final Conta conta = parseConta(matcher);
-
-        return new Extrato.Id(conta,periodo);
-        
+        return getPeriodo(matcher);
     }
 
     private Periodo getPeriodo(final Matcher matcher) {
-        final String strDataInicio = matcher.group(2);
+        final String strDataInicio = matcher.group(1);
         
         final LocalDate inicio = parseData(strDataInicio);
         
-        final String strQuantosDias = matcher.group(5);
+        final String strQuantosDias = matcher.group(4);
         final int quantosDias = 
             parseNumero(strQuantosDias, "uma quantidade de dias");
         
@@ -106,19 +94,13 @@ public class ExtratoIdParamConverter implements ParamConverter<Extrato.Id>{
         return inicio;
     }
 
-    private Conta parseConta(final Matcher matcher) {
-        final String strConta = matcher.group(1);
-        final int contaId = parseNumero(strConta, "um id de conta");
-        return new Conta(contaId);
-    }
-
-    private int parseNumero(final String strConta, final String desc) {
+    private int parseNumero(final String numero, final String desc) {
         final int contaId;
         try {
-            contaId = Integer.parseInt(strConta);
+            contaId = Integer.parseInt(numero);
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(
-                "\""+strConta+"\" não parece " + desc + " válido.", e
+                "\""+numero+"\" não parece " + desc + " válido.", e
             );
         }
         return contaId;

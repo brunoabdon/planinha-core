@@ -157,7 +157,7 @@ public class Extrato implements Identifiable<Extrato.Id>, Serializable{
     @JsonbProperty("id")
     public String getSerialId() {
         if(this.serialId == null) {
-            this.serialId = EXTRATO_ID_SERIALIZER.toString(getId());
+            this.serialId = EXTRATO_ID_SERIALIZER.toString(getId().getPeriodo());
         }
         return serialId;
     }
