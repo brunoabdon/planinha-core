@@ -1,10 +1,19 @@
+MovimentacaoCrua:
+  required:
+    - valor
+  type: object
+  properties:
+    valor:
+      type: number
 Movimentacao:
   required:
     - conta
     - valor
-  type: object
-  properties:
-    conta:
-      $ref: 'conta.yaml#/Conta'
-    valor:
-      type: number
+  allOf:
+    - $ref: "#MovimentacaoCrua"
+    - type: object
+      properties:
+        conta:
+          $ref: 'conta.yaml#/Conta'
+        valor:
+          type: number

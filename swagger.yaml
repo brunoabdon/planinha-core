@@ -298,6 +298,95 @@ paths:
                   $ref: '#/components/schemas/Movimentacao'
         404:
           description: A operação nem existe.
+    post:
+      summary: Cria uma nova movimentação numa operação.
+      tags:
+        - Movimentação
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movimentacao"
+      responses:
+        201:
+          description: A movimentação foi criada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movimentacao"
+        404:
+          description: A operação nem existe.
+        409:
+          description: |
+            A movimentação não pode ser criada por que já existe uma 
+            movimentação para esta conta nesta operação.
+  /operacoes/{operacao_id}/movimentacoes/{conta_id}:
+    parameters:
+    - name: operacao_id
+      in: path
+      description: A operação da qual as movimentações fazem parte.
+      required: true
+      schema:
+        $ref: "#/components/schemas/Id"
+    - name: conta_id
+      in: path
+      description: A conta à qual esta movimentação diz respeito.
+      required: true
+      schema:
+        $ref: "#/components/schemas/Id"
+    get:
+      summary: Recupera uma movimentação específica.
+      tags:
+        - Movimentação
+      responses:
+        200:
+          description: |
+            A movimentaçao foi recuperada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movimentacao'
+        404:
+          description: |
+            A operação nem existe, ou não existem uma movimentação pra esa 
+            conta nesta operação.
+    put:
+      summary: Atualiza o valor de uma movimentação.
+      tags:
+        - Movimentação
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovimentacaoCrua'
+      responses:
+        200:
+          description: A movimentação foi atualizada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movimentacao'
+        404:
+          description: |
+            A operação nem existe, ou não existem uma movimentação pra esa 
+            conta nesta operação.
+    delete:
+      summary: Deleta uma movimentação de uma operação.       
+      tags: 
+        - Movimentação
+      responses:
+        204:
+          description: A movimentação foi deletada com sucesso.
+        403:
+          description: |
+            A movimentação não pode ser deletada por que ela é a única restante
+            na operação. Uma operação não pode existir sem movimentações.
+        404:
+          description: |
+            A operação nem existe, ou não existem uma movimentação pra esa 
+            conta nesta operação.
 components:
   schemas:
     Id:
@@ -318,6 +407,8 @@ components:
       $ref: "extrato.yaml#/ExtratoResumido"
     Movimentacao:
       $ref: "movimentacao.yaml#/Movimentacao"
+    MovimentacaoCrua:
+      $ref: "movimentacao.yaml#/MovimentacaoCrua"
     Operacao:
       $ref: "operacao.yaml#/Operacao"
     OperacaoCrua:
