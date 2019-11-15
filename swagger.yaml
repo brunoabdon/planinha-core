@@ -43,17 +43,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Conta'
   /contas/{conta_id}:
+    parameters:
+    - name: conta_id
+      in: path
+      description: O id da Conta.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
     get:
       summary: Recupera uma Conta.
       tags:
         - Conta
-      parameters:
-      - name: conta_id
-        in: path
-        description: O id da Conta.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       responses:
         200:
           description: A conta foi recuperada com sucesso.
@@ -67,13 +67,6 @@ paths:
       summary: Altera o nome de uma conta.
       tags:
         - Conta
-      parameters:
-      - name: conta_id
-        in: path
-        description: O id da Conta.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       requestBody:
         content:
           application/json:
@@ -93,13 +86,6 @@ paths:
       summary: Deleta uma conta.
       tags:
         - Conta
-      parameters:
-      - name: conta_id
-        in: path
-        description: O id da conta a ser deletada.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       responses:
         204:
           description: A conta foi deletada com sucesso.
@@ -175,17 +161,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fato'
   /fatos/{fato_id}:
+    parameters:
+    - name: fato_id
+      in: path
+      description: O id do fato.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
     get:
       summary: Recupera um Fato.
       tags:
         - Fato
-      parameters:
-      - name: fato_id
-        in: path
-        description: O id do fato.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       responses:
         200:
           description: O fato foi recuperado com sucesso.
@@ -284,17 +270,17 @@ paths:
         404:
           description: Essa operação nem existe.
   /operacoes/{operacao_id}/movimentacoes:
+    parameters:
+    - name: operacao_id
+      in: path
+      description: A operação da qual as movimentações fazem parte.
+      required: true
+      schema:
+        $ref: "#/components/schemas/Id"
     get:
       summary: Lista as movimentações de uma dada operação.
       tags:
         - Operação
-      parameters:
-      - name: operacao_id
-        in: path
-        description: A operação da qual as movimentações fazem parte.
-        required: true
-        schema:
-          $ref: "#/components/schemas/Id"
       responses:
         200:
           description: |
@@ -308,17 +294,17 @@ paths:
         404:
           description: A operação nem existe.
   /contas/{conta_id}/extratos:
+    parameters:
+    - name: conta_id
+      in: path
+      description: O id da conta de que se quer os extratos.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
     get:
       summary: Retorna os extratos de uma conta.
       tags:
         - Extrato
-      parameters:
-      - name: conta_id
-        in: path
-        description: O id da conta de que se quer o extrato.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       responses:
         200:
           description: OK
@@ -331,17 +317,18 @@ paths:
         404:
           description: A conta nem existe.
   /contas/{conta_id}/extratos/{extrato_id}:
+    parameters:
+    - name: conta_id
+      in: path
+      description: O id da conta de que se quer o extrato.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
     get:
       summary: Retorna um extrato específico.
       tags:
         - Extrato
       parameters:
-      - name: conta_id
-        in: path
-        description: O id da conta a que esse extrato pertence.
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: extrato_id
         in: path
         description: O id do extrato.
