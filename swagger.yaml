@@ -146,92 +146,6 @@ paths:
                 $ref: '#/components/schemas/Extrato'
         404:
           description: O extrato (ou a conta) nem existe.
-  /fatos:
-    get:
-      summary: Lista fatos, de acordo com as restrições específicadas.
-      tags:
-        - Fato
-      parameters:
-      - name: mes
-        in: query
-        description: |
-          Mês e ano, no formato MM-YYYY, dos fatos a serem retornados.
-
-          É equivalente a passar o parâmetro dataMinima com o primeiro dia desse mes e dataMaxima com o último.
-
-          Esse parâmetro não pode ser usado em conjunto com dataMinima ou dataMaxima.
-        required: false
-        schema:
-          type: string
-      - name: dataMinima
-        in: query
-        description: |
-          A menor data aceitável para os fatos retornados. Fatos anteriores a
-          esta data não são retornados.
-
-          Esse parâmetro não pode ser usado em conjunto com o parâmero mes.
-        required: false
-        schema:
-          type: string
-          format: date
-      - name: dataMaxima
-        in: query
-        description: |
-          A maior data aceitável para os fatos retornados. Fatos posteriores a
-          esta data não são retornados.
-
-          Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
-        required: false
-        schema:
-          type: string
-          format: date
-      responses:
-        200:
-          description: Os fatos foram consultados com sucesso.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Fato'
-    post:
-      summary: Cria um fato.
-      tags:
-        - Fato
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FatoPatch'
-        required: true
-      responses:
-        201:
-          description: O fato foi criado com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Fato'
-  /fatos/{fato_id}:
-    parameters:
-    - name: fato_id
-      in: path
-      description: O id do fato.
-      required: true
-      schema:
-        $ref: '#/components/schemas/Id'
-    get:
-      summary: Recupera um Fato.
-      tags:
-        - Fato
-      responses:
-        200:
-          description: O fato foi recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Fato'
-        404:
-          description: O Fato nem existe.
   /operacoes/:
     get:
       summary: Lista operações, de acordo com as restrições específicadas.
@@ -320,6 +234,27 @@ paths:
           description: A operação foi deletada com sucesso.
         404:
           description: Essa operação nem existe.
+  /operacoes/{operacao_id}/fato:
+    parameters:
+    - name: operacao_id
+      in: path
+      description: O id da operação.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    get:
+      summary: Recupera o fato de um operção.
+      tags:
+        - Fato
+      responses:
+        200:
+          description: O fato foi recuperado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fato'
+        404:
+          description: A operação nem existe.
   /operacoes/{operacao_id}/movimentacoes:
     parameters:
     - name: operacao_id
@@ -331,7 +266,7 @@ paths:
     get:
       summary: Lista as movimentações de uma dada operação.
       tags:
-        - Operação
+        - Movimentação
       responses:
         200:
           description: |
