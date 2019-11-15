@@ -35,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContaPatch'
+              $ref: '#/components/schemas/PatchConta'
         required: true
       responses:
         204:
@@ -73,7 +73,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContaPatch'
+              $ref: '#/components/schemas/PatchConta'
         required: true
       responses:
         200:
@@ -198,7 +198,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OperacaoCrua'
+              $ref: '#/components/schemas/PatchOperacao'
         required: true
       responses:
         201:
@@ -265,7 +265,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FatoPatch'
+              $ref: '#/components/schemas/PatchFato'
         required: true
       responses:
         200:
@@ -362,7 +362,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MovimentacaoCrua'
+              $ref: '#/components/schemas/PatchMovimentacao'
       responses:
         200:
           description: A movimentação foi atualizada com sucesso.
@@ -395,21 +395,21 @@ components:
       $ref: "types.yaml#/Id"
     Conta:
       $ref: "conta.yaml#/Conta"
-    ContaPatch:
-      $ref: "conta.yaml#/ContaPatch"
     Fato:
       $ref: "fato.yaml#/Fato"
-    FatoPatch:
-      $ref: "fato.yaml#/FatoPatch"
     Extrato:
       $ref: "extrato.yaml#/Extrato"
     ExtratoResumido:
       $ref: "extrato.yaml#/ExtratoResumido"
     Movimentacao:
       $ref: "movimentacao.yaml#/Movimentacao"
-    MovimentacaoCrua:
-      $ref: "movimentacao.yaml#/MovimentacaoCrua"
     Operacao:
       $ref: "operacao.yaml#/Operacao"
-    OperacaoCrua:
-      $ref: "operacao.yaml#/OperacaoCrua"
+    PatchConta:
+      $ref: "conta.yaml#/PatchConta"
+    PatchFato:
+      $ref: "fato.yaml#/PatchFato"
+    PatchMovimentacao:
+      $ref: "movimentacao.yaml#/PatchMovimentacao"
+    PatchOperacao:
+      $ref: "operacao.yaml#/PatchOperacao"

@@ -8,7 +8,7 @@ Conta:
       $ref: 'types.yaml#/Id'
     nome:
       type: string
-ContaPatch:
+PatchConta:
   required:
   - nome
   type: object

@@ -1,4 +1,4 @@
-MovimentacaoCrua:
+PatchMovimentacao:
   required:
     - valor
   type: object
@@ -10,7 +10,7 @@ Movimentacao:
     - conta
     - valor
   allOf:
-    - $ref: "#MovimentacaoCrua"
+    - $ref: "#PatchMovimentacao"
     - type: object
       properties:
         conta:

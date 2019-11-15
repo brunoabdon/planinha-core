@@ -12,7 +12,7 @@ Fato:
       format: date
     descricao:
       type: string
-FatoPatch:
+PatchFato:
   type: object
   properties:
     dia:

@@ -1,4 +1,4 @@
-OperacaoCrua:
+PatchOperacao:
   required:
     - fato
     - movimentacoes
@@ -16,8 +16,8 @@ Operacao:
     - fato
     - movimentacoes
   allOf:
-    - $ref: "#OperacaoCrua"
+    - $ref: "#PatchOperacao"
     - type: object
       properties:
         id:
-          $ref: "#/OperacaoCrua"
+          $ref: "#/PatchOperacao"
