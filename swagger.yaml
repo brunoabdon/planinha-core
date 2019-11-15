@@ -95,6 +95,57 @@ paths:
            description: |
             Existem operações referenciando esta conta e ela não pode ser 
             deletada.
+  /contas/{conta_id}/extratos:
+    parameters:
+    - name: conta_id
+      in: path
+      description: O id da conta de que se quer os extratos.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    get:
+      summary: Retorna os extratos de uma conta.
+      tags:
+        - Extrato
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExtratoResumido'
+        404:
+          description: A conta nem existe.
+  /contas/{conta_id}/extratos/{extrato_id}:
+    parameters:
+    - name: conta_id
+      in: path
+      description: O id da conta de que se quer o extrato.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    get:
+      summary: Retorna um extrato específico.
+      tags:
+        - Extrato
+      parameters:
+      - name: extrato_id
+        in: path
+        description: O id do extrato.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: O extrato foi recuperado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Extrato'
+        404:
+          description: O extrato (ou a conta) nem existe.
   /fatos:
     get:
       summary: Lista fatos, de acordo com as restrições específicadas.
@@ -293,57 +344,6 @@ paths:
                   $ref: '#/components/schemas/Movimentacao'
         404:
           description: A operação nem existe.
-  /contas/{conta_id}/extratos:
-    parameters:
-    - name: conta_id
-      in: path
-      description: O id da conta de que se quer os extratos.
-      required: true
-      schema:
-        $ref: '#/components/schemas/Id'
-    get:
-      summary: Retorna os extratos de uma conta.
-      tags:
-        - Extrato
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ExtratoResumido'
-        404:
-          description: A conta nem existe.
-  /contas/{conta_id}/extratos/{extrato_id}:
-    parameters:
-    - name: conta_id
-      in: path
-      description: O id da conta de que se quer o extrato.
-      required: true
-      schema:
-        $ref: '#/components/schemas/Id'
-    get:
-      summary: Retorna um extrato específico.
-      tags:
-        - Extrato
-      parameters:
-      - name: extrato_id
-        in: path
-        description: O id do extrato.
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: O extrato foi recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Extrato'
-        404:
-          description: O extrato (ou a conta) nem existe.
 components:
   schemas:
     Id:
