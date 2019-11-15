@@ -46,7 +46,6 @@ paths:
   /contas/{id}:
     get:
       summary: Recupera uma Conta
-      description: Recupera uma Conta.
       tags:
         - Conta
       parameters:
@@ -54,8 +53,6 @@ paths:
         in: path
         description: o id da Conta.
         required: true
-        style: simple
-        explode: false
         schema:
           $ref: '#/components/schemas/Id'
       responses:
@@ -67,7 +64,7 @@ paths:
                 $ref: '#/components/schemas/Conta'
         404:
           description: A conta não exsite.
-    post:
+    put:
       summary: Altera o nome de uma conta
       tags:
         - Conta
@@ -112,11 +109,10 @@ paths:
         204:
           description: Deletado
         404:
-          description: A conta não exsite.
+          description: A conta não existe.
   /fatos:
     get:
       summary: Lista fatos
-      description: Lista fatos.
       tags:
         - Fato
       parameters:
@@ -129,8 +125,6 @@ paths:
 
           Esse parâmetro não pode ser usado em conjunto com dataMinima ou dataMaxima.
         required: false
-        style: form
-        explode: true
         schema:
           type: string
       - name: dataMinima
@@ -141,7 +135,6 @@ paths:
 
           Esse parâmetro não pode ser usado em conjunto com o parâmero mes.
         required: false
-        explode: false
         schema:
           type: string
           format: date
@@ -153,7 +146,6 @@ paths:
 
           Esse parâmetro não pode ser usando em conjunto com o parâmero mes.
         required: false
-        explode: false
         schema:
           type: string
           format: date
@@ -167,7 +159,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Fato'
     post:
-      summary: Cria um fato
+      summary: Cria um fato.
       tags:
         - Fato
       requestBody:
@@ -207,52 +199,67 @@ paths:
                 $ref: '#/components/schemas/Fato'
         404:
           description: O Fato não exsite.
-    post:
-      summary: Altera o dia e/ou a descricao de um fato
+
+
+  /operacoes/:
+    get:
+      summary: Lista operações que se adequam aos critérios definidos.
       tags:
-        - Fato
+        - Operação
       parameters:
-      - name: id
-        in: path
-        description: o id do fato.
-        required: true
-        style: simple
-        explode: false
+      - name: mes
+        in: query
+        description: |
+          Mês e ano, no formato MM-YYYY, em que as operações aconteceram.
+
+          É equivalente a passar o parâmetro dataMinima com o primeiro dia desse mês e dataMaxima com o último.
+        required: false
         schema:
-          $ref: '#/components/schemas/Id'
+          type: string
+      - name: dataMinima
+        in: query
+        description: |
+          A data limite mínima das operações a serem listadas. Operações que 
+          aconteceram antes dessa data não serão listadas.
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: dataMaxima
+        in: query
+        description: |
+          A data limite máxima das operações a serem listadas. Operações que 
+          aconteceram depois dessa data não serão listadas.
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operacao'
+    post:
+      summary: Cria uma operação.
+      tags:
+        - Operação
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FatoPatch'
+              $ref: '#/components/schemas/OperacaoCrua'
         required: true
       responses:
-        200:
-          description: Fato alterado
+        201:
+          description: A operação foi criada com sucesso.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Fato'
-        404:
-          description: A conta não exsite.
-    delete:
-      summary: Deleta um fato.
-      tags:
-        - Fato
-      parameters:
-      - name: id
-        in: path
-        description: o id do fato.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/Id'
-      responses:
-        204:
-          description: Deletado
-        404:
-          description: O fato não existe.
+                $ref: '#/components/schemas/Operacao'
   /operacoes/{operacao_id}:
     parameters:
       - name: operacao_id
@@ -381,5 +388,7 @@ components:
     Movimentacao:
       $ref: "movimentacao.yaml#/Movimentacao"
     Operacao:
-      $ref: "operacao.yaml#/Operacao"
+      $ref: "operacao.yaml#/Operacao" 
+    OperacaoCrua:
+      $ref: "operacao.yaml#/OperacaoCrua"
 

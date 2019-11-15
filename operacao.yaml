@@ -1,15 +1,27 @@
-Operacao:
-  required:
-    - id
-    - fato
-    - movimentacoes
+OperacaoCrua:
   type: object
   properties:
-    id:
-      $ref: "types.yaml#/Id"
     fato:
       $ref: "fato.yaml#/Fato"
     movimentacoes:
       type: array
       items:
         $ref: "movimentacao.yaml#/Movimentacao"
+  required:
+    - fato
+    - movimentacoes
+Operacao:
+  type: object
+  required:
+  properties:
+    id:
+      $ref: "#/OperacaoCrua"
+      required: true
+    fato: 
+      $ref: "fato.yaml#/Fato"
+    movimentacoes:
+      type: array
+      items:
+        $ref: "movimentacao.yaml#/Movimentacao"
+
+  
