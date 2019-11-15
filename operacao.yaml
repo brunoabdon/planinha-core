@@ -20,4 +20,4 @@ Operacao:
     - type: object
       properties:
         id:
-          $ref: "#/PatchOperacao"
+          $ref: "types.yaml#/Id"
