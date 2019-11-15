@@ -8,8 +8,6 @@ servers:
   description: localhost
 - url: http://planinha.herokuapp.com/v1.0
   description: herokuapp
-- url: https://virtserver.swaggerhub.com/brunoabdon/planinha/1.0.0
-  description: SwaggerHub API Auto Mocking
 security:
 - accessCode:
   - read
