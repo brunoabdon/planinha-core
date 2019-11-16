@@ -16,7 +16,7 @@ Operacao:
     - fato
     - movimentacoes
   allOf:
-    - $ref: "#PatchOperacao"
+    - $ref: "#/PatchOperacao"
     - type: object
       properties:
         id:
