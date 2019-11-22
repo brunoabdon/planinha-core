@@ -17,6 +17,10 @@ public interface Facade <X extends Identifiable<K>,K,F,A>{
         throws EntidadeInexistenteException;
     
     public List<X> listar(final F filtro);
+
+    public default List<X> listar(){
+        return this.listar(null);
+    }
     
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public X atualiza(@
