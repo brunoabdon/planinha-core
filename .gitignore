@@ -31,3 +31,6 @@ hs_err_pid*
 .env
 *.jpage
 nbactions.xml
+/.apt_generated/
+/.apt_generated_tests/
+.factorypath
