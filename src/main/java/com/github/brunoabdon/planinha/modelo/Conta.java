@@ -4,32 +4,18 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
+
 /**
- * Uma carteia à qual se pode associar e movimentar um valor.
+ * Uma carteira à qual se pode associar e movimentar um valor.
  * 
  * @author bruno
  */
 @Entity
-@NamedQueries({
-	@NamedQuery(
-		name="Conta.all", query="SELECT c FROM Conta c ORDER BY c.nome"
-	),
-	@NamedQuery(
-		name="Conta.nomeEmUso",
-		query="SELECT COUNT(c.id) > 0 FROM Conta c WHERE c.nome = :nome"
-	),
-	@NamedQuery(
-		name="Conta.temLancamento",
-		query="SELECT COUNT(l) > 0 FROM Lancamento l WHERE l.conta = :conta"
-	)
-})
 public class Conta extends EntidadeBaseInt {
     
     private static final long serialVersionUID = 7321886996603362113L;
