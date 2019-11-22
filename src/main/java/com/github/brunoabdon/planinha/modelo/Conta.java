@@ -4,6 +4,10 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -15,13 +19,20 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  * 
  * @author bruno
  */
+@NamedQuery(
+    name="Conta.temLancamento",
+    query="SELECT COUNT(l) > 0 FROM Lancamento l WHERE l.conta = :conta"
+)
 @Entity
 public class Conta extends EntidadeBaseInt {
     
     private static final long serialVersionUID = 7321886996603362113L;
 
     public static final int NOME_MAX_LEN = 50;
-
+    
+    @NotEmpty
+    @NotBlank
+    @Size(max = NOME_MAX_LEN)
     @Column(length = NOME_MAX_LEN, nullable = false, unique = true)
     private String nome;
 
