@@ -1,7 +1,6 @@
 package com.github.brunoabdon.planinha.rest.paramconverters;
 
 import static org.jboss.logging.Logger.Level.DEBUG;
-import static org.jboss.logging.Logger.Level.INFO;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -19,10 +18,10 @@ import com.github.brunoabdon.planinha.modelo.Extrato;
 public class PlaninhaParamConverterProvider implements ParamConverterProvider {
 	
     @Inject
-	private Logger logger;
+	Logger logger;
 	
 	public PlaninhaParamConverterProvider() {
-		logger.logv(INFO, "Criando Provider {0}.", this);
+//		logger.logv(INFO, "Criando Provider {0}.", this);
 	}
 	
 	@Override
