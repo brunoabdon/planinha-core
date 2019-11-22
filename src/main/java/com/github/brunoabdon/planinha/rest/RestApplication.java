@@ -1,9 +1,9 @@
-package com.github.brunoabdon.planinha.planinhacore.rest;
+package com.github.brunoabdon.planinha.rest;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/")
+@ApplicationPath("/planinha")
 public class RestApplication extends Application {
 
 }
