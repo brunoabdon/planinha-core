@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -17,6 +18,10 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  * 
  * @author bruno
  */
+@NamedQuery(
+    name = "Fato.menorDiaComFatoPraConta",
+    query = "select min(l.fato.dia) from Lancamento l where l.conta = :conta"
+)
 @Entity
 public class Fato extends EntidadeBaseInt {
 
