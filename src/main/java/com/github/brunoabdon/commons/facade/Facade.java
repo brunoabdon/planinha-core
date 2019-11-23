@@ -16,6 +16,7 @@ public interface Facade <X extends Identifiable<K>,K,F,A>{
     public X pega(@NotNull @Valid final K key) 
         throws EntidadeInexistenteException;
     
+    //TODO mudar o nome pra lista (conjugado. ou entao muda os outros)
     public List<X> listar(final F filtro);
 
     public default List<X> listar(){
