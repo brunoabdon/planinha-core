@@ -8,11 +8,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.jboss.logging.Logger;
 
+import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.planinha.facade.ContaFacade;
 import com.github.brunoabdon.planinha.modelo.Conta;
 
@@ -26,7 +28,6 @@ public class Contas {
     @Inject
     ContaFacade facade;
     
-    
     @GET
     @Produces(APPLICATION_JSON)
     public Response listar() {
@@ -35,5 +36,18 @@ public class Contas {
         return Response.ok(contas).build();
     }
     
+    @GET
+    @Path("conta_id")
+    @Produces(APPLICATION_JSON)
+    public Response pegar(
+            @PathParam("conta_id") final Integer idConta) 
+                throws EntidadeInexistenteException {
+        
+        logger.logv(INFO, "Pegando conta {0}.",idConta);
+        
+        final Conta conta = facade.pega(idConta);
+        
+        return Response.ok(conta).build();
+    }
     
 }
