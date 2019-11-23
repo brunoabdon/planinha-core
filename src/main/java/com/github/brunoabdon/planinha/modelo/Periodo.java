@@ -34,6 +34,14 @@ public class Periodo implements Serializable {
         this.dataMinima = dataMinima;
         this.dataMaxima = dataMaxima;
     }
+    
+    public static Periodo mesDoDia(final LocalDate dia) {
+        
+        final LocalDate diaPrimeiro = dia.withDayOfMonth(1);
+        final LocalDate fimDoMes = dia.plusMonths(1).minusDays(1);
+
+        return new Periodo(diaPrimeiro,fimDoMes);
+    }
 
     public LocalDate getDataMinima() {
         return dataMinima;
