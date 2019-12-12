@@ -15,7 +15,7 @@ public class FatoFacade
         implements Facade<Fato, Integer, Void, PatchFato> {
 
     @Override
-    public Fato cria(Fato elemento) throws BusinessException {
+    public Fato cria(final Fato elemento) throws BusinessException {
         throw new UnsupportedOperationException();
     }
 

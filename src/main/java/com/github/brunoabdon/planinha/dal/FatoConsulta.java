@@ -47,8 +47,4 @@ public class FatoConsulta {
         
         return diaInauguracao;
     }
-    
-    
-    
-    
 }
