@@ -12,7 +12,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.logging.Logger;
 
-import com.github.brunoabdon.planinha.modelo.Extrato;
+import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @Provider
 public class PlaninhaParamConverterProvider implements ParamConverterProvider {
@@ -32,8 +32,8 @@ public class PlaninhaParamConverterProvider implements ParamConverterProvider {
 			final Annotation[] annotations) {
 		
 		final ParamConverter<T> converter = 
-			rawType == Extrato.Id.class 
-				? (ParamConverter<T>)ExtratoIdParamConverter.INSTANCE
+			rawType == Periodo.class 
+				? (ParamConverter<T>)PeriodoParamConverter.INSTANCE
 				: null;
 		
 		logger.logv(DEBUG, "Meu converter pra {0} é {1}.",rawType,converter);

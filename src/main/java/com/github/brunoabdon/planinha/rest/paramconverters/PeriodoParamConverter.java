@@ -1,8 +1,8 @@
 package com.github.brunoabdon.planinha.rest.paramconverters;
 
 import static java.time.LocalDate.parse;
-import static java.time.Period.between;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -15,25 +15,24 @@ import javax.ws.rs.ext.ParamConverter;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
-public class ExtratoIdParamConverter implements ParamConverter<Periodo>{
+public class PeriodoParamConverter implements ParamConverter<Periodo>{
 
-	public static final ExtratoIdParamConverter INSTANCE = 
-		new ExtratoIdParamConverter();
+	public static final PeriodoParamConverter INSTANCE = 
+		new PeriodoParamConverter();
 
     public static final Pattern EXTRADO_ID_REGEXP =
         Pattern.compile("^(\\d+(-(\\d){2}){2})-(\\d+)");
     
     /**
-     * Formata um {@link Id} como a string {@code ccc-YYYY-MM-DD-dd} onde:
+     * Formata um {@link Periodo} como a string {@code YYYY-MM-DD-dd} onde:
      * <ul>
-     *   <li><em>ccc</em> É o id da conta (uma sequencia de N digitos);</li>
      *   <li><em>YYYY-MM-DD</em> é a {@linkplain Id#getPeriodo() data inicial
      *   do id}, no formato {@link DateTimeFormatter#ISO_LOCAL_DATE};</li> 
      *   <li><em>dd</em> é a quantidade de dias entre a data inicio e a data
-     *   fim do Id (inclusivamente).;</li> 
+     *   fim do Id (inclusivamente).</li> 
      * </ul>
      * 
-     * @param id O id a ser convertido.
+     * @param periodo .
      * 
      * @return O id formatado como uma string.
      */
@@ -43,7 +42,9 @@ public class ExtratoIdParamConverter implements ParamConverter<Periodo>{
         final LocalDate inicio = periodo.getDataMinima();
         final LocalDate fim = periodo.getDataMaxima();
         
-        final int quantosDias = between(inicio, fim.plusDays(1)).getDays();
+        //TODO ERRADO! getDays é o resto (%) de geyYears e getMonths!
+        //só tá funcionando pra valores menores que 30/31 dias....
+        final long quantosDias = DAYS.between(inicio, fim.plusDays(1));
         final String inicioFormatado = inicio.format(ISO_LOCAL_DATE);
         
         return
