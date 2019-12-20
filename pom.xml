@@ -10,12 +10,15 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>1.0.0.CR2</quarkus-plugin.version>
+
+    <quarkus-plugin.version>1.0.1.Final</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.0.0.CR2</quarkus.platform.version>
+    <quarkus.platform.version>1.0.1.Final</quarkus.platform.version>
+
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
 
     <herokuds.database_url>${env.DATABASE_URL}</herokuds.database_url>
