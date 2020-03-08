@@ -8,7 +8,9 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -44,9 +46,8 @@ public class Contas {
     @GET
     @Path("{conta_id}")
     @Produces(APPLICATION_JSON)
-    public Response pegar(
-            @PathParam("conta_id") final Integer idConta) 
-                throws EntidadeInexistenteException {
+    public Response pegar(@PathParam("conta_id") final Integer idConta) 
+            throws EntidadeInexistenteException {
         
         logger.logv(INFO, "Pegando conta {0}.",idConta);
         
@@ -63,7 +64,7 @@ public class Contas {
     		final Conta conta) 
 				throws EntidadeInexistenteException, BusinessException {
     
-        logger.logv(INFO, "Pegando conta {0}.",idConta);
+        logger.logv(INFO, "Atualizando conta {0} pra {1}.",idConta, conta);
         
         final String nome = conta.getNome();
 		final Conta contaAtualizada = facade.atualiza(idConta, nome);
@@ -71,5 +72,26 @@ public class Contas {
         return Response.ok(contaAtualizada).build();
     }
     
+    @DELETE
+    @Path("{conta_id}")
+    public Response deletar(@PathParam("conta_id") final Integer idConta) 
+			throws EntidadeInexistenteException, BusinessException {
     
+        logger.logv(INFO, "Deletando conta de id {0}.",idConta);
+        
+		facade.deleta(idConta);
+        
+        return Response.ok().build();
+    }
+    
+    
+    @POST
+    @Consumes(APPLICATION_JSON)
+    public Response criar(final Conta conta) throws BusinessException {
+        logger.logv(INFO, "Criando conta {0}.",conta);
+        
+		final Conta contaCriada = facade.cria(conta);
+        
+        return Response.ok(contaCriada).build();
+    }
 }
