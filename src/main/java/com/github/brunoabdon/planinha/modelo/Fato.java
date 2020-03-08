@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -23,6 +24,7 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
     query = "select min(l.fato.dia) from Lancamento l where l.conta = :conta"
 )
 @Entity
+@Table(schema = "planinhacore")
 public class Fato extends EntidadeBaseInt {
 
     private static final long serialVersionUID = 3937390897430670267L;

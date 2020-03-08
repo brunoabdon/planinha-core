@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -24,6 +25,7 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
     query="SELECT COUNT(l) > 0 FROM Lancamento l WHERE l.conta = :conta"
 )
 @Entity
+@Table(schema = "planinhacore")
 public class Conta extends EntidadeBaseInt {
     
     private static final long serialVersionUID = 7321886996603362113L;
