@@ -58,6 +58,7 @@ public class Contas {
   
     @PUT
     @Path("{conta_id}")
+    @Produces(APPLICATION_JSON)
     @Consumes(APPLICATION_JSON)
     public Response atualizar(
     		@PathParam("conta_id") final Integer idConta,
@@ -87,6 +88,7 @@ public class Contas {
     
     @POST
     @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Response criar(final Conta conta) throws BusinessException {
         logger.logv(INFO, "Criando conta {0}.",conta);
         
