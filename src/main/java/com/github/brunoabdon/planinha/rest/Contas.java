@@ -7,7 +7,9 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.jboss.logging.Logger;
 
+import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.planinha.facade.ContaFacade;
 import com.github.brunoabdon.planinha.modelo.Conta;
@@ -51,5 +54,22 @@ public class Contas {
         
         return Response.ok(conta).build();
     }
+  
+    @PUT
+    @Path("{conta_id}")
+    @Consumes(APPLICATION_JSON)
+    public Response atualizar(
+    		@PathParam("conta_id") final Integer idConta,
+    		final Conta conta) 
+				throws EntidadeInexistenteException, BusinessException {
+    
+        logger.logv(INFO, "Pegando conta {0}.",idConta);
+        
+        final String nome = conta.getNome();
+		final Conta contaAtualizada = facade.atualiza(idConta, nome);
+        
+        return Response.ok(contaAtualizada).build();
+    }
+    
     
 }
