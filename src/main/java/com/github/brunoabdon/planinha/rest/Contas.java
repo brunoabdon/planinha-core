@@ -37,7 +37,7 @@ public class Contas {
     }
     
     @GET
-    @Path("conta_id")
+    @Path("{conta_id}")
     @Produces(APPLICATION_JSON)
     public Response pegar(
             @PathParam("conta_id") final Integer idConta) 
