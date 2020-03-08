@@ -5,6 +5,7 @@ import static org.jboss.logging.Logger.Level.INFO;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +23,7 @@ import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
+@ApplicationScoped
 @Path("contas/{conta_id}/extratos")
 public class Extratos {
 

@@ -5,6 +5,7 @@ import static org.jboss.logging.Logger.Level.INFO;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,6 +20,7 @@ import com.github.brunoabdon.planinha.facade.ContaFacade;
 import com.github.brunoabdon.planinha.modelo.Conta;
 
 @Path("contas")
+@ApplicationScoped
 public class Contas {
 
     
