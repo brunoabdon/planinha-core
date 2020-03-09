@@ -12,6 +12,16 @@ security:
 - accessCode:
   - read
   - write
+tags:
+  - name: Conta
+    description: |-
+      Uma conta tem um valor em cada momento do tempo. Esse valor varia
+      de acordo com movimentações sobre esta conta. Cada conta possui
+      uma lista de extratos, que listam como fatos modificaram o valor
+      presente desta conta.
+  - name: Operação
+    description: As operações associam um conjunto de movimentações a um fato.
+
 paths:
   /contas:
     get:
@@ -112,7 +122,7 @@ paths:
     get:
       summary: Retorna os extratos de uma conta.
       tags:
-        - Extrato
+        - Conta
       responses:
         200:
           description: OK
@@ -135,7 +145,7 @@ paths:
     get:
       summary: Retorna um extrato específico.
       tags:
-        - Extrato
+        - Conta
       parameters:
       - name: extrato_id
         in: path
@@ -251,7 +261,7 @@ paths:
     get:
       summary: Recupera o fato de um operção.
       tags:
-        - Fato
+        - Operação
       responses:
         200:
           description: O fato foi recuperado com sucesso.
@@ -264,7 +274,7 @@ paths:
     put:
       summary: Altera um fato.
       tags:
-        - Fato
+        - Operação
       requestBody:
         content:
           application/json:
@@ -291,7 +301,7 @@ paths:
     get:
       summary: Lista as movimentações de uma dada operação.
       tags:
-        - Movimentação
+        - Operação
       responses:
         200:
           description: |
@@ -307,7 +317,7 @@ paths:
     post:
       summary: Cria uma nova movimentação numa operação.
       tags:
-        - Movimentação
+        - Operação
       requestBody:
         content:
           application/json:
@@ -343,7 +353,7 @@ paths:
     get:
       summary: Recupera uma movimentação específica.
       tags:
-        - Movimentação
+        - Operação
       responses:
         200:
           description: |
@@ -361,7 +371,7 @@ paths:
     put:
       summary: Atualiza o valor de uma movimentação.
       tags:
-        - Movimentação
+        - Operação
       requestBody:
         content:
           application/json:
@@ -381,7 +391,7 @@ paths:
     delete:
       summary: Deleta uma movimentação de uma operação.       
       tags: 
-        - Movimentação
+        - Operação
       responses:
         204:
           description: A movimentação foi deletada com sucesso.
