@@ -70,6 +70,14 @@ public class Extrato implements Identifiable<Id>, Serializable{
             this.valor = valor;
         }
         
+        public Item(
+        		final Integer id, 
+        		final LocalDate dia, 
+        		final String descricao, 
+        		final int valor) {
+            this(new Fato(id, dia, descricao),valor);
+        }
+        
         public Fato getFato() {
             return fato;
         }
