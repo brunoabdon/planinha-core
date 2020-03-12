@@ -41,10 +41,14 @@ public class Fato extends EntidadeBaseInt {
     }
 
     public Fato(final Integer id) {
-        super.setId(id);
+        this(id,null,null);
     }
     
     public Fato(final LocalDate dia, final String descricao) {
+        this(null,dia,descricao);
+    }
+    public Fato(final Integer id, final LocalDate dia, final String descricao){
+        super.setId(id);
         this.dia = dia;
         this.descricao = descricao;
     }
