@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,6 +24,11 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
  */
 @Entity
 @Table(schema = "planinhacore")
+@NamedQuery(
+	name = "Lancamento.saldoDaContaNoInicioDoDia",
+	query = "select sum(valor) from Lancamento l "
+		  + "where l.conta = :conta and l.fato.dia < :dia"
+)
 public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 
     private static final long serialVersionUID = -3510137276546152596L;
