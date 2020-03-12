@@ -16,7 +16,8 @@ import com.github.brunoabdon.planinha.modelo.Conta;
 public class FatoConsulta {
 
     
-    private static final String QUERYNAME_INAUGURACAO_CONTA = "Fato.menorDiaComFatoPraConta";
+    private static final String QUERYNAME_INAUGURACAO_CONTA =
+		"Fato.menorDiaComFatoPraConta";
 
     @Inject
     Logger logger;

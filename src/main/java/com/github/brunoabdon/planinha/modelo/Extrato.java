@@ -59,7 +59,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
 
         public Item() {
         }
-        
+
         public Item(final Fato fato, final int valor) {
             this.fato = fato;
             this.valor = valor;
@@ -104,7 +104,6 @@ public class Extrato implements Identifiable<Id>, Serializable{
         this.saldoAnterior = saldoAnterior;
         this.items = itens;
     }
-
     
     @Override
     public Id getId() {
@@ -155,9 +154,8 @@ public class Extrato implements Identifiable<Id>, Serializable{
     @JsonbProperty("id")
     public String getSerialId() {
         if(this.serialId == null) {
-            this.serialId = EXTRATO_ID_SERIALIZER.toString(getId().getPeriodo());
+            this.serialId=EXTRATO_ID_SERIALIZER.toString(getId().getPeriodo());
         }
         return serialId;
     }
-    
 }

@@ -27,7 +27,7 @@ public class ExtratoFacade
 
     @PersistenceContext
     EntityManager em;
-
+    
     @Inject
     FatoConsulta fatoConsulta;
     

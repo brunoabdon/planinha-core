@@ -48,7 +48,7 @@ public class Fato extends EntidadeBaseInt {
         this.dia = dia;
         this.descricao = descricao;
     }
-    
+       
     public LocalDate getDia() {
         return dia;
     }
