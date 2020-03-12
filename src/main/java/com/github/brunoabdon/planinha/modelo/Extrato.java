@@ -47,6 +47,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
         public void setConta(Conta conta) {
             this.conta = conta;
         }
+        
+        @Override
+        public String toString() {
+        	return "[Extrato|"+conta+"|"+periodo+"]";
+        }
     }
 
     public static class Item implements Serializable{

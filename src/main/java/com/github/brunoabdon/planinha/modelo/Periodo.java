@@ -58,4 +58,9 @@ public class Periodo implements Serializable {
     public void setDataMaxima(final LocalDate dataMaxima) {
         this.dataMaxima = dataMaxima;
     }
+    
+    @Override
+    public String toString() {
+    	return "["+dataMinima+"->"+dataMaxima+"]";
+    }
 }
