@@ -3,6 +3,7 @@ package com.github.brunoabdon.planinha.facade;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.jboss.logging.Logger.Level.DEBUG;
+import static org.jboss.logging.Logger.Level.WARN;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,7 +55,8 @@ public class ExtratoFacade
     ItemConsulta itemConsulta;
     
     @Override
-    public Extrato cria(final Extrato elemento) throws BusinessException {
+    public Extrato cria(final Extrato extrato) throws BusinessException {
+    	logger.log(WARN, "Extrato se conquista.");
         throw new UnsupportedOperationException();
     }
 
@@ -85,6 +87,8 @@ public class ExtratoFacade
     @Override
     public List<Extrato> listar(final Integer idConta) {
 
+    	logger.logv(DEBUG, "Listando extratos da conta  {0}.", idConta);
+
         List<Extrato> extratos;
         
         Conta conta;
@@ -97,7 +101,6 @@ public class ExtratoFacade
         
         return extratos;
     }
-
 
     private List<Extrato> lista(final Conta conta) {
         final List<Extrato> extratos;
@@ -123,12 +126,14 @@ public class ExtratoFacade
     @Override
     public Extrato atualiza(final Id key, final Void atualizacao) 
             throws EntidadeInexistenteException, BusinessException {
-        throw new UnsupportedOperationException();
+    	logger.log(WARN, "Extrato não se atualiza.");
+    	throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleta(Id key) 
             throws EntidadeInexistenteException, BusinessException {
+    	logger.log(WARN, "Extrato não se deleta.");
         throw new UnsupportedOperationException();
     }
 
