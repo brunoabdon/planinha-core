@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.jboss.logging.Logger;
 
@@ -19,6 +21,9 @@ public class OperacaoFacade
 
 	@Inject 
 	Logger logger;
+	
+    @PersistenceContext
+    EntityManager em;
 
     @Override
     public Operacao cria(final Operacao elemento) throws BusinessException {
@@ -28,8 +33,12 @@ public class OperacaoFacade
 
     @Override
     public Operacao pega(final Integer key) throws EntidadeInexistenteException {
-        // TODO Auto-generated method stub
-        return null;
+        final Operacao operacao = em.find(Operacao.class, key);
+        
+        if(operacao == null) 
+            throw new EntidadeInexistenteException(Operacao.class, key);
+        
+        return operacao;
     }
 
     @Override
