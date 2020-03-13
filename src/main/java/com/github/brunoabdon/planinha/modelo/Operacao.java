@@ -19,7 +19,7 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 		+ "WHERE l.conta = :conta AND l.fato.dia <:dia "
 )
 @Entity
-@Table(name = "fato")
+@Table(schema = "planinhacore", name = "fato")
 public class Operacao extends EntidadeBaseInt {
 
 	private static final long serialVersionUID = 7410023178167290123L;

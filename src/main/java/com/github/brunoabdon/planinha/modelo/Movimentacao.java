@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
 @Entity
-@Table(name = "lancamento")
+@Table(schema = "planinhacore", name = "lancamento")
 public class Movimentacao implements Identifiable<Lancamento.Id>, Serializable {
 
 	private static final long serialVersionUID = 8987967033928269546L;
