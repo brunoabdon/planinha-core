@@ -1,5 +1,7 @@
 package com.github.brunoabdon.planinha.modelo;
 
+import static javax.persistence.FetchType.EAGER;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -29,7 +31,7 @@ public class Operacao extends EntidadeBaseInt {
 	@JoinColumn(name = "id")
 	private Fato fato;
 
-	@OneToMany
+	@OneToMany(fetch = EAGER)
 	@JoinColumn(name="fato_id")  //fato_id em "movimentacao"
     private List<Movimentacao> movimentacoes;
 	
