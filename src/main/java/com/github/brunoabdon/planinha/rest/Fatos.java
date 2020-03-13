@@ -21,7 +21,7 @@ import com.github.brunoabdon.planinha.facade.FatoFacade;
 import com.github.brunoabdon.planinha.facade.patch.PatchFato;
 import com.github.brunoabdon.planinha.modelo.Fato;
 
-@Path("/operacoes/{operacao_id}/fato")
+@Path("operacoes/{operacao_id}/fato")
 @ApplicationScoped
 public class Fatos {
     
@@ -30,7 +30,6 @@ public class Fatos {
     
     @Inject
     FatoFacade facade;
-    
    
     @GET
     @Produces(APPLICATION_JSON)
