@@ -17,8 +17,8 @@ import com.github.brunoabdon.planinha.modelo.Operacao;
 public class OperacaoFacade 
         implements Facade<Operacao, Integer, FiltroOperacao, Void>{
 
-    @Inject 
-    private Logger logger;
+	@Inject 
+	Logger logger;
 
     @Override
     public Operacao cria(final Operacao elemento) throws BusinessException {
