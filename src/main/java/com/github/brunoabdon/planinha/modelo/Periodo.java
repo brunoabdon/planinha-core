@@ -18,6 +18,7 @@ package com.github.brunoabdon.planinha.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  * Um espaço de tempo limitado por dois {@link LocalDate dias}.
@@ -26,7 +27,7 @@ import java.time.LocalDate;
 public class Periodo implements Serializable {
 
     private static final long serialVersionUID = 6000651240503349219L;
-    
+
     private LocalDate dataMinima;
     private LocalDate dataMaxima;
 
@@ -34,13 +35,19 @@ public class Periodo implements Serializable {
         this.dataMinima = dataMinima;
         this.dataMaxima = dataMaxima;
     }
-    
+
     public static Periodo mesDoDia(final LocalDate dia) {
-        
+
         final LocalDate diaPrimeiro = dia.withDayOfMonth(1);
         final LocalDate fimDoMes = dia.plusMonths(1).minusDays(1);
 
         return new Periodo(diaPrimeiro,fimDoMes);
+    }
+
+    public static Periodo mes(final YearMonth mes) {
+    	final LocalDate dataMinima = mes.atDay(1);
+    	final LocalDate dataMaxima = mes.atEndOfMonth();
+    	return new Periodo(dataMinima, dataMaxima);
     }
 
     public LocalDate getDataMinima() {
@@ -58,7 +65,7 @@ public class Periodo implements Serializable {
     public void setDataMaxima(final LocalDate dataMaxima) {
         this.dataMaxima = dataMaxima;
     }
-    
+
     @Override
     public String toString() {
     	return "["+dataMinima+"->"+dataMaxima+"]";

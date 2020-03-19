@@ -4,6 +4,8 @@ import static org.jboss.logging.Logger.Level.DEBUG;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 import javax.inject.Inject;
 import javax.ws.rs.ext.ParamConverter;
@@ -16,26 +18,33 @@ import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @Provider
 public class PlaninhaParamConverterProvider implements ParamConverterProvider {
-	
+
     @Inject
 	Logger logger;
-	
+
 	public PlaninhaParamConverterProvider() {
 //		logger.logv(INFO, "Criando Provider {0}.", this);
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> ParamConverter<T> getConverter(
-			final Class<T> rawType, 
-			final Type genericType, 
+			final Class<T> rawType,
+			final Type genericType,
 			final Annotation[] annotations) {
-		
-		final ParamConverter<T> converter = 
-			rawType == Periodo.class 
+
+		final ParamConverter<T> converter =
+			rawType == Periodo.class
 				? (ParamConverter<T>)PeriodoParamConverter.INSTANCE
+
+				: rawType == YearMonth.class
+				? (ParamConverter<T>)YearMonthParamConverter.INSTANCE
+
+				: rawType == LocalDate.class
+				? (ParamConverter<T>)LocalDateParamConverter.INSTANCE
+
 				: null;
-		
+
 		logger.logv(DEBUG, "Meu converter pra {0} é {1}.",rawType,converter);
 
 		return converter;

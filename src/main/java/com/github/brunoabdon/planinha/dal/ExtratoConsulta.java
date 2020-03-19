@@ -14,26 +14,26 @@ import com.github.brunoabdon.planinha.modelo.Conta;
 
 @ApplicationScoped
 public class ExtratoConsulta {
-    
-	
+
+
 	@Inject
     Logger logger;
-    
+
     @PersistenceContext
     EntityManager em;
-    
+
     @Inject
     CriteriaUtils critUtils;
 	public int saldoNoInicioDoDia(final Conta conta, final LocalDate dia) {
-		
-		return 
+
+		return
 			em.createNamedQuery(
 				"Lancamento.saldoDaContaNoInicioDoDia",
 				Number.class
 			).setParameter("conta", conta)
 			 .setParameter("dia", dia)
 			 .getResultStream()
-			 .findFirst()
+			 .findAny()
 			 .orElse(0)
 			 .intValue();
 	}

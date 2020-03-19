@@ -38,22 +38,22 @@ public class ItemConsulta {
 
     @Inject
     Logger logger;
-    
+
     @PersistenceContext
     EntityManager em;
-    
+
     @Inject
     CriteriaUtils critUtils;
-    
+
     public List<Item> listar(final FiltroItem filtro){
-    	
+
     	final CriteriaBuilder cb = em.getCriteriaBuilder();
-    	
+
     	CriteriaQuery<Item> cq = cb.createQuery(Item.class);
-    	    	
+
     	final Root<Lancamento> rootLancamento = cq.from(Lancamento.class);
     	final Join<Lancamento, Fato> joinFato = rootLancamento.join(fato);
-    	final Join<Lancamento, Conta> joinConta = 
+    	final Join<Lancamento, Conta> joinConta =
 			rootLancamento.join(conta);
 
     	final Path<Integer> colContaId = joinConta.get(Conta_.id);
@@ -61,31 +61,31 @@ public class ItemConsulta {
     	final Path<Integer> colFatoId = joinFato.get(Fato_.id);
 		final Path<LocalDate> colDia = joinFato.get(dia);
 		final Path<String> colDescricao = joinFato.get(Fato_.descricao);
-		
+
 		final Path<Integer> colValor = rootLancamento.get(valor);
-    	
-    	final List<Predicate> where = new ArrayList<Predicate>();
-    	
+
+    	final List<Predicate> where = new ArrayList<>();
+
 		critUtils.eq(cb,colContaId,filtro.getConta())
     	         .ifPresent(where::add);
-    	
+
 		critUtils.greaterThanOrEqualTo(cb, colDia,filtro.getDataMinima())
 				 .ifPresent(where::add);
 
 		critUtils.lessThanOrEqualTo(cb, colDia,filtro.getDataMaxima())
 		         .ifPresent(where::add);
 
-		final CompoundSelection<Item> constrItem = 
+		final CompoundSelection<Item> constrItem =
 			cb.construct(Item.class, colFatoId, colDia, colDescricao, colValor );
 
 		cq = cq.select(constrItem);
-		         
+
 		cq = cq.where(where.toArray(new Predicate[where.size()]));
-		
+
 		cq.orderBy(cb.asc(colDia));
-		
+
 		final TypedQuery<Item> q = em.createQuery(cq);
-		
+
     	return q.getResultList();
     }
 }

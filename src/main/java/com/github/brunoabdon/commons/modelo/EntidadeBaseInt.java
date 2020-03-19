@@ -1,5 +1,7 @@
 package com.github.brunoabdon.commons.modelo;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,11 +39,16 @@ public class EntidadeBaseInt implements Entidade<Integer> {
         try {
             final int id = Integer.parseInt(str);
 
-            entidade = klass.newInstance();
+            entidade = klass.getDeclaredConstructor().newInstance();
             entidade.setId(id);
+        } catch (final NumberFormatException e) {
+        	throw new RuntimeException("Bad id \"" + str + "\"", e);
         } catch (InstantiationException 
                 | IllegalAccessException 
-                | NumberFormatException e){
+                | IllegalArgumentException 
+                | InvocationTargetException 
+                | NoSuchMethodException 
+                | SecurityException e){
             throw new RuntimeException(e);
         }
 
