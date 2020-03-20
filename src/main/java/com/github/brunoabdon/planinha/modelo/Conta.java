@@ -1,10 +1,15 @@
 package com.github.brunoabdon.planinha.modelo;
 
+import static javax.persistence.FetchType.LAZY;
+
+import java.util.List;
 import java.util.Objects;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +22,7 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
 /**
  * Uma carteira à qual se pode associar e movimentar um valor.
- * 
+ *
  * @author bruno
  */
 @NamedQuery(
@@ -27,16 +32,20 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 @Entity
 @Table(schema = "planinhacore")
 public class Conta extends EntidadeBaseInt {
-    
+
     private static final long serialVersionUID = 7321886996603362113L;
 
     public static final int NOME_MAX_LEN = 50;
-    
+
     @NotEmpty
     @NotBlank
     @Size(max = NOME_MAX_LEN)
     @Column(length = NOME_MAX_LEN, nullable = false, unique = true)
     private String nome;
+
+    @JsonbTransient
+	@OneToMany(fetch = LAZY, mappedBy = "conta")
+	private List<Lancamento> movimentacoes;
 
     public Conta() {
     }
@@ -44,7 +53,7 @@ public class Conta extends EntidadeBaseInt {
     public Conta(final Integer id) {
         this(id,null);
     }
-    
+
     public Conta(final String nome) {
         this.nome = nome;
     }
@@ -61,7 +70,7 @@ public class Conta extends EntidadeBaseInt {
     public void setNome(final String nome) {
         this.nome = nome;
     }
- 
+
     public static Conta fromString(final String str){
         return EntidadeBaseInt.fromString(Conta.class, str);
     }
@@ -84,7 +93,7 @@ public class Conta extends EntidadeBaseInt {
 
     @Override
     public int hashCode() {
-        return 
+        return
             new HashCodeBuilder(3, 11)
             .append(getId())
             .append(getNome())

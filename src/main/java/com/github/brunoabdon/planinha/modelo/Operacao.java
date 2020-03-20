@@ -1,40 +1,64 @@
 package com.github.brunoabdon.planinha.modelo;
 
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
 
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
-@NamedQuery(
-	name = "saldoDaContaNoInicioDoDia",
-	query = 
-		"SELECT SUM(l.valor) FROM Lancamento l "
-		+ "WHERE l.conta = :conta AND l.fato.dia <:dia "
-)
+@NamedQueries({
+
+	@NamedQuery(
+	    name="Fato.menorDiaComFatoPraConta",
+	    query="select min(l.operacao.fato.dia) from Lancamento l where l.conta = :conta"
+	),
+})
 @Entity
 @Table(schema = "planinhacore", name = "fato")
 public class Operacao extends EntidadeBaseInt {
 
 	private static final long serialVersionUID = 7410023178167290123L;
 
-	@MapsId
-	@OneToOne
-	@JoinColumn(name = "id")
+	public static final int DESC_MAX_LEN = 70;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(
+			name = "dia",
+			column = @Column(nullable = false)
+		),
+		@AttributeOverride(
+			name = "descricao",
+			column = @Column(length=DESC_MAX_LEN, nullable=false, unique=false)
+		),
+	})
 	private Fato fato;
 
-	@OneToMany(fetch = EAGER)
-	@JoinColumn(name="fato_id")  //fato_id em "movimentacao"
-    private List<Movimentacao> movimentacoes;
-	
+	@OneToMany(
+		fetch = EAGER,
+		cascade = REMOVE,
+		mappedBy = "operacao"
+	)
+    private List<Lancamento> movimentacoes;
+
+	public Operacao() {
+	}
+
+	public Operacao(Integer id) {
+		super(id);
+	}
+
 	public Fato getFato() {
 		return fato;
 	}
@@ -43,11 +67,11 @@ public class Operacao extends EntidadeBaseInt {
 		this.fato = fato;
 	}
 
-	public List<Movimentacao> getMovimentacoes() {
+	public List<Lancamento> getMovimentacoes() {
 		return movimentacoes;
 	}
 
-	public void setMovimentacoes(final List<Movimentacao> movimentacoes) {
+	public void setMovimentacoes(final List<Lancamento> movimentacoes) {
 		this.movimentacoes = movimentacoes;
 	}
 
@@ -72,7 +96,7 @@ public class Operacao extends EntidadeBaseInt {
 			    return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[Operacao:"+ fato + "]";

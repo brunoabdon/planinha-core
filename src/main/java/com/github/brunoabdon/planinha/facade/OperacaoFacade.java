@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.jboss.logging.Logger;
 
@@ -15,12 +16,13 @@ import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.OperacaoConsultaFiltro;
+import com.github.brunoabdon.planinha.facade.patch.PatchFato;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @ApplicationScoped
 public class OperacaoFacade
-        implements Facade<Operacao, Integer, Periodo, Void>{
+        implements Facade<Operacao, Integer, Periodo, PatchFato>{
 
 	@Inject
 	Logger logger;
@@ -56,16 +58,18 @@ public class OperacaoFacade
     }
 
     @Override
-    public Operacao atualiza(final Integer key, final Void atualizacao)
+    public Operacao atualiza(final Integer key, final PatchFato atualizacao)
             throws EntidadeInexistenteException, BusinessException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public void deleta(final Integer key)
     		throws EntidadeInexistenteException, BusinessException {
     	logger.logv(DEBUG, "Deletando operação de id {0}.", key);
-
+        final Object operacao = pega(key);
+		em.remove(operacao );
     }
 
 

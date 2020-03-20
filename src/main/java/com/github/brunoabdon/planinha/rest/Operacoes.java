@@ -10,6 +10,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import org.jboss.logging.Logger;
 
+import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.planinha.facade.OperacaoFacade;
 import com.github.brunoabdon.planinha.modelo.Operacao;
@@ -71,4 +73,19 @@ public class Operacoes {
 
         return Response.ok(operacao).build();
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deletar(@PathParam("id") final Integer id)
+			throws EntidadeInexistenteException, BusinessException {
+
+        logger.logv(INFO, "Deletando operacao de id {0}.",id);
+
+		facade.deleta(id);
+
+        return Response.ok().build();
+    }
+
+
+
 }

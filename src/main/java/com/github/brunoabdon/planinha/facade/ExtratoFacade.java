@@ -20,12 +20,10 @@ import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.ExtratoConsulta;
 import com.github.brunoabdon.planinha.dal.FatoConsulta;
-import com.github.brunoabdon.planinha.dal.ItemConsulta;
-import com.github.brunoabdon.planinha.filtro.FiltroItem;
 import com.github.brunoabdon.planinha.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
-import com.github.brunoabdon.planinha.modelo.Extrato.Item;
+import com.github.brunoabdon.planinha.modelo.Item;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.github.brunoabdon.planinha.util.TimeUtils;
 
@@ -33,27 +31,24 @@ import com.github.brunoabdon.planinha.util.TimeUtils;
 public class ExtratoFacade
         implements Facade<Extrato, Extrato.Id, Integer, Void> {
 
-	@Inject 
+	@Inject
 	Logger logger;
-	
+
     @PersistenceContext
     EntityManager em;
-    
+
     @Inject
     FatoConsulta fatoConsulta;
-    
+
     @Inject
     ExtratoConsulta extratoConsulta;
-    
+
     @Inject
     TimeUtils tmu;
-        
-    @Inject 
+
+    @Inject
     ContaFacade contaFacade;
-    
-    @Inject 
-    ItemConsulta itemConsulta;
-    
+
     @Override
     public Extrato cria(final Extrato extrato) throws BusinessException {
     	logger.log(WARN, "Extrato se conquista.");
@@ -64,23 +59,16 @@ public class ExtratoFacade
     public Extrato pega(final Id key) throws EntidadeInexistenteException {
 
     	logger.logv(DEBUG, "Pegando extrato de id {0}.", key);
-    	
+
 		final Conta conta = contaFacade.pega(key.getConta().getId());
 		final Periodo periodo = key.getPeriodo();
 		final LocalDate dataInicial = periodo.getDataMinima();
-		
-		final int saldoAnterior = 
+
+		final int saldoAnterior =
 			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);
-		
-		final FiltroItem filtroItem = new FiltroItem();
-		
-		filtroItem.setConta(conta.getId());
-		
-		filtroItem.setDataMinima(periodo.getDataMinima());
-		filtroItem.setDataMaxima(periodo.getDataMaxima());
-		
-		final List<Item> itens = itemConsulta.listar(filtroItem);
-		
+
+		final List<Item> itens = extratoConsulta.itensDoExtrato(conta,periodo);
+
 		return new Extrato(new Id(conta, periodo), saldoAnterior, itens);
     }
 
@@ -90,7 +78,7 @@ public class ExtratoFacade
     	logger.logv(DEBUG, "Listando extratos da conta  {0}.", idConta);
 
         List<Extrato> extratos;
-        
+
         Conta conta;
         try {
             conta = contaFacade.pega(idConta);
@@ -98,40 +86,40 @@ public class ExtratoFacade
         } catch (final EntidadeInexistenteException e) {
             extratos = emptyList();
         }
-        
+
         return extratos;
     }
 
     private List<Extrato> lista(final Conta conta) {
         final List<Extrato> extratos;
 
-        final LocalDate diaInauguracaoDaConta = 
+        final LocalDate diaInauguracaoDaConta =
             fatoConsulta.pegaDiaInauguracaoDaConta(conta);
 
         if(diaInauguracaoDaConta == null) {
             extratos = emptyList();
         } else {
-            
-            extratos = 
+
+            extratos =
                 tmu.streamMensalAteHoje(diaInauguracaoDaConta)
                    .map(Periodo::mesDoDia)
                    .map(p -> new Extrato.Id(conta, p))
                    .map(Extrato::new)
                    .collect(toList());
         }
-            
+
         return extratos;
     }
 
     @Override
-    public Extrato atualiza(final Id key, final Void atualizacao) 
+    public Extrato atualiza(final Id key, final Void atualizacao)
             throws EntidadeInexistenteException, BusinessException {
     	logger.log(WARN, "Extrato não se atualiza.");
     	throw new UnsupportedOperationException();
     }
 
     @Override
-    public void deleta(Id key) 
+    public void deleta(Id key)
             throws EntidadeInexistenteException, BusinessException {
     	logger.log(WARN, "Extrato não se deleta.");
         throw new UnsupportedOperationException();

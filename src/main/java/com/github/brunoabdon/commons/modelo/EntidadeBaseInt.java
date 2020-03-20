@@ -8,9 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo 
+ * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo
  * {@link Integer}.
- * 
+ *
  * @author bruno
  */
 @MappedSuperclass
@@ -22,7 +22,14 @@ public class EntidadeBaseInt implements Entidade<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Override
+	public EntidadeBaseInt() {
+	}
+
+    public EntidadeBaseInt(final Integer id) {
+    	this.id = id;
+	}
+
+	@Override
     public Integer getId() {
         return id;
     }
@@ -43,11 +50,11 @@ public class EntidadeBaseInt implements Entidade<Integer> {
             entidade.setId(id);
         } catch (final NumberFormatException e) {
         	throw new RuntimeException("Bad id \"" + str + "\"", e);
-        } catch (InstantiationException 
-                | IllegalAccessException 
-                | IllegalArgumentException 
-                | InvocationTargetException 
-                | NoSuchMethodException 
+        } catch (InstantiationException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | NoSuchMethodException
                 | SecurityException e){
             throw new RuntimeException(e);
         }

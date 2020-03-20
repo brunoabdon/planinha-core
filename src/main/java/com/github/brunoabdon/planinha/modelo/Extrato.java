@@ -17,11 +17,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;
 
-    private static final PeriodoParamConverter EXTRATO_ID_SERIALIZER = 
+    private static final PeriodoParamConverter EXTRATO_ID_SERIALIZER =
         new PeriodoParamConverter();
 
     public static class Id implements Serializable{
-        
+
         private static final long serialVersionUID = 3587349119460038562L;
 
         private Conta conta;
@@ -47,51 +47,10 @@ public class Extrato implements Identifiable<Id>, Serializable{
         public void setConta(Conta conta) {
             this.conta = conta;
         }
-        
+
         @Override
         public String toString() {
         	return "[Extrato|"+conta+"|"+periodo+"]";
-        }
-    }
-
-    public static class Item implements Serializable{
-
-        private static final long serialVersionUID = 7915709116381425166L;
-
-        private Fato fato;
-        
-        private int valor;
-
-        public Item() {
-        }
-
-        public Item(final Fato fato, final int valor) {
-            this.fato = fato;
-            this.valor = valor;
-        }
-        
-        public Item(
-        		final Integer id, 
-        		final LocalDate dia, 
-        		final String descricao, 
-        		final int valor) {
-            this(new Fato(id, dia, descricao),valor);
-        }
-        
-        public Fato getFato() {
-            return fato;
-        }
-
-        public void setFato(Fato fato) {
-            this.fato = fato;
-        }
-
-        public int getValor() {
-            return valor;
-        }
-
-        public void setValor(int valor) {
-            this.valor = valor;
         }
     }
 
@@ -101,23 +60,23 @@ public class Extrato implements Identifiable<Id>, Serializable{
     private String serialId;
 
     private Number saldoAnterior;
-    
+
     private List<Item> items;
 
-    
+
     public Extrato(final Id id) {
         this.id = id;
     }
 
     public Extrato(
-            final Id id, 
-            final Number saldoAnterior, 
+            final Id id,
+            final Number saldoAnterior,
             final List<Item> itens) {
         this(id);
         this.saldoAnterior = saldoAnterior;
         this.items = itens;
     }
-    
+
     @Override
     public Id getId() {
         return this.id;
@@ -138,11 +97,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
     public void setSaldoAnterior(final Number saldoAnterior) {
         this.saldoAnterior = saldoAnterior;
     }
-    
+
     public Conta getConta(){
         return getOptionalAttr(Id::getConta).orElse(null);
     }
-    
+
     public LocalDate getDataInicio() {
         return getData(Periodo::getDataMinima);
     }
@@ -159,11 +118,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
             final Function<? super Id, ? extends T> getter) {
         return optionalId().map(getter);
     }
-    
+
     private Optional<Id> optionalId() {
         return Optional.of(id);
     }
-    
+
     @JsonbProperty("id")
     public String getSerialId() {
         if(this.serialId == null) {
