@@ -22,10 +22,6 @@ public class PlaninhaParamConverterProvider implements ParamConverterProvider {
     @Inject
 	Logger logger;
 
-	public PlaninhaParamConverterProvider() {
-//		logger.logv(INFO, "Criando Provider {0}.", this);
-	}
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> ParamConverter<T> getConverter(
