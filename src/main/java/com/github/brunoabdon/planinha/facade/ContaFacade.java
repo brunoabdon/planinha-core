@@ -19,57 +19,57 @@ public class ContaFacade implements Facade<Conta,Integer,String,String> {
 
     @PersistenceContext
     EntityManager em;
-    
+
     @Inject
-    private ContaConsultaFiltro consultaPorFiltro;
-    
+    ContaConsultaFiltro consultaPorFiltro;
+
     @Override
     public Conta pega(final Integer id) throws EntidadeInexistenteException{
 
         final Conta conta = em.find(Conta.class, id);
-        
-        if(conta == null) 
+
+        if(conta == null)
             throw new EntidadeInexistenteException(Conta.class, id);
-        
+
         return conta;
     }
-    
+
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Conta cria(final Conta conta) throws BusinessException{
         em.persist(conta);
         return conta;
     }
-    
+
     @Override
     public List<Conta> listar(final String parteDoNome){
         return this.consultaPorFiltro.listar(parteDoNome);
     }
-    
+
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Conta atualiza(
             final Integer id,
-            final String nome) 
+            final String nome)
         throws EntidadeInexistenteException, BusinessException{
 
         final Conta conta = pega(id);
         conta.setNome(nome);
-        
+
         return conta;
     }
 
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
-    public void deleta(final Integer id) 
+    public void deleta(final Integer id)
         throws EntidadeInexistenteException, BusinessException{
-        
+
         final Conta conta = pega(id);
-        
+
         final boolean estaEmUso = this.consultaPorFiltro.estaEmUso(conta);
-        
+
         if(estaEmUso) throw new BusinessException();
-        
+
         em.remove(conta);
     }
 }
