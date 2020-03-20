@@ -19,7 +19,6 @@ import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.ExtratoConsulta;
-import com.github.brunoabdon.planinha.dal.FatoConsulta;
 import com.github.brunoabdon.planinha.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
@@ -36,9 +35,6 @@ public class ExtratoFacade
 
     @PersistenceContext
     EntityManager em;
-
-    @Inject
-    FatoConsulta fatoConsulta;
 
     @Inject
     ExtratoConsulta extratoConsulta;
@@ -67,7 +63,8 @@ public class ExtratoFacade
 		final int saldoAnterior =
 			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);
 
-		final List<ItemDeExtrato> itens = extratoConsulta.itensDoExtrato(conta,periodo);
+		final List<ItemDeExtrato> itens =
+			extratoConsulta.itensDoExtrato(conta,periodo);
 
 		return new Extrato(new Id(conta, periodo), saldoAnterior, itens);
     }
@@ -94,7 +91,7 @@ public class ExtratoFacade
         final List<Extrato> extratos;
 
         final LocalDate diaInauguracaoDaConta =
-            fatoConsulta.pegaDiaInauguracaoDaConta(conta);
+    		extratoConsulta.pegaDiaInauguracaoDaConta(conta);
 
         if(diaInauguracaoDaConta == null) {
             extratos = emptyList();

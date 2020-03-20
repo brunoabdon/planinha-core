@@ -45,6 +45,4 @@ public class ContaConsultaFiltro {
             .setParameter("conta", conta)
             .getSingleResult();
     }
-
-
 }

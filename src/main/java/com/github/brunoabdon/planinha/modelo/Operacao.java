@@ -10,20 +10,11 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
-@NamedQueries({
-
-	@NamedQuery(
-	    name="Fato.menorDiaComFatoPraConta",
-	    query="select min(l.operacao.fato.dia) from Lancamento l where l.conta = :conta"
-	),
-})
 @Entity
 @Table(schema = "planinhacore", name = "fato")
 public class Operacao extends EntidadeBaseInt {

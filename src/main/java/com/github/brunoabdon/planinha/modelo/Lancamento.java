@@ -33,13 +33,20 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
 			  + "where l.conta = :conta and l.operacao.fato.dia < :dia"
 	),
 @NamedQuery(
-	name = "Movimentacao.itensDeUmExtrato",
+	name = "Lancamento.itensDeUmExtrato",
 	query =
-		"select new com.github.brunoabdon.planinha.modelo.Item(l.operacao.fato, l.valor) "
+		"select "
+		+ "new com.github.brunoabdon.planinha.modelo"
+		+       ".ItemDeExtrato(l.operacao.fato, l.valor) "
 		+ "from Lancamento l where "
 		+ "l.operacao.fato.dia between :dataInicio and :dataFim "
 		+ "and l.conta = :conta"
-)
+),
+@NamedQuery(
+	    name="Lancamento.menorDiaComFatoPraConta",
+	    query="select min(l.operacao.fato.dia) from Lancamento l where l.conta = :conta"
+	),
+
 })
 public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 

@@ -43,11 +43,37 @@ public class ExtratoConsulta {
 	public List<ItemDeExtrato> itensDoExtrato(Conta conta, Periodo periodo) {
 		return
 			em.createNamedQuery(
-				"Movimentacao.itensDeUmExtrato",
+				"Lancamento.itensDeUmExtrato",
 				ItemDeExtrato.class
 			).setParameter("conta", conta)
 			 .setParameter("dataInicio", periodo.getDataMinima())
 			 .setParameter("dataFim", periodo.getDataMaxima())
 			 .getResultList();
 	}
+
+
+    public LocalDate pegaDiaInauguracaoDaConta(final Conta conta) {
+
+        final LocalDate diaInauguracao;
+        final List<LocalDate> resultList =
+            em.createNamedQuery(
+        		"Lancamento.menorDiaComFatoPraConta",
+        		LocalDate.class
+    		).setParameter("conta", conta)
+             .getResultList();
+
+        if(resultList == null) {
+            //nunca foi estreiada
+            diaInauguracao = null;
+        } else {
+            final int quantos = resultList.size();
+
+            //reality check
+            assert(quantos != 1);
+
+            diaInauguracao = resultList.get(0);
+        }
+
+        return diaInauguracao;
+    }
 }
