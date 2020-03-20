@@ -12,7 +12,7 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.dal.CriteriaUtils;
 import com.github.brunoabdon.planinha.modelo.Conta;
-import com.github.brunoabdon.planinha.modelo.Item;
+import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @ApplicationScoped
@@ -40,11 +40,11 @@ public class ExtratoConsulta {
 			 .orElse(0)
 			 .intValue();
 	}
-	public List<Item> itensDoExtrato(Conta conta, Periodo periodo) {
+	public List<ItemDeExtrato> itensDoExtrato(Conta conta, Periodo periodo) {
 		return
 			em.createNamedQuery(
 				"Movimentacao.itensDeUmExtrato",
-				Item.class
+				ItemDeExtrato.class
 			).setParameter("conta", conta)
 			 .setParameter("dataInicio", periodo.getDataMinima())
 			 .setParameter("dataFim", periodo.getDataMaxima())

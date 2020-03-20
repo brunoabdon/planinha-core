@@ -3,7 +3,7 @@ package com.github.brunoabdon.planinha.modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Item implements Serializable{
+public class ItemDeExtrato implements Serializable{
 
     private static final long serialVersionUID = 7915709116381425166L;
 
@@ -11,15 +11,15 @@ public class Item implements Serializable{
 
     private int valor;
 
-    public Item() {
+    public ItemDeExtrato() {
     }
 
-    public Item(final Fato fato, final int valor) {
+    public ItemDeExtrato(final Fato fato, final int valor) {
         this.fato = fato;
         this.valor = valor;
     }
 
-    public Item(
+    public ItemDeExtrato(
     		final LocalDate dia,
     		final String descricao,
     		final int valor) {

@@ -61,7 +61,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
 
     private Number saldoAnterior;
 
-    private List<Item> items;
+    private List<ItemDeExtrato> items;
 
 
     public Extrato(final Id id) {
@@ -71,7 +71,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
     public Extrato(
             final Id id,
             final Number saldoAnterior,
-            final List<Item> itens) {
+            final List<ItemDeExtrato> itens) {
         this(id);
         this.saldoAnterior = saldoAnterior;
         this.items = itens;
@@ -82,11 +82,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
         return this.id;
     }
 
-    public List<Item> getItems() {
+    public List<ItemDeExtrato> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<ItemDeExtrato> items) {
         this.items = items;
     }
 

@@ -23,7 +23,7 @@ import com.github.brunoabdon.planinha.dal.FatoConsulta;
 import com.github.brunoabdon.planinha.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
-import com.github.brunoabdon.planinha.modelo.Item;
+import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.github.brunoabdon.planinha.util.TimeUtils;
 
@@ -67,7 +67,7 @@ public class ExtratoFacade
 		final int saldoAnterior =
 			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);
 
-		final List<Item> itens = extratoConsulta.itensDoExtrato(conta,periodo);
+		final List<ItemDeExtrato> itens = extratoConsulta.itensDoExtrato(conta,periodo);
 
 		return new Extrato(new Id(conta, periodo), saldoAnterior, itens);
     }
