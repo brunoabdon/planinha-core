@@ -68,6 +68,7 @@ public class ContaFacade implements Facade<Conta,Integer,String,String> {
 
         final boolean estaEmUso = this.consultaPorFiltro.estaEmUso(conta);
 
+        //TODO dar a real
         if(estaEmUso) throw new BusinessException();
 
         em.remove(conta);
