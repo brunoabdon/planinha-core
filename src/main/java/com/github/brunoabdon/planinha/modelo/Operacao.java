@@ -12,6 +12,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
@@ -34,6 +36,7 @@ public class Operacao extends EntidadeBaseInt {
 			column = @Column(length=DESC_MAX_LEN, nullable=false, unique=false)
 		),
 	})
+	@NotNull
 	private Fato fato;
 
 	@OneToMany(
@@ -41,6 +44,7 @@ public class Operacao extends EntidadeBaseInt {
 		cascade = REMOVE,
 		mappedBy = "operacao"
 	)
+	@NotEmpty
     private List<Lancamento> movimentacoes;
 
 	public Operacao() {
