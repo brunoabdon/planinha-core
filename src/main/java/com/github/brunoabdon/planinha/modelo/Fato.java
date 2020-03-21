@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -15,10 +17,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Fato implements Serializable {
 
-	private static final long serialVersionUID = -1303184765328707216L;
+    private static final long serialVersionUID = -1303184765328707216L;
 
+    @NotNull(message = "planinha.valid.fato.semDia")
     private LocalDate dia;
 
+    @NotBlank(message = "planinha.valid.fato.semDescricao")
     private String descricao;
 
     public Fato() {
