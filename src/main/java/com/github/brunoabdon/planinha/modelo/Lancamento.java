@@ -50,6 +50,11 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
             "select min(l.operacao.fato.dia) from Lancamento l "
             + "where l.conta = :conta"
     ),
+	@NamedQuery(
+        name="Lancamento.quantasNaOperacao",
+        query=
+            "select count(id) from Lancamento where operacao.id = :idOperacao"
+    ),
 })
 public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 
@@ -74,6 +79,14 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 			this.operacaoId = operacaoId;
 			this.contaId = contaId;
 		}
+
+		public Integer getOperacaoId() {
+            return operacaoId;
+        }
+
+		public Integer getContaId() {
+            return contaId;
+        }
 
 		@Override
 		public int hashCode() {
@@ -118,6 +131,14 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
             @JsonbProperty("valor") final int valor) {
         this();
         this.conta = conta;
+        this.valor = valor;
+    }
+
+    public Lancamento(
+            final Id id,
+            final int valor) {
+        this();
+        this.id = id;
         this.valor = valor;
     }
 
