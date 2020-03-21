@@ -15,13 +15,33 @@ security:
 tags:
   - name: Conta
     description: |-
-      Uma conta tem um valor em cada momento do tempo. Esse valor varia
-      de acordo com movimentações sobre esta conta. Cada conta possui
-      uma lista de extratos, que listam como fatos modificaram o valor
-      presente desta conta.
+      Uma conta é uma entidade a qual se pode associar um saldo em cada 
+      momento, e que varia com o acontecimento de fatos durante o tempo.
+      
+      Exemplos de contas são uma cadernet de poupança, uma carteira, um vale 
+      refeição, um pendura em uma mercearia, um colchão ou um cartão de crédito.  
+  - name: Conta - Extrato
+    description: |-
+      O extrato de uma conta num periodo lista os fatos que alteraram
+      o saldo dessa conta nesse período.
   - name: Operação
-    description: As operações associam um conjunto de movimentações a um fato.
+    description: |-
+      Uma operação é um fato que altera o saldo de uma ou mais contas.
 
+      Um exemplo de uma operação é o pagamento de uma conta de supermercado
+      com o vale alimentação, o pagamento de uma conta de restaurante com os
+      cartões de crédito de três pessoas diferentes, um empréstimo de dinheiro
+      ou a compra de uma água mineral.
+  - name: Operação - Fato
+    description: |-
+      Um fato é um acontecimento. Toda operação corresponde a um fato.
+  - name: Operação - Movimentação
+    description: |- 
+      Uma movimentação é uma variação no saldo de uma conta.
+      
+      São movimentações a entrada de R$ 26,04 na poupança,
+      a saída de R$ 28,11 do bolso, R$ 18,06 caindo no ticket ou menos 
+      R$ 3,08 por IOF numa conta corrente.
 paths:
   /contas:
     get:
@@ -122,7 +142,7 @@ paths:
     get:
       summary: Retorna os extratos de uma conta.
       tags:
-        - Conta
+        - Conta - Extrato
       responses:
         200:
           description: OK
@@ -145,7 +165,7 @@ paths:
     get:
       summary: Retorna um extrato específico.
       tags:
-        - Conta
+        - Conta - Extrato
       parameters:
       - name: extrato_id
         in: path
@@ -261,7 +281,7 @@ paths:
     get:
       summary: Recupera o fato de um operção.
       tags:
-        - Operação
+        - Operação - Fato
       responses:
         200:
           description: O fato foi recuperado com sucesso.
@@ -274,7 +294,7 @@ paths:
     put:
       summary: Altera um fato.
       tags:
-        - Operação
+        - Operação - Fato
       requestBody:
         content:
           application/json:
@@ -301,7 +321,7 @@ paths:
     get:
       summary: Lista as movimentações de uma dada operação.
       tags:
-        - Operação
+        - Operação - Movimentação
       responses:
         200:
           description: |
@@ -317,7 +337,7 @@ paths:
     post:
       summary: Cria uma nova movimentação numa operação.
       tags:
-        - Operação
+        - Operação - Movimentação
       requestBody:
         content:
           application/json:
@@ -353,11 +373,11 @@ paths:
     get:
       summary: Recupera uma movimentação específica.
       tags:
-        - Operação
+        - Operação - Movimentação
       responses:
         200:
           description: |
-            A movimentaçao foi recuperada com sucesso.
+            A movimentação foi recuperada com sucesso.
           content:
             application/json:
               schema:
@@ -371,7 +391,7 @@ paths:
     put:
       summary: Atualiza o valor de uma movimentação.
       tags:
-        - Operação
+        - Operação - Movimentação
       requestBody:
         content:
           application/json:
@@ -391,7 +411,7 @@ paths:
     delete:
       summary: Deleta uma movimentação de uma operação.       
       tags: 
-        - Operação
+        - Operação - Movimentação
       responses:
         204:
           description: A movimentação foi deletada com sucesso.
