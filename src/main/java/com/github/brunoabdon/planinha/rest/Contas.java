@@ -37,7 +37,7 @@ public class Contas {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response listar() {
+    public Response listar() throws EntidadeInexistenteException {
         logger.log(INFO, "Listando contas");
         final List<Conta> contas = facade.listar();
         return Response.ok(contas).build();
