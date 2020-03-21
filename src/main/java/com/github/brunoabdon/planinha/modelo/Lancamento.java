@@ -195,9 +195,7 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
         appendIdNotNull(sb, "id",id);
         appendIdNotNull(sb, "conta",conta);
         appendIdNotNull(sb, "operacao",operacao);
-        appendIdNotNull(sb, "valor",valor);
-
-        return sb.append("]").toString();
+        return sb.append("|valor").append(valor).append("]").toString();
     }
 
     private static void appendIdNotNull(
