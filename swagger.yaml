@@ -299,7 +299,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchFato'
+              $ref: '#/components/schemas/Fato'
         required: true
       responses:
         200:
@@ -441,8 +441,6 @@ components:
       $ref: "operacao.yaml#/Operacao"
     PatchConta:
       $ref: "conta.yaml#/PatchConta"
-    PatchFato:
-      $ref: "fato.yaml#/PatchFato"
     PatchMovimentacao:
       $ref: "movimentacao.yaml#/PatchMovimentacao"
     PatchOperacao:

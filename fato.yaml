@@ -2,21 +2,10 @@ Fato:
   required:
   - descricao
   - dia
-  - id
   type: object
   properties:
-    id:
-      $ref: 'types.yaml#/Id'
     dia:
       type: string
       format: date
     descricao:
-      type: string
-PatchFato:
-  type: object
-  properties:
-    dia:
-      type: string
-      format: date
-    nome:
       type: string
