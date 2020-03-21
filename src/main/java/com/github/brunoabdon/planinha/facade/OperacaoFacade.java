@@ -17,6 +17,7 @@ import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.OperacaoConsultaFiltro;
 import com.github.brunoabdon.planinha.modelo.Fato;
+import com.github.brunoabdon.planinha.modelo.Lancamento;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
@@ -34,9 +35,29 @@ public class OperacaoFacade
     OperacaoConsultaFiltro operacaoConsulta;
 
     @Override
+    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Operacao cria(final Operacao operacao) throws BusinessException {
     	logger.logv(DEBUG, "Criando operação {0}.", operacao);
-        return null;
+    	em.persist(operacao);
+
+    	operacao.getMovimentacoes().forEach(m -> this.cria(operacao,m));
+
+        return operacao;
+    }
+
+    private void cria(final Operacao operacao, final Lancamento movimentacao){
+        logger.logv(
+            DEBUG, "Criando movimentação {0} da operação {1}.",
+            movimentacao, operacao
+        );
+
+        movimentacao.setId(
+            new Lancamento.Id(
+                operacao.getId(),
+                movimentacao.getConta().getId()
+            )
+        );
+        em.persist(movimentacao);
     }
 
     @Override

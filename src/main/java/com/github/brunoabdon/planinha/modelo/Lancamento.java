@@ -3,6 +3,8 @@ package com.github.brunoabdon.planinha.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -106,16 +108,15 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
     private int valor;
 
     public Lancamento() {
+        super();
     }
 
-    public Lancamento(final Operacao operacao, final Conta conta, final int valor) {
-    	this(valor);
-        this.id = new Lancamento.Id(operacao.getId(),conta.getId());
-        this.operacao = operacao;
+    @JsonbCreator
+    public Lancamento(
+            @JsonbProperty("conta") final Conta conta,
+            @JsonbProperty("valor") final int valor) {
+        this();
         this.conta = conta;
-    }
-
-    public Lancamento(final int valor) {
         this.valor = valor;
     }
 
@@ -150,6 +151,10 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
     public Operacao getOperacao() {
 		return operacao;
 	}
+
+    public void setOperacao(final Operacao operacao) {
+        this.operacao = operacao;
+    }
 
     @Override
     public boolean equals(final Object obj) {
