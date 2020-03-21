@@ -25,6 +25,7 @@ import com.github.brunoabdon.planinha.modelo.Periodo;
 public class OperacaoFacade
         implements Facade<Operacao, Integer, Periodo, Fato>{
 
+
 	@Inject
 	Logger logger;
 
@@ -51,12 +52,8 @@ public class OperacaoFacade
             movimentacao, operacao
         );
 
-        movimentacao.setId(
-            new Lancamento.Id(
-                operacao.getId(),
-                movimentacao.getConta().getId()
-            )
-        );
+        movimentacao.withOperacao(operacao.getId());
+
         em.persist(movimentacao);
     }
 

@@ -144,6 +144,15 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 		}
 	}
 
+    public void withOperacao(final Integer operacaoId) {
+        this.setId(
+            new Lancamento.Id(
+                operacaoId,
+                getConta().getId()
+            )
+        );
+    }
+
     public void setValor(final int valor) {
         this.valor = valor;
     }
