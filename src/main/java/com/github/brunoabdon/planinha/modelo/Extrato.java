@@ -50,7 +50,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
 
         @Override
         public String toString() {
-        	return "[Extrato|"+conta+"|"+periodo+"]";
+        	return "["+conta+"|"+periodo+"]";
         }
     }
 
@@ -62,7 +62,6 @@ public class Extrato implements Identifiable<Id>, Serializable{
     private Number saldoAnterior;
 
     private List<ItemDeExtrato> items;
-
 
     public Extrato(final Id id) {
         this.id = id;
@@ -130,4 +129,10 @@ public class Extrato implements Identifiable<Id>, Serializable{
         }
         return serialId;
     }
+
+    @Override
+    public String toString() {
+        return "[Extrato:"+id+"|saldoAnt:"+saldoAnterior+"]";
+    }
+
 }

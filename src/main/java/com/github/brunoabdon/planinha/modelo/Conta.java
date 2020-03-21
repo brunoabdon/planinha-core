@@ -77,7 +77,7 @@ public class Conta extends EntidadeBaseInt {
 
     @Override
     public String toString() {
-        return "[Conta: " + nome + "]";
+        return "[Conta:"+getId()+"|" + nome + "]";
     }
 
     @Override

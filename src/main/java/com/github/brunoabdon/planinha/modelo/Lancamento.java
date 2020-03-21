@@ -179,4 +179,22 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
             .append(getConta())
             .toHashCode();
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("[lanc:");
+        appendIdNotNull(sb, "id",id);
+        appendIdNotNull(sb, "conta",conta);
+        appendIdNotNull(sb, "operacao",operacao);
+        appendIdNotNull(sb, "valor",valor);
+
+        return sb.append("]").toString();
+    }
+
+    private static void appendIdNotNull(
+            final StringBuilder sb,
+            final String desc,
+            final Object o){
+        if(o != null) sb.append("|").append(desc).append(":").append(o);
+    }
 }

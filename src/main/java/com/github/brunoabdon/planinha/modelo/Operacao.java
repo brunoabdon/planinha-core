@@ -94,6 +94,6 @@ public class Operacao extends EntidadeBaseInt {
 
 	@Override
 	public String toString() {
-		return "[Operacao:"+ fato + "]";
+		return "[Operacao:"+getId()+"|"+ fato + "]";
 	}
 }
