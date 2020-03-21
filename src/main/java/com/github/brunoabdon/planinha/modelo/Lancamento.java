@@ -157,10 +157,10 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
         if(equal){
             final Lancamento lancamento = (Lancamento) obj;
             equal =
-                    Objects.equals(this.getId(), lancamento.getId())
-                    && Objects.equals(this.getValor(), lancamento.getValor())
-                    && Objects.equals(this.getConta(), lancamento.getConta())
-                    && Objects.equals(this.getOperacao(), lancamento.getOperacao());
+                Objects.equals(this.getId(), lancamento.getId())
+                && Objects.equals(this.getValor(), lancamento.getValor())
+                && Objects.equals(this.getConta(), lancamento.getConta())
+                && Objects.equals(this.getOperacao(), lancamento.getOperacao());
         }
         return equal;
     }

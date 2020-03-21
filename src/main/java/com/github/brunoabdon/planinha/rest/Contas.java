@@ -28,13 +28,13 @@ import com.github.brunoabdon.planinha.modelo.Conta;
 @ApplicationScoped
 public class Contas {
 
-    
+
     @Inject
     Logger logger;
-    
+
     @Inject
     ContaFacade facade;
-    
+
     @GET
     @Produces(APPLICATION_JSON)
     public Response listar() {
@@ -42,58 +42,57 @@ public class Contas {
         final List<Conta> contas = facade.listar();
         return Response.ok(contas).build();
     }
-    
+
     @GET
     @Path("{conta_id}")
     @Produces(APPLICATION_JSON)
-    public Response pegar(@PathParam("conta_id") final Integer idConta) 
+    public Response pegar(@PathParam("conta_id") final Integer idConta)
             throws EntidadeInexistenteException {
-        
+
         logger.logv(INFO, "Pegando conta {0}.",idConta);
-        
+
         final Conta conta = facade.pega(idConta);
-        
+
         return Response.ok(conta).build();
     }
-  
+
     @PUT
     @Path("{conta_id}")
     @Produces(APPLICATION_JSON)
     @Consumes(APPLICATION_JSON)
     public Response atualizar(
     		@PathParam("conta_id") final Integer idConta,
-    		final Conta conta) 
+    		final Conta conta)
 				throws EntidadeInexistenteException, BusinessException {
-    
+
         logger.logv(INFO, "Atualizando conta {0} pra {1}.",idConta, conta);
-        
+
         final String nome = conta.getNome();
 		final Conta contaAtualizada = facade.atualiza(idConta, nome);
-        
+
         return Response.ok(contaAtualizada).build();
     }
-    
+
     @DELETE
     @Path("{conta_id}")
-    public Response deletar(@PathParam("conta_id") final Integer idConta) 
+    public Response deletar(@PathParam("conta_id") final Integer idConta)
 			throws EntidadeInexistenteException, BusinessException {
-    
+
         logger.logv(INFO, "Deletando conta de id {0}.",idConta);
-        
+
 		facade.deleta(idConta);
-        
+
         return Response.ok().build();
     }
-    
-    
+
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response criar(final Conta conta) throws BusinessException {
         logger.logv(INFO, "Criando conta {0}.",conta);
-        
+
 		final Conta contaCriada = facade.cria(conta);
-        
+
         return Response.ok(contaCriada).build();
     }
 }
