@@ -5,6 +5,7 @@ import static org.jboss.logging.Logger.Level.INFO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -18,7 +19,6 @@ import org.jboss.logging.Logger;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.planinha.facade.OperacaoFacade;
-import com.github.brunoabdon.planinha.facade.patch.PatchFato;
 import com.github.brunoabdon.planinha.modelo.Fato;
 
 @Path("operacoes/{operacao_id}/fato")
@@ -48,16 +48,16 @@ public class Fatos {
     @Produces(APPLICATION_JSON)
     public Response atualizar(
     		@PathParam("operacao_id") final Integer idOperacao,
-    		final PatchFato patchFato)
+    		@Valid final Fato patch)
 				throws EntidadeInexistenteException, BusinessException {
 
         logger.logv(
     		INFO, "Atualizando fato da operacao {0} pra {1}.",
-    		idOperacao, patchFato
+    		idOperacao, patch
 		);
 
         final Fato fatoAtualizado =
-    		facade.atualiza(idOperacao, patchFato).getFato();
+    		facade.atualiza(idOperacao, patch).getFato();
 
         return Response.ok(fatoAtualizado).build();
     }

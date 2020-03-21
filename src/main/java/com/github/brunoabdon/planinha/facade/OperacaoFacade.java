@@ -16,13 +16,13 @@ import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.OperacaoConsultaFiltro;
-import com.github.brunoabdon.planinha.facade.patch.PatchFato;
+import com.github.brunoabdon.planinha.modelo.Fato;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @ApplicationScoped
 public class OperacaoFacade
-        implements Facade<Operacao, Integer, Periodo, PatchFato>{
+        implements Facade<Operacao, Integer, Periodo, Fato>{
 
 	@Inject
 	Logger logger;
@@ -58,7 +58,7 @@ public class OperacaoFacade
     }
 
     @Override
-    public Operacao atualiza(final Integer key, final PatchFato atualizacao)
+    public Operacao atualiza(final Integer key, final Fato atualizacao)
             throws EntidadeInexistenteException, BusinessException {
         throw new UnsupportedOperationException();
     }
