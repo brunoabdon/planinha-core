@@ -58,6 +58,7 @@ public class OperacaoFacade
     }
 
     @Override
+    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Operacao atualiza(final Integer key, final Fato atualizacao)
             throws EntidadeInexistenteException, BusinessException {
 
