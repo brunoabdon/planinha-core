@@ -12,24 +12,24 @@ public interface Facade <X extends Identifiable<K>,K,F,A>{
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public X cria(@NotNull @Valid final X elemento) throws BusinessException;
-    
-    public X pega(@NotNull @Valid final K key) 
+
+    public X pega(@NotNull @Valid final K key)
         throws EntidadeInexistenteException;
-    
+
     //TODO mudar o nome pra lista (conjugado. ou entao muda os outros)
     public List<X> listar(final F filtro);
 
     public default List<X> listar(){
         return this.listar(null);
     }
-    
+
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public X atualiza(@
-            NotNull @Valid final K key, 
-            @NotNull @Valid final A atualizacao) 
+            NotNull @Valid final K key,
+            @NotNull @Valid final A atualizacao)
         throws EntidadeInexistenteException, BusinessException;
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
-    public void deleta(@NotNull @Valid final K key) 
+    public void deleta(@NotNull @Valid final K key)
         throws EntidadeInexistenteException, BusinessException;
 }
