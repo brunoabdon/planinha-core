@@ -60,7 +60,12 @@ public class OperacaoFacade
     @Override
     public Operacao atualiza(final Integer key, final Fato atualizacao)
             throws EntidadeInexistenteException, BusinessException {
-        throw new UnsupportedOperationException();
+
+    	final Operacao operacao = pega(key);
+
+    	operacao.setFato(atualizacao);
+
+    	return operacao;
     }
 
     @Override
