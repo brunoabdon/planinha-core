@@ -44,7 +44,7 @@ public class Extratos {
 
         logger.logv(INFO, "Listando extratos da conta {0}.", idConta);
 
-        final List<Extrato> extratosDaConta = facade.listar(idConta);
+        final List<Extrato> extratosDaConta = facade.lista(idConta);
         if(extratosDaConta.isEmpty()) {
             this.contaFacade.pega(idConta); //excecao se nao existir a conta
         }

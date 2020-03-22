@@ -70,7 +70,7 @@ public class ExtratoFacade
     }
 
     @Override
-    public List<Extrato> listar(final Integer idConta) {
+    public List<Extrato> lista(final Integer idConta) {
 
     	logger.logv(DEBUG, "Listando extratos da conta  {0}.", idConta);
 

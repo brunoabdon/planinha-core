@@ -16,11 +16,10 @@ public interface Facade <X extends Identifiable<K>,K,F,A>{
     public X pega(@NotNull @Valid final K key)
         throws EntidadeInexistenteException;
 
-    //TODO mudar o nome pra lista (conjugado. ou entao muda os outros)
-    public List<X> listar(final F filtro) throws EntidadeInexistenteException;
+    public List<X> lista(final F filtro) throws EntidadeInexistenteException;
 
     public default List<X> listar() throws EntidadeInexistenteException{
-        return this.listar(null);
+        return this.lista(null);
     }
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})

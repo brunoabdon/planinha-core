@@ -42,7 +42,7 @@ public class ContaFacade implements Facade<Conta,Integer,String,String> {
     }
 
     @Override
-    public List<Conta> listar(final String parteDoNome){
+    public List<Conta> lista(final String parteDoNome){
         return this.consultaPorFiltro.listar(parteDoNome);
     }
 

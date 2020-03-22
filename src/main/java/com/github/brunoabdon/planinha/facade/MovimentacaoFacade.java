@@ -54,7 +54,7 @@ public class MovimentacaoFacade
     }
 
     @Override
-    public List<Lancamento> listar(final Integer idOperacao)
+    public List<Lancamento> lista(final Integer idOperacao)
             throws EntidadeInexistenteException {
         return operacaoFacade.pega(idOperacao).getMovimentacoes();
     }

@@ -70,7 +70,7 @@ public class OperacaoFacade
     }
 
     @Override
-    public List<Operacao> listar(final Periodo filtro) {
+    public List<Operacao> lista(final Periodo filtro) {
     	logger.logv(DEBUG, "Listando operações por {0}.", filtro);
         return operacaoConsulta.listar(filtro);
     }

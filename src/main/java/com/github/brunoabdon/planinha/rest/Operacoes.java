@@ -58,7 +58,7 @@ public class Operacoes {
 		final Periodo periodo =
 			temMes ? Periodo.mes(mes) : new Periodo(dataMinima, dataMaxima);
 
-        final List<Operacao> operacoes = facade.listar(periodo);
+        final List<Operacao> operacoes = facade.lista(periodo);
 
         return Response.ok(operacoes).build();
     }

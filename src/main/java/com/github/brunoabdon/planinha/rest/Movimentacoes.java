@@ -54,7 +54,7 @@ public class Movimentacoes {
             @PathParam("operacao_id") final Integer idOperacao)
                 throws EntidadeInexistenteException {
         logger.logv(INFO,"Listando movimentações da operação {0}.",idOperacao);
-        final List<Lancamento> movimentacoes = facade.listar(idOperacao);
+        final List<Lancamento> movimentacoes = facade.lista(idOperacao);
         return Response.ok(movimentacoes).build();
     }
 
