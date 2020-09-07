@@ -2,6 +2,7 @@ package com.github.brunoabdon.planinha.dal;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ public class ExtratoConsulta {
 			).setParameter("conta", conta)
 			 .setParameter("dia", dia)
 			 .getResultStream()
+			 .filter(Objects::nonNull)
 			 .findAny()
 			 .orElse(0)
 			 .intValue();
