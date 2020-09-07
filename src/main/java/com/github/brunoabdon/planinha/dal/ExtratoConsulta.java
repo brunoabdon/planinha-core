@@ -20,7 +20,7 @@ import com.github.brunoabdon.planinha.modelo.Periodo;
 public class ExtratoConsulta {
 
 
-	@Inject
+    @Inject
     Logger logger;
 
     @PersistenceContext
