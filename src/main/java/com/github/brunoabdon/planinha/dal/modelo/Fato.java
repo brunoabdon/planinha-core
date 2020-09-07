@@ -65,16 +65,6 @@ public class Fato extends EntidadeBaseInt {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
     public String toString() {
         return "[Fato:"+getId() + "|" + dia + "|" + descricao + "]";
     }

@@ -3,7 +3,6 @@ package com.github.brunoabdon.planinha.dal.modelo;
 import static javax.persistence.FetchType.LAZY;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
@@ -72,23 +69,5 @@ public class Conta extends EntidadeBaseInt {
     @Override
     public String toString() {
         return "[Conta:"+getId()+"|" + nome + "]";
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        boolean equal = obj instanceof Conta;
-        if(equal){
-            final Conta conta = (Conta) obj;
-            equal = Objects.equals(this.getId(), conta.getId());
-        }
-        return equal;
-    }
-
-    @Override
-    public int hashCode() {
-        return
-            new HashCodeBuilder(3, 11)
-            .append(getId())
-            .toHashCode();
     }
 }
