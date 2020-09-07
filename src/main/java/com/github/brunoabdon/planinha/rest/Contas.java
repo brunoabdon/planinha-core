@@ -21,8 +21,8 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.facade.ContaFacade;
-import com.github.brunoabdon.planinha.modelo.Conta;
 
 @Path("contas")
 @ApplicationScoped

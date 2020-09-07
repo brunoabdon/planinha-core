@@ -15,9 +15,9 @@ import org.jboss.logging.Logger;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.planinha.dal.OperacaoConsultaFiltro;
-import com.github.brunoabdon.planinha.modelo.Fato;
-import com.github.brunoabdon.planinha.modelo.Lancamento;
+import com.github.brunoabdon.planinha.dal.FatoConsultaFiltro;
+import com.github.brunoabdon.planinha.dal.modelo.Fato;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
@@ -33,7 +33,7 @@ public class OperacaoFacade
     EntityManager em;
 
     @Inject
-    OperacaoConsultaFiltro operacaoConsulta;
+    FatoConsultaFiltro operacaoConsulta;
 
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
@@ -52,7 +52,7 @@ public class OperacaoFacade
             movimentacao, operacao
         );
 
-        movimentacao.withOperacao(operacao.getId());
+        movimentacao.withFato(operacao.getId());
 
         em.persist(movimentacao);
     }
@@ -72,7 +72,7 @@ public class OperacaoFacade
     @Override
     public List<Operacao> lista(final Periodo filtro) {
     	logger.logv(DEBUG, "Listando operações por {0}.", filtro);
-        return operacaoConsulta.listar(filtro);
+        throw new UnsupportedOperationException();
     }
 
     @Override

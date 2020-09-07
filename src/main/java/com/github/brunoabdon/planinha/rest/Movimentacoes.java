@@ -22,9 +22,9 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento.Id;
 import com.github.brunoabdon.planinha.facade.MovimentacaoFacade;
-import com.github.brunoabdon.planinha.modelo.Lancamento;
-import com.github.brunoabdon.planinha.modelo.Lancamento.Id;
 
 @ApplicationScoped
 @Path("operacoes/{operacao_id}/movimentacoes")
@@ -130,7 +130,7 @@ public class Movimentacoes {
             movimentacao, idOperacao
         );
 
-        movimentacao.withOperacao(idOperacao);
+        movimentacao.withFato(idOperacao);
 
 		final Lancamento movimentacaoCriada = facade.cria(movimentacao);
 

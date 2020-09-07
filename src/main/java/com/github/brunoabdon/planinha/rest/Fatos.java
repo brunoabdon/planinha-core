@@ -18,8 +18,8 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.planinha.dal.modelo.Fato;
 import com.github.brunoabdon.planinha.facade.OperacaoFacade;
-import com.github.brunoabdon.planinha.modelo.Fato;
 
 @Path("operacoes/{operacao_id}/fato")
 @ApplicationScoped

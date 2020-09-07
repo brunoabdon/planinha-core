@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.dal.CriteriaUtils;
-import com.github.brunoabdon.planinha.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 

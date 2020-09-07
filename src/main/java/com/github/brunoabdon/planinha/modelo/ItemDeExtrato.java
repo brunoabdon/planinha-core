@@ -3,6 +3,8 @@ package com.github.brunoabdon.planinha.modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.github.brunoabdon.planinha.dal.modelo.Fato;
+
 public class ItemDeExtrato implements Serializable{
 
     private static final long serialVersionUID = 7915709116381425166L;

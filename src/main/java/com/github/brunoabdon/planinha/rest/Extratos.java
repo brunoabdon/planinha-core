@@ -16,9 +16,9 @@ import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.facade.ContaFacade;
 import com.github.brunoabdon.planinha.facade.ExtratoFacade;
-import com.github.brunoabdon.planinha.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.Periodo;

@@ -12,7 +12,7 @@ import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.dal.ContaConsultaFiltro;
-import com.github.brunoabdon.planinha.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 
 @ApplicationScoped
 public class ContaFacade implements Facade<Conta,Integer,String,String> {

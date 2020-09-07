@@ -1,6 +1,7 @@
 package com.github.brunoabdon.commons.modelo;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,4 +62,20 @@ public class EntidadeBaseInt implements Entidade<Integer> {
 
         return entidade;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        return Objects.equals(id, ((EntidadeBaseInt) obj).id);
+    }
+
+
 }

@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.github.brunoabdon.planinha.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 
 @ApplicationScoped
 public class ContaConsultaFiltro {

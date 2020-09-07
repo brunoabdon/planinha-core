@@ -1,11 +1,10 @@
-package com.github.brunoabdon.planinha.modelo;
+package com.github.brunoabdon.planinha.dal.modelo;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -15,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
@@ -32,7 +29,7 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
 	@NamedQuery(
 		name = "Lancamento.saldoDaContaNoInicioDoDia",
 		query = "select sum(valor) from Lancamento l "
-			  + "where l.conta = :conta and l.operacao.fato.dia < :dia"
+			  + "where l.conta = :conta and l.fato.dia < :dia"
 	),
     @NamedQuery(
     	name = "Lancamento.itensDeUmExtrato",
@@ -41,7 +38,7 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
     		+ "new com.github.brunoabdon.planinha.modelo"
     		+       ".ItemDeExtrato(l.operacao.fato, l.valor) "
     		+ "from Lancamento l "
-    		+ "where l.operacao.fato.dia between :dataInicio and :dataFim "
+    		+ "where l.fato.dia between :dataInicio and :dataFim "
     		+ "and l.conta = :conta"
     ),
     @NamedQuery(
@@ -49,12 +46,7 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
         query=
             "select min(l.operacao.fato.dia) from Lancamento l "
             + "where l.conta = :conta"
-    ),
-	@NamedQuery(
-        name="Lancamento.quantasNaOperacao",
-        query=
-            "select count(id) from Lancamento where operacao.id = :idOperacao"
-    ),
+    )
 })
 public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 
@@ -66,7 +58,7 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 		private static final long serialVersionUID = -1734494257092861534L;
 
 		@Column(name="fato_id")
-		private Integer operacaoId;
+		private Integer fatoId;
 
 		@Column(name="conta_id")
     	private Integer contaId;
@@ -74,14 +66,14 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 		public Id() {
 		}
 
-		public Id(final Integer operacaoId, final Integer contaId) {
+		public Id(final Integer fatoId, final Integer contaId) {
 			super();
-			this.operacaoId = operacaoId;
+			this.fatoId = fatoId;
 			this.contaId = contaId;
 		}
 
-		public Integer getOperacaoId() {
-            return operacaoId;
+		public Integer getFatoId() {
+            return fatoId;
         }
 
 		public Integer getContaId() {
@@ -90,7 +82,7 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(contaId, operacaoId);
+			return Objects.hash(contaId, fatoId);
 		}
 
 		@Override
@@ -101,18 +93,16 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
 			final Id other = (Id) obj;
 			return
 				Objects.equals(contaId, other.contaId)
-				&& Objects.equals(operacaoId, other.operacaoId);
+				&& Objects.equals(fatoId, other.fatoId);
 		}
     }
 
     @EmbeddedId
-    @JsonbTransient
     private Id id;
 
-    @JsonbTransient
     @ManyToOne
     @JoinColumn(insertable = false, updatable = false,name = "fato_id")
-    private Operacao operacao;
+    private Fato fato;
 
     @ManyToOne
     @JoinColumn(insertable = false, updatable = false)
@@ -158,18 +148,18 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
     public void setId(final Id id) {
 		this.id = id;
 		if(id == null) {
-			this.operacao = null;
+			this.fato = null;
 			this.conta = null;
 		} else {
-			this.operacao = new Operacao(id.operacaoId);
+			this.fato = new Fato(id.fatoId);
 			this.conta = new Conta(id.contaId);
 		}
 	}
 
-    public void withOperacao(final Integer operacaoId) {
+    public void withFato(final Integer fatoId) {
         this.setId(
             new Lancamento.Id(
-                operacaoId,
+                fatoId,
                 getConta().getId()
             )
         );
@@ -179,12 +169,12 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
         this.valor = valor;
     }
 
-    public Operacao getOperacao() {
-		return operacao;
-	}
+    public Fato getFato() {
+        return fato;
+    }
 
-    public void setOperacao(final Operacao operacao) {
-        this.operacao = operacao;
+    public void setFato(final Fato fato) {
+        this.fato = fato;
     }
 
     @Override
@@ -192,23 +182,14 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
         boolean equal = obj instanceof Lancamento;
         if(equal){
             final Lancamento lancamento = (Lancamento) obj;
-            equal =
-                Objects.equals(this.getId(),lancamento.getId())
-                && Objects.equals(this.getValor(),lancamento.getValor())
-                && Objects.equals(this.getConta(),lancamento.getConta())
-                && Objects.equals(this.getOperacao(),lancamento.getOperacao());
+            equal = Objects.equals(this.getId(),lancamento.getId());
         }
         return equal;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(3, 11)
-            .append(getId())
-            .append(getValor())
-            .append(getOperacao())
-            .append(getConta())
-            .toHashCode();
+        return Objects.hash(id);
     }
 
     @Override
@@ -216,7 +197,7 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable{
         final StringBuilder sb = new StringBuilder("[lanc:");
         appendIdNotNull(sb, "id",id);
         appendIdNotNull(sb, "conta",conta);
-        appendIdNotNull(sb, "operacao",operacao);
+        appendIdNotNull(sb, "fato",fato);
         return sb.append("|valor").append(valor).append("]").toString();
     }
 

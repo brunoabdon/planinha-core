@@ -16,6 +16,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
+import com.github.brunoabdon.planinha.dal.modelo.Fato;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
 
 @Entity
 @Table(schema = "planinhacore", name = "fato")

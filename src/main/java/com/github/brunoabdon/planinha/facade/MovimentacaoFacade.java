@@ -15,8 +15,8 @@ import org.jboss.logging.Logger;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.planinha.modelo.Lancamento;
-import com.github.brunoabdon.planinha.modelo.Lancamento.Id;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento.Id;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
 @ApplicationScoped
@@ -76,7 +76,7 @@ public class MovimentacaoFacade
     public void deleta(@NotNull @Valid final Id id)
             throws EntidadeInexistenteException, BusinessException {
 
-        final Operacao operacao = operacaoFacade.pega(id.getOperacaoId());
+        final Operacao operacao = operacaoFacade.pega(id.getFatoId());
 
         final List<Lancamento> movimentacoes = operacao.getMovimentacoes();
 

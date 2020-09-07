@@ -10,6 +10,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.rest.paramconverters.PeriodoParamConverter;
 

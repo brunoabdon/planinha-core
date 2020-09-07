@@ -1,18 +1,15 @@
-package com.github.brunoabdon.planinha.modelo;
+package com.github.brunoabdon.planinha.dal.modelo;
 
 import static javax.persistence.FetchType.LAZY;
 
 import java.util.List;
 import java.util.Objects;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -37,13 +34,10 @@ public class Conta extends EntidadeBaseInt {
 
     public static final int NOME_MAX_LEN = 50;
 
-    @NotEmpty
-    @NotBlank
     @Size(max = NOME_MAX_LEN)
     @Column(length = NOME_MAX_LEN, nullable = false, unique = true)
     private String nome;
 
-    @JsonbTransient
 	@OneToMany(fetch = LAZY, mappedBy = "conta")
 	private List<Lancamento> movimentacoes;
 
@@ -85,8 +79,7 @@ public class Conta extends EntidadeBaseInt {
         boolean equal = obj instanceof Conta;
         if(equal){
             final Conta conta = (Conta) obj;
-            equal = Objects.equals(this.getId(), conta.getId())
-                    && Objects.equals(this.getNome(), conta.getNome());
+            equal = Objects.equals(this.getId(), conta.getId());
         }
         return equal;
     }
@@ -96,7 +89,6 @@ public class Conta extends EntidadeBaseInt {
         return
             new HashCodeBuilder(3, 11)
             .append(getId())
-            .append(getNome())
             .toHashCode();
     }
 }
