@@ -1,5 +1,6 @@
-#planinha-core
-##Separação do Modelo
+# planinha-core
+
+## Separação do Modelo
 
 Nesse branch vão ser separadas as classes de modelo dal do modelo rest.
 
