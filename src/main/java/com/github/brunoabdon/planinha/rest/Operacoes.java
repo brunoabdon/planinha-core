@@ -24,7 +24,7 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.facade.OperacaoFacade;
+import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
@@ -36,14 +36,15 @@ public class Operacoes {
     Logger logger;
 
     @Inject
-    OperacaoFacade facade;
+    Facade<Operacao, Integer, Periodo, ?> facade;
 
     @GET
     @Produces(APPLICATION_JSON)
     public Response listar(
 			@QueryParam("mes") final YearMonth mes,
 			@QueryParam("dataMinima") final LocalDate dataMinima,
-			@QueryParam("dataMaxima") final LocalDate dataMaxima) {
+			@QueryParam("dataMaxima") final LocalDate dataMaxima)
+		        throws EntidadeInexistenteException {
 
         logger.logv(
     		INFO, "Listando operações por {0},{1}->{2}.",

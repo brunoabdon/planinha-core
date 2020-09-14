@@ -18,8 +18,9 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.facade.OperacaoFacade;
+import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.FatoVO;
+import com.github.brunoabdon.planinha.modelo.Operacao;
 
 @Path("operacoes/{operacao_id}/fato")
 @ApplicationScoped
@@ -29,7 +30,7 @@ public class Fatos {
     Logger logger;
 
     @Inject
-    OperacaoFacade facade;
+    Facade<Operacao, Integer, ?, FatoVO> facade;
 
     @GET
     @Produces(APPLICATION_JSON)

@@ -16,8 +16,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.facade.ContaFacade;
-import com.github.brunoabdon.planinha.facade.ExtratoFacade;
+import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
@@ -31,10 +30,10 @@ public class Extratos {
     Logger logger;
 
     @Inject
-    ContaFacade contaFacade;
+    Facade<ContaVO,Integer,?,?> contaFacade;
 
     @Inject
-    ExtratoFacade facade;
+    Facade<Extrato, Extrato.Id, Integer, ?> facade;
 
     @GET
     @Produces(APPLICATION_JSON)
