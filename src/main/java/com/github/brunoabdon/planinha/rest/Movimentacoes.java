@@ -22,7 +22,7 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.facade.MovimentacaoFacade;
+import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 
@@ -30,7 +30,7 @@ import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 @Path("operacoes/{operacao_id}/movimentacoes")
 public class Movimentacoes {
 
-    public static class Atualizacao{
+    public static class Atualizacao {
         private Integer valor;
 
         public Integer getValor() {
@@ -46,7 +46,7 @@ public class Movimentacoes {
     Logger logger;
 
     @Inject
-    MovimentacaoFacade facade;
+    Facade<Movimentacao, Id, Integer, Integer> facade;
 
     @GET
     @Produces(APPLICATION_JSON)

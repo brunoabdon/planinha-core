@@ -21,7 +21,7 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.facade.ContaFacade;
+import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 
 @Path("contas")
@@ -33,7 +33,7 @@ public class Contas {
     Logger logger;
 
     @Inject
-    ContaFacade facade;
+    Facade<ContaVO,Integer,String,String> facade;
 
     @GET
     @Produces(APPLICATION_JSON)
