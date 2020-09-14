@@ -1,6 +1,6 @@
 package com.github.brunoabdon.planinha.dal;
 
-import static com.github.brunoabdon.planinha.modelo.Conta_.nome;
+import static com.github.brunoabdon.planinha.dal.modelo.Conta_.nome;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.github.brunoabdon.planinha.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
 
 @ApplicationScoped
 public class ContaConsultaFiltro {

@@ -7,14 +7,14 @@ public class ItemDeExtrato implements Serializable{
 
     private static final long serialVersionUID = 7915709116381425166L;
 
-    private Fato fato;
+    private FatoVO fato;
 
     private int valor;
 
     public ItemDeExtrato() {
     }
 
-    public ItemDeExtrato(final Fato fato, final int valor) {
+    public ItemDeExtrato(final FatoVO fato, final int valor) {
         this.fato = fato;
         this.valor = valor;
     }
@@ -23,14 +23,14 @@ public class ItemDeExtrato implements Serializable{
     		final LocalDate dia,
     		final String descricao,
     		final int valor) {
-        this(new Fato(dia, descricao),valor);
+        this(new FatoVO(dia, descricao),valor);
     }
 
-    public Fato getFato() {
+    public FatoVO getFato() {
         return fato;
     }
 
-    public void setFato(Fato fato) {
+    public void setFato(final FatoVO fato) {
         this.fato = fato;
     }
 
@@ -38,7 +38,7 @@ public class ItemDeExtrato implements Serializable{
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(final int valor) {
         this.valor = valor;
     }
 }

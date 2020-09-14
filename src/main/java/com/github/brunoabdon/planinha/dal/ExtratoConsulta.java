@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
 import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.dal.CriteriaUtils;
-import com.github.brunoabdon.planinha.modelo.Conta;
-import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
+import com.github.brunoabdon.planinha.dal.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @ApplicationScoped
@@ -42,11 +42,12 @@ public class ExtratoConsulta {
 			 .orElse(0)
 			 .intValue();
 	}
-	public List<ItemDeExtrato> itensDoExtrato(Conta conta, Periodo periodo) {
+	public List<Lancamento> lancamentosDoExtrato(
+	            final Conta conta, final Periodo periodo) {
 		return
 			em.createNamedQuery(
-				"Lancamento.itensDeUmExtrato",
-				ItemDeExtrato.class
+				"Lancamento.lancamentosDaContaNoPeriodo",
+				Lancamento.class
 			).setParameter("conta", conta)
 			 .setParameter("dataInicio", periodo.getDataMinima())
 			 .setParameter("dataFim", periodo.getDataMaxima())

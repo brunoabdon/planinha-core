@@ -3,32 +3,34 @@ package com.github.brunoabdon.planinha.modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+public class FatoVO implements Serializable {
 
-/**
- * Um evento no mundo, que acarretará em valores serem movimentados entre
- * {@linkplain Conta contas}.
- *
- * @author bruno
- */
-@Embeddable
-public class Fato implements Serializable {
+    private static final long serialVersionUID = -6816326120547843562L;
 
-    private static final long serialVersionUID = -1303184765328707216L;
+    private static final int TAMANHO_MAX_DESCRICAO_FATO = 70;
 
     @NotNull(message = "planinha.valid.fato.semDia")
     private LocalDate dia;
 
-    @NotBlank(message = "planinha.valid.fato.semDescricao")
+    @Size(
+        max = TAMANHO_MAX_DESCRICAO_FATO,
+        message = "planinha.valid.fato.descricao.max"
+    )
+    @NotBlank(message = "planinha.valid.fato.descricao.sem")
     private String descricao;
 
-    public Fato() {
+    public FatoVO() {
+        super();
     }
 
-    public Fato(final LocalDate dia, final String descricao){
+    public FatoVO(
+            final LocalDate dia,
+            final String descricao) {
+        this();
         this.dia = dia;
         this.descricao = descricao;
     }
@@ -37,7 +39,7 @@ public class Fato implements Serializable {
         return dia;
     }
 
-    public void setDia(LocalDate dia) {
+    public void setDia(final LocalDate dia) {
         this.dia = dia;
     }
 
@@ -51,6 +53,6 @@ public class Fato implements Serializable {
 
     @Override
     public String toString() {
-        return "["+dia+"|"+descricao+"]";
+        return "[Fato:" + dia + "|" + descricao + "]";
     }
 }
