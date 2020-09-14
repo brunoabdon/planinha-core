@@ -1,12 +1,15 @@
 package com.github.brunoabdon.planinha.dal.modelo;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.FetchType.LAZY;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,22 +22,26 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  *
  * @author bruno
  */
+@NamedQuery(
+    name = "Fato.porPeriodo",
+    query = "select f from Fato f where f.dia between :dataInicio and :dataFim"
+)
 @Entity
 @Table(schema = "planinhacore")
 public class Fato extends EntidadeBaseInt {
 
-    private static final int TAMANHO_MAX_DESCRICAO_FATO = 70;
+    private static final int TAMANHO_MAX_DESCRICAO = 70;
 
     private static final long serialVersionUID = -1303184765328707216L;
 
     @Column(nullable = false)
     private LocalDate dia;
 
-    @Column(nullable = false, length = TAMANHO_MAX_DESCRICAO_FATO)
+    @Column(nullable = false, length = TAMANHO_MAX_DESCRICAO)
     private String descricao;
 
-    @OneToMany(mappedBy = "fato",cascade = REMOVE)
-    private List<Lancamento> movimentacoes;
+    @OneToMany(mappedBy = "fato", fetch = LAZY, cascade = {REMOVE, PERSIST})
+    private List<Lancamento> lancamentos;
 
     public Fato() {
     }
@@ -62,6 +69,14 @@ public class Fato extends EntidadeBaseInt {
 
     public void setDescricao(final String descricao) {
         this.descricao = descricao;
+    }
+
+    public List<Lancamento> getLancamentos() {
+        return lancamentos;
+    }
+
+    public void setLancamentos(final List<Lancamento> lancamentos) {
+        this.lancamentos = lancamentos;
     }
 
     @Override

@@ -18,8 +18,8 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.dal.modelo.Fato;
 import com.github.brunoabdon.planinha.facade.OperacaoFacade;
+import com.github.brunoabdon.planinha.modelo.FatoVO;
 
 @Path("operacoes/{operacao_id}/fato")
 @ApplicationScoped
@@ -38,7 +38,7 @@ public class Fatos {
 
         logger.logv(INFO, "Pegando fato da operacao {0}.",idOperacao);
 
-        final Fato fato = facade.pega(idOperacao).getFato();
+        final FatoVO fato = facade.pega(idOperacao).getFato();
 
         return Response.ok(fato).build();
     }
@@ -48,7 +48,7 @@ public class Fatos {
     @Produces(APPLICATION_JSON)
     public Response atualizar(
     		@PathParam("operacao_id") final Integer idOperacao,
-    		@Valid final Fato patch)
+    		@Valid final FatoVO patch)
 				throws EntidadeInexistenteException, BusinessException {
 
         logger.logv(
@@ -56,7 +56,7 @@ public class Fatos {
     		idOperacao, patch
 		);
 
-        final Fato fatoAtualizado =
+        final FatoVO fatoAtualizado =
     		facade.atualiza(idOperacao, patch).getFato();
 
         return Response.ok(fatoAtualizado).build();

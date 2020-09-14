@@ -1,6 +1,6 @@
 package com.github.brunoabdon.planinha.dal;
 
-import static com.github.brunoabdon.planinha.modelo.Conta_.nome;
+import static com.github.brunoabdon.planinha.dal.modelo.Conta_.nome;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.List;

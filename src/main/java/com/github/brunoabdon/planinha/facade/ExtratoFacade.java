@@ -18,8 +18,12 @@ import org.jboss.logging.Logger;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
+import com.github.brunoabdon.commons.facade.mappers.Mapper;
 import com.github.brunoabdon.planinha.dal.ExtratoConsulta;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
+import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
+import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
@@ -37,13 +41,16 @@ public class ExtratoFacade
     EntityManager em;
 
     @Inject
+    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
+
+    @Inject
+    Mapper<Lancamento,ItemDeExtrato> mapperItemDeExtrato;
+
+    @Inject
     ExtratoConsulta extratoConsulta;
 
     @Inject
     TimeUtils tmu;
-
-    @Inject
-    ContaFacade contaFacade;
 
     @Override
     public Extrato cria(final Extrato extrato) throws BusinessException {
@@ -56,7 +63,8 @@ public class ExtratoFacade
 
     	logger.logv(DEBUG, "Pegando extrato de id {0}.", key);
 
-		final Conta conta = contaFacade.pega(key.getConta().getId());
+		final Conta conta = pegaContaDoExtrato(key);
+
 		final Periodo periodo = key.getPeriodo();
 		final LocalDate dataInicial = periodo.getDataMinima();
 
@@ -64,43 +72,73 @@ public class ExtratoFacade
 			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);
 
 		final List<ItemDeExtrato> itens =
-			extratoConsulta.itensDoExtrato(conta,periodo);
+			extratoConsulta
+			    .lancamentosDoExtrato(conta,periodo)
+			    .stream()
+			    .map(mapperItemDeExtrato::toVO)
+			    .collect(toList());
 
-		return new Extrato(new Id(conta, periodo), saldoAnterior, itens);
+		return new Extrato(key, saldoAnterior, itens);
+    }
+
+    private Conta pegaContaDoExtrato(final Id id)
+            throws EntidadeInexistenteException {
+
+        logger.logv(DEBUG, "Pegando conta (Entity) do extrato de id {0}.", id);
+
+        final Integer idConta = mapperConta.toKey(id.getConta().getId());
+
+        final Conta conta = em.find(Conta.class, idConta);
+
+        if(conta == null)
+            throw new EntidadeInexistenteException(Extrato.class, id);
+
+        return conta;
     }
 
     @Override
     public List<Extrato> lista(final Integer idConta) {
 
-    	logger.logv(DEBUG, "Listando extratos da conta  {0}.", idConta);
+    	logger.logv(DEBUG, "Listando extratos da conta de id {0}.", idConta);
 
         List<Extrato> extratos;
 
-        Conta conta;
-        try {
-            conta = contaFacade.pega(idConta);
-            extratos = lista(conta);
-        } catch (final EntidadeInexistenteException e) {
+        final Conta conta = em.find(Conta.class, idConta);
+        if(conta == null) {
+            logger.logv(WARN,"Zero extratos da conta inexistente {0}.",idConta);
             extratos = emptyList();
+        } else {
+            extratos = lista(conta);
         }
 
         return extratos;
     }
 
     private List<Extrato> lista(final Conta conta) {
+
+        logger.logv(DEBUG, "Listando extratos da conta {0}.", conta);
+
         final List<Extrato> extratos;
 
         final LocalDate diaInauguracaoDaConta =
     		extratoConsulta.pegaDiaInauguracaoDaConta(conta);
 
         if(diaInauguracaoDaConta == null) {
+            logger.logv(DEBUG, "Extrato vazio pra conta virgem {0}.", conta);
             extratos = emptyList();
         } else {
+
+            logger.logv(
+                DEBUG, "Listando extrados desde {0} pra conta {1}.",
+                diaInauguracaoDaConta, conta
+            );
+
+            final ContaVO contaVO = mapperConta.toVOSimples(conta);
 
             extratos =
                 tmu.streamMensalAteHoje(diaInauguracaoDaConta)
                    .map(Periodo::mesDoDia)
-                   .map(p -> new Extrato.Id(conta, p))
+                   .map(p -> new Extrato.Id(contaVO, p))
                    .map(Extrato::new)
                    .collect(toList());
         }
@@ -121,5 +159,4 @@ public class ExtratoFacade
     	logger.log(WARN, "Extrato não se deleta.");
         throw new UnsupportedOperationException();
     }
-
 }

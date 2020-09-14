@@ -21,8 +21,8 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.facade.ContaFacade;
+import com.github.brunoabdon.planinha.modelo.ContaVO;
 
 @Path("contas")
 @ApplicationScoped
@@ -39,7 +39,7 @@ public class Contas {
     @Produces(APPLICATION_JSON)
     public Response listar() throws EntidadeInexistenteException {
         logger.log(INFO, "Listando contas");
-        final List<Conta> contas = facade.listar();
+        final List<ContaVO> contas = facade.listar();
         return Response.ok(contas).build();
     }
 
@@ -51,7 +51,7 @@ public class Contas {
 
         logger.logv(INFO, "Pegando conta {0}.",idConta);
 
-        final Conta conta = facade.pega(idConta);
+        final ContaVO conta = facade.pega(idConta);
 
         return Response.ok(conta).build();
     }
@@ -62,13 +62,13 @@ public class Contas {
     @Consumes(APPLICATION_JSON)
     public Response atualizar(
     		@PathParam("conta_id") final Integer idConta,
-    		final Conta conta)
+    		final ContaVO conta)
 				throws EntidadeInexistenteException, BusinessException {
 
         logger.logv(INFO, "Atualizando conta {0} pra {1}.",idConta, conta);
 
         final String nome = conta.getNome();
-		final Conta contaAtualizada = facade.atualiza(idConta, nome);
+		final ContaVO contaAtualizada = facade.atualiza(idConta, nome);
 
         return Response.ok(contaAtualizada).build();
     }
@@ -88,10 +88,10 @@ public class Contas {
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response criar(final Conta conta) throws BusinessException {
+    public Response criar(final ContaVO conta) throws BusinessException {
         logger.logv(INFO, "Criando conta {0}.",conta);
 
-		final Conta contaCriada = facade.cria(conta);
+		final ContaVO contaCriada = facade.cria(conta);
 
         return Response.ok(contaCriada).build();
     }

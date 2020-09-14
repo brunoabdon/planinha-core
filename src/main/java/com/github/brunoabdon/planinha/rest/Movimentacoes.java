@@ -22,9 +22,9 @@ import org.jboss.logging.Logger;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
-import com.github.brunoabdon.planinha.dal.modelo.Lancamento.Id;
 import com.github.brunoabdon.planinha.facade.MovimentacaoFacade;
+import com.github.brunoabdon.planinha.modelo.Movimentacao;
+import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 
 @ApplicationScoped
 @Path("operacoes/{operacao_id}/movimentacoes")
@@ -54,7 +54,7 @@ public class Movimentacoes {
             @PathParam("operacao_id") final Integer idOperacao)
                 throws EntidadeInexistenteException {
         logger.logv(INFO,"Listando movimentações da operação {0}.",idOperacao);
-        final List<Lancamento> movimentacoes = facade.lista(idOperacao);
+        final List<Movimentacao> movimentacoes = facade.lista(idOperacao);
         return Response.ok(movimentacoes).build();
     }
 
@@ -71,11 +71,12 @@ public class Movimentacoes {
             idConta, idOperacao
         );
 
-        final Lancamento.Id id = new Id(idOperacao,idConta);
 
-        final Lancamento lancamento = facade.pega(id);
+        final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
-        return Response.ok(lancamento).build();
+        final Movimentacao movimentacao = facade.pega(id);
+
+        return Response.ok(movimentacao).build();
     }
 
     @PUT
@@ -93,8 +94,8 @@ public class Movimentacoes {
             idConta, idOperacao, atualizacao
         );
 
-        final Lancamento.Id id = new Id(idOperacao,idConta);
-		final Lancamento movimentacaoAtualizada =
+        final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
+		final Movimentacao movimentacaoAtualizada =
 	        facade.atualiza(id, atualizacao.getValor());
 
         return Response.ok(movimentacaoAtualizada).build();
@@ -112,7 +113,7 @@ public class Movimentacoes {
             idConta, idOperacao
         );
 
-        final Lancamento.Id id = new Id(idOperacao,idConta);
+        final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
 		facade.deleta(id);
 
@@ -124,15 +125,20 @@ public class Movimentacoes {
     @Produces(APPLICATION_JSON)
     public Response criar(
             @PathParam("operacao_id") final Integer idOperacao,
-            @NotNull final Lancamento movimentacao) throws BusinessException {
+            @NotNull final Movimentacao payload)
+                throws BusinessException, EntidadeInexistenteException {
+
         logger.logv(
             INFO, "Criando movimentação {0} na operação {1}.",
-            movimentacao, idOperacao
+            payload, idOperacao
         );
 
-        movimentacao.withFato(idOperacao);
+        final Movimentacao.Id id = new Id(idOperacao,payload.getConta());
 
-		final Lancamento movimentacaoCriada = facade.cria(movimentacao);
+        final Movimentacao movimentacao =
+            new Movimentacao(id, payload.getValor());
+
+        final Movimentacao movimentacaoCriada = facade.cria(movimentacao);
 
         return Response.ok(movimentacaoCriada).build();
     }

@@ -10,7 +10,6 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
-import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.rest.paramconverters.PeriodoParamConverter;
 
@@ -25,10 +24,10 @@ public class Extrato implements Identifiable<Id>, Serializable{
 
         private static final long serialVersionUID = 3587349119460038562L;
 
-        private Conta conta;
+        private ContaVO conta;
         private Periodo periodo;
 
-        public Id(final Conta conta, final Periodo periodo) {
+        public Id(final ContaVO conta, final Periodo periodo) {
             this.conta = conta;
             this.periodo = periodo;
         }
@@ -41,11 +40,11 @@ public class Extrato implements Identifiable<Id>, Serializable{
             this.periodo = periodo;
         }
 
-        public Conta getConta() {
+        public ContaVO getConta() {
             return conta;
         }
 
-        public void setConta(Conta conta) {
+        public void setConta(ContaVO conta) {
             this.conta = conta;
         }
 
@@ -63,6 +62,9 @@ public class Extrato implements Identifiable<Id>, Serializable{
     private Number saldoAnterior;
 
     private List<ItemDeExtrato> items;
+
+    public Extrato() {
+    }
 
     public Extrato(final Id id) {
         this.id = id;
@@ -98,7 +100,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
         this.saldoAnterior = saldoAnterior;
     }
 
-    public Conta getConta(){
+    public ContaVO getConta(){
         return getOptionalAttr(Id::getConta).orElse(null);
     }
 
@@ -120,7 +122,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
     }
 
     private Optional<Id> optionalId() {
-        return Optional.of(id);
+        return Optional.ofNullable(id);
     }
 
     @JsonbProperty("id")
