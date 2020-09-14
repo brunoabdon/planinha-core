@@ -4,12 +4,11 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 import java.time.LocalDate;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ext.ParamConverter;
 
+@ApplicationScoped
 public class LocalDateParamConverter implements ParamConverter<LocalDate> {
-
-	public static final LocalDateParamConverter INSTANCE =
-		new LocalDateParamConverter();
 
 	@Override
 	public LocalDate fromString(final String str) {

@@ -10,11 +10,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ext.ParamConverter;
 
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
+
+@ApplicationScoped
 public class PeriodoParamConverter implements ParamConverter<Periodo>{
 
 	public static final PeriodoParamConverter INSTANCE = 
