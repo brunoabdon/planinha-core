@@ -11,14 +11,10 @@ import javax.json.bind.annotation.JsonbTransient;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
-import com.github.brunoabdon.planinha.rest.paramconverters.PeriodoParamConverter;
 
 public class Extrato implements Identifiable<Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;
-
-    private static final PeriodoParamConverter EXTRATO_ID_SERIALIZER =
-        new PeriodoParamConverter();
 
     public static class Id implements Serializable{
 
@@ -128,7 +124,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
     @JsonbProperty("id")
     public String getSerialId() {
         if(this.serialId == null) {
-            this.serialId=EXTRATO_ID_SERIALIZER.toString(getId().getPeriodo());
+            this.serialId=getId().getPeriodo().serialize();
         }
         return serialId;
     }

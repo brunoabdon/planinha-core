@@ -16,9 +16,17 @@
  */
 package com.github.brunoabdon.planinha.modelo;
 
+import static java.time.LocalDate.parse;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.io.Serializable;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Um espaço de tempo limitado por dois {@link LocalDate dias}.
@@ -26,7 +34,10 @@ import java.time.YearMonth;
  */
 public class Periodo implements Serializable {
 
-    private static final long serialVersionUID = 6000651240503349219L;
+    private static final long serialVersionUID = 5639145559450301864L;
+
+    public static final Pattern EXTRADO_ID_REGEXP =
+        Pattern.compile("^(\\d+(-(\\d){2}){2})-(\\d+)");
 
     private LocalDate dataMinima;
     private LocalDate dataMaxima;
@@ -65,6 +76,83 @@ public class Periodo implements Serializable {
     public void setDataMaxima(final LocalDate dataMaxima) {
         this.dataMaxima = dataMaxima;
     }
+
+    /**
+     * Formata este período como a string {@code YYYY-MM-DD-dd} onde:
+     * <ul>
+     *   <li><em>YYYY-MM-DD</em> é a {@linkplain Periodo#getDataMinima() data
+     *   inicial do período}, no formato {@link
+     *   DateTimeFormatter#ISO_LOCAL_DATE};</li>
+     *   <li><em>dd</em> é a quantidade de dias entre a data inicio e a data
+     *   fim deste período (inclusivamente).</li>
+     * </ul>
+     *
+     * @return Este periodo formatado como uma string.
+     */
+    public String serialize() {
+        final LocalDate inicio = dataMinima;
+        final LocalDate fim = dataMaxima;
+        final long quantosDias = DAYS.between(inicio, fim.plusDays(1));
+        final String inicioFormatado = inicio.format(ISO_LOCAL_DATE);
+
+        return
+            new StringBuilder(16)
+                .append(inicioFormatado)
+                .append("-")
+                .append(quantosDias)
+                .toString();
+    }
+
+    public static Periodo fromString(final String str) {
+
+        if(str == null) return null;
+
+        final Matcher matcher = EXTRADO_ID_REGEXP.matcher(str);
+
+        if(!matcher.matches()) {
+            throw new IllegalArgumentException(
+                "Não segue " + EXTRADO_ID_REGEXP + ": \"" + str + "\"."
+            );
+        }
+
+        final String strDataInicio = matcher.group(1);
+
+        final LocalDate inicio = parseData(strDataInicio);
+
+        final String strQuantosDias = matcher.group(4);
+        final int quantosDias =
+            parseNumero(strQuantosDias, "uma quantidade de dias");
+
+        final LocalDate fim = inicio.plusDays(quantosDias);
+
+        return new Periodo(inicio,fim);
+    }
+
+    private static LocalDate parseData(final String strData) {
+        LocalDate inicio;
+
+        try {
+            inicio = parse(strData, ISO_LOCAL_DATE);
+        } catch (final DateTimeException e) {
+            throw new IllegalArgumentException(
+                "\"" + strData + "\" não é " + ISO_LOCAL_DATE + ".", e
+            );
+        }
+        return inicio;
+    }
+
+    private static int parseNumero(final String numero, final String desc) {
+        final int contaId;
+        try {
+            contaId = Integer.parseInt(numero);
+        } catch (final NumberFormatException e) {
+            throw new IllegalArgumentException(
+                "\""+numero+"\" não parece " + desc + " válido.", e
+            );
+        }
+        return contaId;
+    }
+
 
     @Override
     public String toString() {
