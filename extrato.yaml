@@ -34,6 +34,6 @@ ItemDeExtrato:
   type: object
   properties:
     fato:
-      $ref: "conta.yaml#/Conta"
+      $ref: "fato.yaml#/Fato"
     valor:
       type: integer
