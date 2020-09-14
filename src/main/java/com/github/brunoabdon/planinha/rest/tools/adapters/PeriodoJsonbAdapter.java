@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.rest.toos.adapters;
+package com.github.brunoabdon.planinha.rest.tools.adapters;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;

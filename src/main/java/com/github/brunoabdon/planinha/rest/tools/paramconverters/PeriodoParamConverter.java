@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.rest.paramconverters;
+package com.github.brunoabdon.planinha.rest.tools.paramconverters;
 
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
