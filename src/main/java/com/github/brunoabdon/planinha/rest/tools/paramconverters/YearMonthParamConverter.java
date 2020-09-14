@@ -1,13 +1,12 @@
-package com.github.brunoabdon.planinha.rest.paramconverters;
+package com.github.brunoabdon.planinha.rest.tools.paramconverters;
 
 import java.time.YearMonth;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ext.ParamConverter;
 
+@ApplicationScoped
 public class YearMonthParamConverter implements ParamConverter<YearMonth> {
-
-	public static final YearMonthParamConverter INSTANCE =
-		new YearMonthParamConverter();
 
 	@Override
 	public YearMonth fromString(final String str) {

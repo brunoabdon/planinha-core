@@ -16,7 +16,7 @@ public class ContaMapper
         implements SimpleIdentifiableMapper<Conta, ContaVO, Integer> {
 
     @Inject
-    private Logger logger;
+    Logger logger;
 
     @Override
     public ContaVO toVO(final Conta conta) {

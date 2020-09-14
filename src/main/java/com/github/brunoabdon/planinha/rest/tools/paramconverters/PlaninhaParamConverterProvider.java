@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.rest.paramconverters;
+package com.github.brunoabdon.planinha.rest.tools.paramconverters;
 
 import static org.jboss.logging.Logger.Level.DEBUG;
 
@@ -22,6 +22,15 @@ public class PlaninhaParamConverterProvider implements ParamConverterProvider {
     @Inject
 	Logger logger;
 
+    @Inject
+    ParamConverter<Periodo> periodoConverter;
+
+    @Inject
+    ParamConverter<YearMonth> mesConverter;
+
+    @Inject
+    ParamConverter<LocalDate> localDateConverter;
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> ParamConverter<T> getConverter(
@@ -31,13 +40,13 @@ public class PlaninhaParamConverterProvider implements ParamConverterProvider {
 
 		final ParamConverter<T> converter =
 			rawType == Periodo.class
-				? (ParamConverter<T>)PeriodoParamConverter.INSTANCE
+				? (ParamConverter<T>)periodoConverter
 
 				: rawType == YearMonth.class
-				? (ParamConverter<T>)YearMonthParamConverter.INSTANCE
+				? (ParamConverter<T>)mesConverter
 
 				: rawType == LocalDate.class
-				? (ParamConverter<T>)LocalDateParamConverter.INSTANCE
+				? (ParamConverter<T>)localDateConverter
 
 				: null;
 
