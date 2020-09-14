@@ -78,7 +78,9 @@ public class ExtratoFacade
 			    .map(mapperItemDeExtrato::toVO)
 			    .collect(toList());
 
-		return new Extrato(key, saldoAnterior, itens);
+		final Extrato.Id id = new Extrato.Id(mapperConta.toVO(conta),periodo);
+
+		return new Extrato(id, saldoAnterior, itens);
     }
 
     private Conta pegaContaDoExtrato(final Id id)
