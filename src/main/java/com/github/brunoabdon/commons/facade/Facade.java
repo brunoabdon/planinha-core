@@ -9,12 +9,9 @@ import javax.validation.constraints.NotNull;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
 /**
- * Uma facade para persistência e possíveis métodos de negócio de uma entidade,
- * levando em consideração sua transformação em um VO.
+ * Uma facade para persistência e possíveis métodos de negócio de uma entidade.
  * @author bruno
  *
- * @param <E> O tipo da entidade no banco.
- * @param <I> A chave do tipo da entidade {@code E}.
  * @param <X> O tipo VO da entidade.
  * @param <K> A chave do tipo {@code V}.
  * @param <F> O tipo do filtro de consulta pra a entidade.
