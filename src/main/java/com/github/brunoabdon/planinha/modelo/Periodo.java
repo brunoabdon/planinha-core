@@ -39,12 +39,12 @@ public class Periodo implements Serializable {
     public static final Pattern EXTRADO_ID_REGEXP =
         Pattern.compile("^(\\d+(-(\\d){2}){2})-(\\d+)");
 
-    private LocalDate dataMinima;
-    private LocalDate dataMaxima;
+    private LocalDate inicio;
+    private LocalDate fim;
 
-    public Periodo(final LocalDate dataMinima, final LocalDate dataMaxima) {
-        this.dataMinima = dataMinima;
-        this.dataMaxima = dataMaxima;
+    public Periodo(final LocalDate inicio, final LocalDate fim) {
+        this.inicio = inicio;
+        this.fim = fim;
     }
 
     public static Periodo mesDoDia(final LocalDate dia) {
@@ -61,26 +61,27 @@ public class Periodo implements Serializable {
     	return new Periodo(dataMinima, dataMaxima);
     }
 
-    public LocalDate getDataMinima() {
-        return dataMinima;
+    
+    public LocalDate getInicio() {
+        return inicio;
     }
 
-    public void setDataMinima(final LocalDate dataMinima) {
-        this.dataMinima = dataMinima;
+    public void setInicio(final LocalDate inicio) {
+        this.inicio = inicio;
     }
 
-    public LocalDate getDataMaxima() {
-        return dataMaxima;
+    public LocalDate getFim() {
+        return fim;
     }
 
-    public void setDataMaxima(final LocalDate dataMaxima) {
-        this.dataMaxima = dataMaxima;
+    public void setFim(final LocalDate fim) {
+        this.fim = fim;
     }
 
     /**
      * Formata este período como a string {@code YYYY-MM-DD-dd} onde:
      * <ul>
-     *   <li><em>YYYY-MM-DD</em> é a {@linkplain Periodo#getDataMinima() data
+     *   <li><em>YYYY-MM-DD</em> é a {@linkplain Periodo#getInicio() data
      *   inicial do período}, no formato {@link
      *   DateTimeFormatter#ISO_LOCAL_DATE};</li>
      *   <li><em>dd</em> é a quantidade de dias entre a data inicio e a data
@@ -90,8 +91,6 @@ public class Periodo implements Serializable {
      * @return Este periodo formatado como uma string.
      */
     public String serialize() {
-        final LocalDate inicio = dataMinima;
-        final LocalDate fim = dataMaxima;
         final long quantosDias = DAYS.between(inicio, fim.plusDays(1));
         final String inicioFormatado = inicio.format(ISO_LOCAL_DATE);
 
@@ -156,6 +155,6 @@ public class Periodo implements Serializable {
 
     @Override
     public String toString() {
-    	return "["+dataMinima+"->"+dataMaxima+"]";
+    	return "["+inicio+"->"+fim+"]";
     }
 }

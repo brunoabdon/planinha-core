@@ -183,8 +183,8 @@ public class OperacaoFacade
 
     	return
         	em.createNamedQuery("Fato.porPeriodo", Fato.class)
-              .setParameter("dataInicio", periodo.getDataMinima())
-              .setParameter("dataFim", periodo.getDataMaxima())
+              .setParameter("dataInicio", periodo.getInicio())
+              .setParameter("dataFim", periodo.getFim())
               .getResultStream()
               .map(mapper::toVOSimples)
               .collect(toList());

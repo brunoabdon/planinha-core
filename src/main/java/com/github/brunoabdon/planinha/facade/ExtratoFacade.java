@@ -66,7 +66,7 @@ public class ExtratoFacade
 		final Conta conta = pegaContaDoExtrato(key);
 
 		final Periodo periodo = key.getPeriodo();
-		final LocalDate dataInicial = periodo.getDataMinima();
+		final LocalDate dataInicial = periodo.getInicio();
 
 		final int saldoAnterior =
 			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);

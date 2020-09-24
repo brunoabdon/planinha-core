@@ -49,8 +49,8 @@ public class ExtratoConsulta {
 				"Lancamento.lancamentosDaContaNoPeriodo",
 				Lancamento.class
 			).setParameter("conta", conta)
-			 .setParameter("dataInicio", periodo.getDataMinima())
-			 .setParameter("dataFim", periodo.getDataMaxima())
+			 .setParameter("dataInicio", periodo.getInicio())
+			 .setParameter("dataFim", periodo.getFim())
 			 .getResultList();
 	}
 

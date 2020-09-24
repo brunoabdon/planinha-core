@@ -1,7 +1,6 @@
 package com.github.brunoabdon.planinha.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -100,16 +99,9 @@ public class Extrato implements Identifiable<Id>, Serializable{
         return getOptionalAttr(Id::getConta).orElse(null);
     }
 
-    public LocalDate getDataInicio() {
-        return getData(Periodo::getDataMinima);
-    }
-
-    public LocalDate getDataFim() {
-        return getData(Periodo::getDataMaxima);
-    }
-
-    private LocalDate getData(final Function<Periodo, LocalDate> dateMapper) {
-        return getOptionalAttr(Id::getPeriodo).map(dateMapper).orElse(null);
+    @JsonbProperty
+    public Periodo getPeriodo(){
+        return id == null ? null : id.getPeriodo();
     }
 
     private <T> Optional<? extends T> getOptionalAttr(
@@ -133,5 +125,4 @@ public class Extrato implements Identifiable<Id>, Serializable{
     public String toString() {
         return "[Extrato:"+id+"|saldoAnt:"+saldoAnterior+"]";
     }
-
 }
