@@ -1,10 +1,13 @@
 package com.github.brunoabdon.planinha.modelo;
 
+import java.net.URI;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
+import com.github.brunoabdon.commons.rest.Resource;
 
 
 /**
@@ -12,7 +15,7 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  *
  * @author bruno
  */
-public class ContaVO extends EntidadeBaseInt {
+public class ContaVO extends EntidadeBaseInt implements Resource  {
 
     private static final long serialVersionUID = 7321886996603362113L;
 
@@ -22,6 +25,8 @@ public class ContaVO extends EntidadeBaseInt {
     @NotBlank
     @Size(max = TAMANHO_MAX_NOME)
     private String nome;
+
+    private URI uri;
 
     public ContaVO() {
     }
@@ -49,6 +54,15 @@ public class ContaVO extends EntidadeBaseInt {
 
     public static ContaVO fromString(final String str){
         return EntidadeBaseInt.fromString(ContaVO.class, str);
+    }
+
+    @Override
+    public URI getURI() {
+        return uri;
+    }
+
+    public void setUri(final URI uri) {
+        this.uri = uri;
     }
 
     @Override
