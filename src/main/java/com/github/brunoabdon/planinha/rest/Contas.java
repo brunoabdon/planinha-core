@@ -15,7 +15,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.jboss.logging.Logger;
 
@@ -27,7 +29,6 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 @Path("contas")
 @ApplicationScoped
 public class Contas {
-
 
     @Inject
     Logger logger;
@@ -46,12 +47,16 @@ public class Contas {
     @GET
     @Path("{conta_id}")
     @Produces(APPLICATION_JSON)
-    public Response pegar(@PathParam("conta_id") final Integer idConta)
+    public Response pegar(
+            @PathParam("conta_id") final Integer idConta,
+            @Context final UriInfo uriInfo
+            )
             throws EntidadeInexistenteException {
 
         logger.logv(INFO, "Pegando conta {0}.",idConta);
 
         final ContaVO conta = facade.pega(idConta);
+        conta.setUri(uriInfo.getRequestUri());
 
         return Response.ok(conta).build();
     }
