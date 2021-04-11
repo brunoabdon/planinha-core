@@ -44,7 +44,7 @@ import lombok.ToString;
   + " from planinhacore.lancamento l "
   + " join planinhacore.fato f on f.id = l.fato_id "
   + " join planinhacore.conta c on c.id = l.conta_id "
-  + " group by c.id, f.dia "
+  + " group by c.id "
 )
 public class AberturaDeConta extends EntidadeBaseInt implements Serializable {
 
