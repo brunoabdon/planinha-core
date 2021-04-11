@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/planinhadb
+    username: planinha
+    password: 
+    
+server:
+  port: 8080
+  servlet:
+    context-path: /planinha
+    
+    
+logging:
+  level:
+    ROOT: INFO
+    '[com.github.brunoabdon]': TRACE
+    

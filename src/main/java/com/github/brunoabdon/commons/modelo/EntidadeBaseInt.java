@@ -1,12 +1,17 @@
 package com.github.brunoabdon.commons.modelo;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo
@@ -14,6 +19,11 @@ import javax.persistence.MappedSuperclass;
  *
  * @author bruno
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @MappedSuperclass
 public class EntidadeBaseInt implements Entidade<Integer> {
 
@@ -22,23 +32,6 @@ public class EntidadeBaseInt implements Entidade<Integer> {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-	public EntidadeBaseInt() {
-	}
-
-    public EntidadeBaseInt(final Integer id) {
-    	this.id = id;
-	}
-
-	@Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public static <X extends EntidadeBaseInt> X fromString(
             final Class<X> klass, final String str) {
@@ -62,20 +55,4 @@ public class EntidadeBaseInt implements Entidade<Integer> {
 
         return entidade;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-
-        return Objects.equals(id, ((EntidadeBaseInt) obj).id);
-    }
-
-
 }

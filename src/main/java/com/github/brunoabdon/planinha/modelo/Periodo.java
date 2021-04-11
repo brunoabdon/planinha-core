@@ -16,38 +16,46 @@
  */
 package com.github.brunoabdon.planinha.modelo;
 
-import static java.time.LocalDate.parse;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static java.time.temporal.ChronoUnit.DAYS;
-
 import java.io.Serializable;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Objects;
+import java.util.function.BiPredicate;
+
+import javax.validation.constraints.NotNull;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * Um espaço de tempo limitado por dois {@link LocalDate dias}.
  * @author Bruno Abdon
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class Periodo implements Serializable {
 
     private static final long serialVersionUID = 5639145559450301864L;
 
-    public static final Pattern EXTRADO_ID_REGEXP =
-        Pattern.compile("^(\\d+(-(\\d){2}){2})-(\\d+)");
+    public static final Periodo SEMPRE = new Periodo(null, null);
 
-    private LocalDate inicio;
-    private LocalDate fim;
+    private final LocalDate inicio;
 
-    public Periodo(final LocalDate inicio, final LocalDate fim) {
-        this.inicio = inicio;
-        this.fim = fim;
+    private final LocalDate fim;
+
+    public static Periodo of(final LocalDate inicio, final LocalDate fim) {
+        if( inicio == null && fim == null) return SEMPRE;
+
+        return new Periodo(inicio, fim);
     }
 
-    public static Periodo mesDoDia(final LocalDate dia) {
+    public static Periodo mesDoDia(@NotNull final LocalDate dia) {
+
+        Objects.requireNonNull(dia);
 
         final LocalDate diaPrimeiro = dia.withDayOfMonth(1);
         final LocalDate fimDoMes = dia.plusMonths(1).minusDays(1);
@@ -55,101 +63,42 @@ public class Periodo implements Serializable {
         return new Periodo(diaPrimeiro,fimDoMes);
     }
 
-    public static Periodo mes(final YearMonth mes) {
+    public static Periodo mes(@NotNull final YearMonth mes) {
+
+        Objects.requireNonNull(mes);
+
     	final LocalDate dataMinima = mes.atDay(1);
     	final LocalDate dataMaxima = mes.atEndOfMonth();
     	return new Periodo(dataMinima, dataMaxima);
     }
 
-    
-    public LocalDate getInicio() {
-        return inicio;
+    public boolean isFechado() {
+        return inicio != null && fim != null;
     }
 
-    public void setInicio(final LocalDate inicio) {
-        this.inicio = inicio;
+    public Periodo intersecao(@NotNull final Periodo periodo) {
+
+        final LocalDate maiorInicio = max(this.getInicio(),periodo.getInicio());
+        final LocalDate menorFim = min(this.getFim(),periodo.getFim());
+
+        return Periodo.of(maiorInicio, menorFim);
     }
 
-    public LocalDate getFim() {
-        return fim;
+    private LocalDate max(final LocalDate data1, final LocalDate data2) {
+        return nullComp(LocalDate::isAfter, data1, data2);
     }
 
-    public void setFim(final LocalDate fim) {
-        this.fim = fim;
+    private LocalDate min(final LocalDate data1, final LocalDate data2) {
+        return nullComp(LocalDate::isBefore, data1, data2);
     }
+    private LocalDate nullComp(
+            final BiPredicate<LocalDate, LocalDate> comp,
+            final LocalDate data1,
+            final LocalDate data2) {
 
-    /**
-     * Formata este período como a string {@code YYYY-MM-DD-dd} onde:
-     * <ul>
-     *   <li><em>YYYY-MM-DD</em> é a {@linkplain Periodo#getInicio() data
-     *   inicial do período}, no formato {@link
-     *   DateTimeFormatter#ISO_LOCAL_DATE};</li>
-     *   <li><em>dd</em> é a quantidade de dias entre a data inicio e a data
-     *   fim deste período (inclusivamente).</li>
-     * </ul>
-     *
-     * @return Este periodo formatado como uma string.
-     */
-    public String serialize() {
-        final long quantosDias = DAYS.between(inicio, fim.plusDays(1));
-        final String inicioFormatado = inicio.format(ISO_LOCAL_DATE);
+        if(data1 == null || data2 == null) return null;
 
-        return
-            new StringBuilder(16)
-                .append(inicioFormatado)
-                .append("-")
-                .append(quantosDias)
-                .toString();
-    }
-
-    public static Periodo fromString(final String str) {
-
-        if(str == null) return null;
-
-        final Matcher matcher = EXTRADO_ID_REGEXP.matcher(str);
-
-        if(!matcher.matches()) {
-            throw new IllegalArgumentException(
-                "Não segue " + EXTRADO_ID_REGEXP + ": \"" + str + "\"."
-            );
-        }
-
-        final String strDataInicio = matcher.group(1);
-
-        final LocalDate inicio = parseData(strDataInicio);
-
-        final String strQuantosDias = matcher.group(4);
-        final int quantosDias =
-            parseNumero(strQuantosDias, "uma quantidade de dias");
-
-        final LocalDate fim = inicio.plusDays(quantosDias);
-
-        return new Periodo(inicio,fim);
-    }
-
-    private static LocalDate parseData(final String strData) {
-        LocalDate inicio;
-
-        try {
-            inicio = parse(strData, ISO_LOCAL_DATE);
-        } catch (final DateTimeException e) {
-            throw new IllegalArgumentException(
-                "\"" + strData + "\" não é " + ISO_LOCAL_DATE + ".", e
-            );
-        }
-        return inicio;
-    }
-
-    private static int parseNumero(final String numero, final String desc) {
-        final int contaId;
-        try {
-            contaId = Integer.parseInt(numero);
-        } catch (final NumberFormatException e) {
-            throw new IllegalArgumentException(
-                "\""+numero+"\" não parece " + desc + " válido.", e
-            );
-        }
-        return contaId;
+        return comp.test(data1, data2) ? data1 : data2;
     }
 
 

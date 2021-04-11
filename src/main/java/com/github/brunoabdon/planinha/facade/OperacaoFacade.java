@@ -1,27 +1,25 @@
 package com.github.brunoabdon.planinha.facade;
 
 import static java.util.stream.Collectors.toList;
-import static org.jboss.logging.Logger.Level.DEBUG;
-import static org.jboss.logging.Logger.Level.TRACE;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdMappingException;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
+import com.github.brunoabdon.planinha.dal.ContaRepository;
+import com.github.brunoabdon.planinha.dal.FatoRepository;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.dal.modelo.Fato;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
@@ -34,21 +32,27 @@ import com.pivovarit.function.ThrowingBiFunction;
 import com.pivovarit.function.ThrowingFunction;
 import com.pivovarit.function.exception.WrappedException;
 
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@Service
 public class OperacaoFacade
         implements Facade<Operacao, Integer, Periodo, FatoVO>{
 
-	@Inject
-	Logger logger;
+    @Autowired
+    private IdentifiableMapper<Fato, Integer, Operacao, Integer> mapper;
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
 
-    @Inject
-    IdentifiableMapper<Fato, Integer, Operacao, Integer> mapper;
+    @Autowired
+    private ContaRepository contaRepository;
 
-    @Inject
-    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
+    @Autowired
+    private FatoRepository fatoRepository;
+
 
     private BiFunction<Fato, Movimentacao, Lancamento> mapeaLancamento;
     private Function<Integer,Integer> contaKeyMapper;
@@ -56,7 +60,7 @@ public class OperacaoFacade
     @PostConstruct
     void init() {
         final ThrowingBiFunction<
-        Fato, Movimentacao, Lancamento, IdMappingException
+        Fato, Movimentacao, Lancamento, EntidadeInexistenteException
      > mapeaChecked = this::extraiLancamento;
 
         this.mapeaLancamento = mapeaChecked.unchecked();
@@ -65,13 +69,12 @@ public class OperacaoFacade
             checkedContaKeyMapper = mapper::toKey;
 
         this.contaKeyMapper = checkedContaKeyMapper.uncheck();
-
     }
 
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Operacao cria(final Operacao operacao) throws BusinessException {
-    	logger.logv(DEBUG, "Criando operação {0}.", operacao);
+    	log.debug("Criando operação {}.", operacao);
 
     	final FatoVO fatoVO = operacao.getFato();
         final Fato fato = new Fato(fatoVO.getDia(),fatoVO.getDescricao());
@@ -87,10 +90,7 @@ public class OperacaoFacade
                 .collect(toList());
 
         final long quantasContasEncontradas =
-            em.createNamedQuery("Conta.porIds",Conta.class)
-              .setParameter("ids", idsContas)
-              .getResultStream()
-              .count();
+            contaRepository.countByIdIn(idsContas);
 
         if(quantasContasEncontradas != idsContas.size()) {
             //alguma das movimentacoes faz referencia a uma conta que não existe
@@ -100,15 +100,14 @@ public class OperacaoFacade
             throw new BusinessException();
         }
 
-        em.persist(fato);
+        final Fato fatoCriado = fatoRepository.save(fato);
 
         final List<Lancamento> lancamentos =
             extraiLancamentos(fato, operacao.getMovimentacoes());
 
-        fato.setLancamentos(lancamentos);
+        fatoCriado.setLancamentos(lancamentos);
 
-
-        return mapper.toVO(fato);
+        return mapper.toVO(fatoCriado);
     }
 
     private List<Lancamento> extraiLancamentos(
@@ -139,53 +138,58 @@ public class OperacaoFacade
 
     private Lancamento extraiLancamento(
             final Fato fato, final Movimentacao movimentacao)
-                throws IdMappingException {
+                throws EntidadeInexistenteException {
 
         final Integer idContaVO = movimentacao.getConta().getId();
 
         final Integer idConta = mapperConta.toKey(idContaVO);
 
-        logger.logv(DEBUG, "Dando find na conta {0}",idConta);
-        final Conta conta = em.find(Conta.class, idConta);
+        log.debug("Dando find na conta {}",idConta);
 
-        return new Lancamento(fato,conta,movimentacao.getValor());
+        return
+            contaRepository
+                .findById(idConta)
+                .map(c -> new Lancamento(fato,c,movimentacao.getValor()))
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(
+                        Conta.class,idConta
+                    )
+                );
 
     }
 
     @Override
     public Operacao pega(final Integer id) throws EntidadeInexistenteException {
-    	logger.logv(DEBUG, "Pegando operação de id {0}.", id);
+    	log.debug("Pegando operação de id {}.", id);
 
-    	final Fato fato = pega_(id);
+    	final Fato fato = pega2(id);
 
         return mapper.toVO(fato);
     }
 
-    private Fato pega_(final Integer id)
-            throws IdMappingException, EntidadeInexistenteException {
+    private Fato pega2(final Integer id) throws EntidadeInexistenteException {
 
-        logger.logv(TRACE, "Pegando fato da operação de id {0}.", id);
+        log.trace("Pegando fato da operação de id {}.", id);
 
         final Integer idFato = mapper.toKey(id);
 
-        logger.logv(TRACE, "Pegando fato de id {0}.", id);
+        log.trace("Pegando fato de id {}.", id);
 
-        final Fato fato = em.find(Fato.class, idFato);
-
-        if(fato == null)
-            throw new EntidadeInexistenteException(Operacao.class, id);
-        return fato;
+        return
+            fatoRepository
+                .findById(idFato)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(Operacao.class, id)
+                );
     }
 
     @Override
     public List<Operacao> lista(final Periodo periodo) {
-    	logger.logv(DEBUG, "Listando operações por {0}.", periodo);
+    	log.debug("Listando operações por {}.", periodo);
 
     	return
-        	em.createNamedQuery("Fato.porPeriodo", Fato.class)
-              .setParameter("dataInicio", periodo.getInicio())
-              .setParameter("dataFim", periodo.getFim())
-              .getResultStream()
+	        fatoRepository
+	        .findByDiaBetween(periodo.getInicio(), periodo.getFim())
               .map(mapper::toVOSimples)
               .collect(toList());
     }
@@ -193,15 +197,15 @@ public class OperacaoFacade
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public Operacao atualiza(final Integer key, final FatoVO atualizacao)
-            throws EntidadeInexistenteException, BusinessException {
+            throws BusinessException {
 
-        logger.logv(
-            DEBUG, "Atualizando operação de id {0} com {1}.", key, atualizacao
+        log.debug(
+            "Atualizando operação de id {} com {}.", key, atualizacao
         );
 
-        final Fato fato = pega_(key);
+        final Fato fato = pega2(key);
 
-        logger.logv(TRACE, "Atualizando fato {0} com {1}.", fato, atualizacao);
+        log.trace("Atualizando fato {} com {}.", fato, atualizacao);
 
         fato.setDia(atualizacao.getDia());
         fato.setDescricao(atualizacao.getDescricao());
@@ -212,13 +216,13 @@ public class OperacaoFacade
     @Override
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public void deleta(final Integer key)
-    		throws EntidadeInexistenteException, BusinessException {
-    	logger.logv(DEBUG, "Deletando operação de id {0}.", key);
+    		throws EntidadeInexistenteException {
+    	log.debug("Deletando operação de id {}.", key);
 
-    	final Fato fato = pega_(key);
+    	final Fato fato = pega2(key);
 
-    	logger.logv(TRACE, "Deletando fato {0}.", fato);
+    	log.trace("Deletando fato {}.", fato);
 
-    	em.remove(fato);
+    	fatoRepository.delete(fato);
     }
 }

@@ -1,24 +1,19 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.jboss.logging.Logger.Level.INFO;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import javax.websocket.server.PathParam;
 
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
@@ -26,8 +21,13 @@ import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 
-@ApplicationScoped
-@Path("operacoes/{operacao_id}/movimentacoes")
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@RestController
+@RequestMapping("operacoes/{operacao_id}/movimentacoes")
 public class Movimentacoes {
 
     public static class Atualizacao {
@@ -42,94 +42,73 @@ public class Movimentacoes {
         }
     }
 
-    @Inject
-    Logger logger;
+    @Autowired
+    private Facade<Movimentacao, Id, Integer, Integer> facade;
 
-    @Inject
-    Facade<Movimentacao, Id, Integer, Integer> facade;
-
-    @GET
-    @Produces(APPLICATION_JSON)
-    public Response listar(
+    @GetMapping
+    public List<Movimentacao> listar(
             @PathParam("operacao_id") final Integer idOperacao)
                 throws EntidadeInexistenteException {
-        logger.logv(INFO,"Listando movimentações da operação {0}.",idOperacao);
-        final List<Movimentacao> movimentacoes = facade.lista(idOperacao);
-        return Response.ok(movimentacoes).build();
+
+        log.debug("Listando movimentações da operação {}.",idOperacao);
+        return facade.lista(idOperacao);
     }
 
-    @GET
-    @Path("{conta_id}")
-    @Produces(APPLICATION_JSON)
-    public Response pegar(
+    @GetMapping("{conta_id}")
+    public Movimentacao pegar(
             @PathParam("operacao_id") final Integer idOperacao,
             @PathParam("conta_id") final Integer idConta)
                 throws EntidadeInexistenteException {
 
-        logger.logv(
-            INFO, "Pegando movimentação da conta {0} em {1}.",
+        log.debug(
+            "Pegando movimentação da conta {} em {}.",
             idConta, idOperacao
         );
 
-
         final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
-        final Movimentacao movimentacao = facade.pega(id);
-
-        return Response.ok(movimentacao).build();
+        return facade.pega(id);
     }
 
-    @PUT
-    @Path("{conta_id}")
-    @Produces(APPLICATION_JSON)
-    @Consumes(APPLICATION_JSON)
-    public Response atualizar(
+    @PutMapping("{conta_id}")
+    public Movimentacao atualizar(
             @PathParam("operacao_id") final Integer idOperacao,
     		@PathParam("conta_id") final Integer idConta,
-    		@NotNull final Atualizacao atualizacao)
-				throws EntidadeInexistenteException, BusinessException {
+    		@NotNull final Atualizacao atualizacao) throws Exception {
 
-        logger.logv(
-            INFO, "Atualizando pra {2} a movimentação da conta {0} em {1}.",
+        log.debug(
+            "Atualizando pra {} a movimentação da conta {} em {}.",
             idConta, idOperacao, atualizacao
         );
 
         final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
-		final Movimentacao movimentacaoAtualizada =
-	        facade.atualiza(id, atualizacao.getValor());
 
-        return Response.ok(movimentacaoAtualizada).build();
+        return facade.atualiza(id, atualizacao.getValor());
     }
 
-    @DELETE
-    @Path("{conta_id}")
-    public Response deletar(
+    @DeleteMapping("{conta_id}")
+    public void deletar(
             @PathParam("operacao_id") final Integer idOperacao,
             @PathParam("conta_id") final Integer idConta)
-                throws EntidadeInexistenteException, BusinessException {
+                throws BusinessException {
 
-        logger.logv(
-            INFO, "Deletando a movimentação da conta {0} em {1}.",
+        log.debug(
+            "Deletando a movimentação da conta {0} em {1}.",
             idConta, idOperacao
         );
 
         final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
 		facade.deleta(id);
-
-        return Response.ok().build();
     }
 
-    @POST
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    public Response criar(
+    @PostMapping
+    public Movimentacao criar(
             @PathParam("operacao_id") final Integer idOperacao,
-            @NotNull final Movimentacao payload)
-                throws BusinessException, EntidadeInexistenteException {
+            @NotNull final Movimentacao payload) throws BusinessException {
 
-        logger.logv(
-            INFO, "Criando movimentação {0} na operação {1}.",
+        log.debug(
+            "Criando movimentação {} na operação {}.",
             payload, idOperacao
         );
 
@@ -138,8 +117,6 @@ public class Movimentacoes {
         final Movimentacao movimentacao =
             new Movimentacao(id, payload.getValor());
 
-        final Movimentacao movimentacaoCriada = facade.cria(movimentacao);
-
-        return Response.ok(movimentacaoCriada).build();
+        return facade.cria(movimentacao);
     }
 }

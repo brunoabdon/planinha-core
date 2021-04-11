@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -20,18 +18,6 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  *
  * @author bruno
  */
-@NamedQueries({
-    @NamedQuery(
-        name="Conta.temLancamento",
-        query="SELECT COUNT(l) > 0 FROM Lancamento l WHERE l.conta = :conta"
-    ),
-    @NamedQuery(
-        name="Conta.porIds",
-        query="SELECT c FROM Conta c WHERE c.id in :ids"
-    ),
-})
-
-
 @Entity
 @Table(schema = "planinhacore")
 public class Conta extends EntidadeBaseInt {

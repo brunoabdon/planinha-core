@@ -1,19 +1,14 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.jboss.logging.Logger.Level.INFO;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
@@ -22,48 +17,47 @@ import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 
-@ApplicationScoped
-@Path("contas/{conta_id}/extratos")
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@RestController
+@RequestMapping("contas/{conta_id}/extratos")
 public class Extratos {
 
-    @Inject
-    Logger logger;
+    @Autowired
+    private Facade<ContaVO,Integer,?,?> contaFacade;
 
-    @Inject
-    Facade<ContaVO,Integer,?,?> contaFacade;
+    @Autowired
+    private Facade<Extrato, Extrato.Id, Integer, ?> facade;
 
-    @Inject
-    Facade<Extrato, Extrato.Id, Integer, ?> facade;
-
-    @GET
-    @Produces(APPLICATION_JSON)
-    public Response listar(
-            @PathParam("conta_id") final Integer idConta)
+    @GetMapping
+    public List<Extrato> listar(
+            @PathVariable("conta_id") final Integer idConta)
                 throws EntidadeInexistenteException {
 
-        logger.logv(INFO, "Listando extratos da conta {0}.", idConta);
+        log.debug("Listando extratos da conta {}.", idConta);
 
         final List<Extrato> extratosDaConta = facade.lista(idConta);
         if(extratosDaConta.isEmpty()) {
             this.contaFacade.pega(idConta); //excecao se nao existir a conta
         }
 
-        return Response.ok(extratosDaConta).build();
+        return extratosDaConta;
     }
 
-    @GET
-    @Path("{periodo}")
-    @Produces(APPLICATION_JSON)
-    public Response pegar(
-            @PathParam("conta_id") final Integer idConta,
-            @PathParam("periodo") final Periodo periodo)
+    @GetMapping("{periodo}")
+    public Extrato pegar(
+            @PathVariable("conta_id") final Integer idConta,
+            @PathVariable("periodo") final Periodo periodo)
                 throws EntidadeInexistenteException {
+
+        log.debug("Pegando extrato da conta {} em {}.",idConta, periodo);
 
         final Extrato.Id id = new Id(new ContaVO(idConta), periodo);
 
-        final Extrato extrato = facade.pega(id);
-
-        return Response.ok(extrato).build();
+        return facade.pega(id);
     }
 
 }

@@ -1,28 +1,29 @@
 package com.github.brunoabdon.planinha.facade;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static org.jboss.logging.Logger.Level.DEBUG;
-import static org.jboss.logging.Logger.Level.WARN;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
 import com.github.brunoabdon.commons.facade.mappers.Mapper;
-import com.github.brunoabdon.planinha.dal.ExtratoConsulta;
+import com.github.brunoabdon.planinha.dal.AberturaDeContaRepository;
+import com.github.brunoabdon.planinha.dal.ContaRepository;
+import com.github.brunoabdon.planinha.dal.LancamentoRepository;
+import com.github.brunoabdon.planinha.dal.SaldoInicialRepository;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
+import com.github.brunoabdon.planinha.dal.modelo.virtual.AberturaDeConta;
+import com.github.brunoabdon.planinha.dal.modelo.virtual.SaldoInicial;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
@@ -30,50 +31,64 @@ import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
 import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.github.brunoabdon.planinha.util.TimeUtils;
 
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@Service
 public class ExtratoFacade
         implements Facade<Extrato, Extrato.Id, Integer, Void> {
 
-	@Inject
-	Logger logger;
+    @Autowired
+    private IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private Mapper<Lancamento,ItemDeExtrato> mapperItemDeExtrato;
 
-    @Inject
-    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
+    @Autowired
+    private LancamentoRepository lancamentoRepo;
 
-    @Inject
-    Mapper<Lancamento,ItemDeExtrato> mapperItemDeExtrato;
+    @Autowired
+    private ContaRepository contaRepository;
 
-    @Inject
-    ExtratoConsulta extratoConsulta;
+    @Autowired
+    private SaldoInicialRepository  saldoInicialRepo;
 
-    @Inject
-    TimeUtils tmu;
+    @Autowired
+    private AberturaDeContaRepository aberturaDeContaRepository;
+
+    @Autowired
+    private TimeUtils tmu;
 
     @Override
     public Extrato cria(final Extrato extrato) throws BusinessException {
-    	logger.log(WARN, "Extrato se conquista.");
+    	log.warn("Extrato se conquista.");
         throw new UnsupportedOperationException();
     }
 
     @Override
     public Extrato pega(final Id key) throws EntidadeInexistenteException {
 
-    	logger.logv(DEBUG, "Pegando extrato de id {0}.", key);
+    	log.debug( "Pegando extrato de id {}.", key);
 
 		final Conta conta = pegaContaDoExtrato(key);
+		final Integer idConta = conta.getId();
 
 		final Periodo periodo = key.getPeriodo();
 		final LocalDate dataInicial = periodo.getInicio();
 
+
 		final int saldoAnterior =
-			extratoConsulta.saldoNoInicioDoDia(conta, dataInicial);
+	        saldoInicialRepo
+	            .findById(new SaldoInicial.Id(idConta, dataInicial))
+	            .map(SaldoInicial::getValor)
+	            .orElse(0);
+
 
 		final List<ItemDeExtrato> itens =
-			extratoConsulta
-			    .lancamentosDoExtrato(conta,periodo)
+			lancamentoRepo
+			    .findByContaPeriodo(conta, periodo)
 			    .stream()
 			    .map(mapperItemDeExtrato::toVO)
 			    .collect(toList());
@@ -86,79 +101,74 @@ public class ExtratoFacade
     private Conta pegaContaDoExtrato(final Id id)
             throws EntidadeInexistenteException {
 
-        logger.logv(DEBUG, "Pegando conta (Entity) do extrato de id {0}.", id);
+        log.debug("Pegando conta (Entity) do extrato de id {}.", id);
 
         final Integer idConta = mapperConta.toKey(id.getConta().getId());
 
-        final Conta conta = em.find(Conta.class, idConta);
-
-        if(conta == null)
-            throw new EntidadeInexistenteException(Extrato.class, id);
-
-        return conta;
+        return
+            contaRepository
+                .findById(idConta)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(Extrato.class,id)
+                );
     }
 
     @Override
     public List<Extrato> lista(final Integer idConta) {
 
-    	logger.logv(DEBUG, "Listando extratos da conta de id {0}.", idConta);
+    	log.debug("Listando extratos da conta de id {}.", idConta);
 
-        List<Extrato> extratos;
-
-        final Conta conta = em.find(Conta.class, idConta);
-        if(conta == null) {
-            logger.logv(WARN,"Zero extratos da conta inexistente {0}.",idConta);
-            extratos = emptyList();
-        } else {
-            extratos = lista(conta);
-        }
-
-        return extratos;
+        return
+            contaRepository
+                .findById(idConta)
+                .map(this::lista)
+                .orElseGet(Collections::emptyList);
     }
 
     private List<Extrato> lista(final Conta conta) {
 
-        logger.logv(DEBUG, "Listando extratos da conta {0}.", conta);
+        log.debug("Listando extratos da conta {}.", conta);
 
-        final List<Extrato> extratos;
+        return
+            aberturaDeContaRepository
+                .findByConta(conta)
+                .map(this::lista)
+                .orElseGet(Collections::emptyList);
 
-        final LocalDate diaInauguracaoDaConta =
-    		extratoConsulta.pegaDiaInauguracaoDaConta(conta);
+    }
 
-        if(diaInauguracaoDaConta == null) {
-            logger.logv(DEBUG, "Extrato vazio pra conta virgem {0}.", conta);
-            extratos = emptyList();
-        } else {
+    private List<Extrato> lista(final AberturaDeConta aberturaDeConta){
+        log.debug(
+            "Listando extratos desde a abertura da conta {}.",
+            aberturaDeConta
+        );
 
-            logger.logv(
-                DEBUG, "Listando extrados desde {0} pra conta {1}.",
-                diaInauguracaoDaConta, conta
-            );
+        final LocalDate diaInauguracaoDaConta = aberturaDeConta.getDia();
 
-            final ContaVO contaVO = mapperConta.toVOSimples(conta);
+        final Conta conta = aberturaDeConta.getConta();
+        final ContaVO contaVO = mapperConta.toVOSimples(conta);
 
-            extratos =
-                tmu.streamMensalAteHoje(diaInauguracaoDaConta)
-                   .map(Periodo::mesDoDia)
-                   .map(p -> new Extrato.Id(contaVO, p))
-                   .map(Extrato::new)
-                   .collect(toList());
-        }
+        final Function<Periodo,Extrato.Id> toIdExtrato =
+            p -> new Extrato.Id(contaVO, p);
 
-        return extratos;
+        return
+            tmu.streamMensalAteHoje(diaInauguracaoDaConta)
+               .map(Periodo::mesDoDia)
+               .map(toIdExtrato)
+               .map(Extrato::new)
+               .collect(toList());
     }
 
     @Override
     public Extrato atualiza(final Id key, final Void atualizacao)
-            throws EntidadeInexistenteException, BusinessException {
-    	logger.log(WARN, "Extrato não se atualiza.");
+            throws BusinessException {
+    	log.warn("Extrato não se atualiza.");
     	throw new UnsupportedOperationException();
     }
 
     @Override
-    public void deleta(Id key)
-            throws EntidadeInexistenteException, BusinessException {
-    	logger.log(WARN, "Extrato não se deleta.");
+    public void deleta(Id key) throws BusinessException {
+        log.warn("Extrato não se deleta.");
         throw new UnsupportedOperationException();
     }
 }

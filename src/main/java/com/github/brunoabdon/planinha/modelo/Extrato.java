@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
+import com.github.brunoabdon.planinha.modelo.conv.PeriodoConverter;
 
 public class Extrato implements Identifiable<Id>, Serializable{
 
@@ -49,7 +49,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
         }
     }
 
-    @JsonbTransient
+    @JsonIgnore
     private Id id;
 
     private String serialId;
@@ -99,7 +99,7 @@ public class Extrato implements Identifiable<Id>, Serializable{
         return getOptionalAttr(Id::getConta).orElse(null);
     }
 
-    @JsonbProperty
+    @JsonProperty
     public Periodo getPeriodo(){
         return id == null ? null : id.getPeriodo();
     }
@@ -113,10 +113,12 @@ public class Extrato implements Identifiable<Id>, Serializable{
         return Optional.ofNullable(id);
     }
 
-    @JsonbProperty("id")
+    @JsonProperty("id")
     public String getSerialId() {
         if(this.serialId == null) {
-            this.serialId=getId().getPeriodo().serialize();
+            final Periodo periodo = getId().getPeriodo();
+            this.serialId=
+                PeriodoConverter.ToString.INSTANCE.convert(periodo);
         }
         return serialId;
     }

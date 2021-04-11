@@ -1,7 +1,7 @@
 package com.github.brunoabdon.planinha.facade.mapper;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.github.brunoabdon.commons.facade.mappers.IdMappingException;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
@@ -13,7 +13,7 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
-@ApplicationScoped
+@Component
 public class MovimentacaoMapper
         implements IdentifiableMapper<
                     Lancamento,
@@ -24,11 +24,11 @@ public class MovimentacaoMapper
 
     private static final String ERR_MSG_ID_MAPPING = "Erro ao mapear id";
 
-    @Inject
-    IdentifiableMapper<Fato, Integer, Operacao , Integer> mapperOperacao;
+    @Autowired
+    private IdentifiableMapper<Fato, Integer, Operacao, Integer> mapperOperacao;
 
-    @Inject
-    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
+    @Autowired
+    private IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
 
     @Override
     public Movimentacao toVO(final Lancamento lancamento) {
@@ -56,7 +56,8 @@ public class MovimentacaoMapper
     }
 
     @Override
-    public Lancamento.Id toKey(final Movimentacao.Id id) throws IdMappingException {
+    public Lancamento.Id toKey(final Movimentacao.Id id)
+            throws IdMappingException {
 
         return
             new Lancamento.Id(

@@ -4,8 +4,8 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.github.brunoabdon.commons.facade.mappers.Mapper;
 import com.github.brunoabdon.commons.facade.mappers.SimpleIdentifiableMapper;
@@ -15,18 +15,23 @@ import com.github.brunoabdon.planinha.modelo.FatoVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
-@ApplicationScoped
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
 public class OperacaoMapper
         implements SimpleIdentifiableMapper<Fato, Operacao, Integer>{
 
-    @Inject
-    Mapper<Lancamento,Movimentacao> mapperIntensDeExtrato;
+    @Autowired
+    private Mapper<Lancamento,Movimentacao> mapperIntensDeExtrato;
 
-    @Inject
-    Mapper<Fato, FatoVO> mapperFato;
+    @Autowired
+    private Mapper<Fato, FatoVO> mapperFato;
 
     @Override
     public Operacao toVO(final Fato fato) {
+
+        log.trace("Mapeando pra VO {}.", fato);
 
         final Integer id = fato.getId();
 

@@ -3,8 +3,7 @@ package com.github.brunoabdon.planinha.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.json.bind.annotation.JsonbTransient;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
 public class Movimentacao
@@ -67,7 +66,7 @@ public class Movimentacao
         }
     }
 
-    @JsonbTransient
+    @JsonIgnore
     private final Id id;
 
     private int valor;

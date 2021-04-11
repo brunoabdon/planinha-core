@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,10 +21,6 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  *
  * @author bruno
  */
-@NamedQuery(
-    name = "Fato.porPeriodo",
-    query = "select f from Fato f where f.dia between :dataInicio and :dataFim"
-)
 @Entity
 @Table(schema = "planinhacore")
 public class Fato extends EntidadeBaseInt {

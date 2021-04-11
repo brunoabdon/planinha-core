@@ -1,62 +1,66 @@
 package com.github.brunoabdon.planinha.facade;
 
-import static org.jboss.logging.Logger.Level.DEBUG;
-import static org.jboss.logging.Logger.Level.WARN;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdMappingException;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
+import com.github.brunoabdon.planinha.dal.ContaRepository;
+import com.github.brunoabdon.planinha.dal.FatoRepository;
+import com.github.brunoabdon.planinha.dal.LancamentoRepository;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.dal.modelo.Fato;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
-import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@Service
 public class MovimentacaoFacade
         implements Facade<Movimentacao, Id, Integer, Integer> {
 
-    @Inject
-    Logger logger;
+    @Autowired
+    private OperacaoFacade operacaoFacade;
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private LancamentoRepository lancamentoRepository;
 
-    @Inject
-    OperacaoFacade operacaoFacade;
+    @Autowired
+    private ContaRepository contaRepository;
 
-    @Inject
-    IdentifiableMapper<Lancamento,Lancamento.Id,Movimentacao,Movimentacao.Id>
-        mapper;
+    @Autowired
+    private FatoRepository fatoRepository;
 
-    @Inject
-    IdentifiableMapper<Fato, Integer, Operacao, Integer> mapperOperacao;
+    @Autowired
+    private IdentifiableMapper<
+        Lancamento,Lancamento.Id,Movimentacao,Movimentacao.Id
+        > mapper;
 
-    @Inject
-    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
+    @Autowired
+    private IdentifiableMapper<Fato, Integer, Operacao, Integer> mapperOperacao;
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public Movimentacao cria(@NotNull @Valid final Movimentacao movimentacao)
-            throws BusinessException, EntidadeInexistenteException {
+            throws BusinessException{
 
-        logger.logv(DEBUG, "Criando movimentação {0}.", movimentacao);
+        log.debug("Criando movimentação {}.", movimentacao);
 
         final Fato fato = extraiFato(movimentacao);
 
@@ -66,15 +70,12 @@ public class MovimentacaoFacade
             fato.getLancamentos()
                 .stream()
                 .map(Lancamento::getConta)
-                .filter(conta::equals)
-                .findAny()
-                .isPresent();
+                .anyMatch(conta::equals);
 
         if(fatoTemLancamentoDaConta) {
             //TODO especificar o erro.. EntidadeInvalidaException, etc..
-            logger.logv(
-                WARN,
-                "Não adicionando mais um lancamento da conta {0} no fato {1}.",
+            log.warn(
+                "Não adicionando mais um lancamento da conta {} no fato {}.",
                 conta, fato
             );
             throw new BusinessException();
@@ -83,11 +84,8 @@ public class MovimentacaoFacade
         final Lancamento lancamento =
             new Lancamento(fato, conta, movimentacao.getValor());
 
-        em.persist(lancamento);
-
-        //TODO testar se é necessário mesmo....
         final Lancamento lancamentoCriado =
-            em.find(Lancamento.class, lancamento.getId());
+            lancamentoRepository.save(lancamento);
 
         return mapper.toVO(lancamentoCriado);
     }
@@ -97,12 +95,11 @@ public class MovimentacaoFacade
 
         final Integer idConta = movimentacao.getConta().getId();
 
-        final Conta conta = em.find(Conta.class, idConta);
-        if(conta == null) {
-           //TODO especializar. EntidadeInvalidaExceptio? ContaInvalida...
-            throw new BusinessException();
-        }
-        return conta;
+        //TODO especializar. EntidadeInvalidaExceptio? ContaInvalida...
+        return
+            contaRepository
+                .findById(idConta)
+                .orElseThrow(BusinessException::new);
     }
 
     private Fato extraiFato(final Movimentacao movimentacao)
@@ -112,43 +109,39 @@ public class MovimentacaoFacade
 
         final Integer idFato = mapperOperacao.toKey(idOperacao);
 
-        final Fato fato = em.find(Fato.class, idFato);
-
-        if(fato == null) {
-            logger.logv(
-                WARN, "Não existe um fato {0} como pede {1}.",
-                idFato, movimentacao
-            );
-            throw new EntidadeInexistenteException(Operacao.class, idOperacao);
-        }
-        return fato;
+        return
+            fatoRepository
+                .findById(idFato)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(
+                            Operacao.class,
+                            idOperacao
+                    )
+                );
     }
 
     @Override
     public Movimentacao pega(@NotNull @Valid final Movimentacao.Id id)
             throws EntidadeInexistenteException {
 
-        final Lancamento lancamento = pega_(id);
+        final Lancamento lancamento = pega2(id);
 
         return mapper.toVO(lancamento);
     }
 
-    private Lancamento pega_(final Movimentacao.Id id)
-            throws IdMappingException, EntidadeInexistenteException {
+    private Lancamento pega2(final Movimentacao.Id id)
+            throws EntidadeInexistenteException {
 
         final Lancamento.Id idLancamento = mapper.toKey(id);
 
-        final Lancamento lancamento = em.find(Lancamento.class, idLancamento);
-
-        if(lancamento == null) {
-            logger.logv(
-                WARN, "Não existe um lancamento {0} como pede {1}.",
-                idLancamento, id
+        return
+            lancamentoRepository
+                .findById(idLancamento)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(
+                        Movimentacao.class, id
+                    )
                 );
-            throw new EntidadeInexistenteException(Movimentacao.class, id);
-
-        }
-        return lancamento;
     }
 
     @Override
@@ -158,11 +151,11 @@ public class MovimentacaoFacade
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public Movimentacao atualiza(
                 @NotNull @Valid final Id id,
                 @NotNull @Valid final Integer valor)
-            throws EntidadeInexistenteException, BusinessException {
+            throws BusinessException {
 
         final Lancamento lancamento = this.pegaLancamento(id);
         lancamento.setValor(valor);
@@ -170,9 +163,9 @@ public class MovimentacaoFacade
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public void deleta(@NotNull @Valid final Movimentacao.Id id)
-            throws EntidadeInexistenteException, BusinessException {
+            throws BusinessException {
 
         final Lancamento lancamento = pegaLancamento(id);
 
@@ -182,8 +175,8 @@ public class MovimentacaoFacade
         lancamentos.remove(lancamento);
 
         if(lancamentos.size() == 0) {
-            logger.logv(
-                WARN, "Impedindo a remoção de lancamento filho único {0}.",
+            log.warn(
+                "Impedindo a remoção de lancamento filho único {}.",
                 lancamento
             );
             //TODO dar a real que a operação não pode ficar sem movimentacoes
@@ -192,15 +185,18 @@ public class MovimentacaoFacade
     }
 
     private Lancamento pegaLancamento(final Movimentacao.Id id)
-            throws IdMappingException {
+            throws EntidadeInexistenteException {
+
         final Lancamento.Id k = mapper.toKey(id);
 
-        final Lancamento lancamento = em.find(Lancamento.class, k);
-
-        if(lancamento == null) {
-            new EntidadeInexistenteException(Movimentacao.class, id);
-        }
-        return lancamento;
+        return
+            lancamentoRepository
+                .findById(k)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(
+                        Movimentacao.class, id
+                    )
+                );
     }
 
 }

@@ -21,7 +21,7 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public X cria(@NotNull @Valid final X elemento)
-        throws BusinessException, EntidadeInexistenteException;
+        throws BusinessException;
 
     public X pega(@NotNull @Valid final K key)
         throws EntidadeInexistenteException;
@@ -40,5 +40,5 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public void deleta(@NotNull @Valid final K key)
-        throws EntidadeInexistenteException, BusinessException;
+        throws BusinessException;
 }

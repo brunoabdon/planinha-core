@@ -18,13 +18,13 @@ package com.github.brunoabdon.commons.modelo;
 
 /**
  * Um tipo identificável por uma chave.
- * 
- * @param <Key> o tipo da chave da que identifica o elemento.
+ *
+ * @param <K> o tipo da chave da que identifica o elemento.
  * @author Bruno Abdon
- * 
+ *
  */
-public interface Identifiable<Key> {
-    
-    public Key getId();
-    
+public interface Identifiable<K> {
+
+    public K getId();
+
 }

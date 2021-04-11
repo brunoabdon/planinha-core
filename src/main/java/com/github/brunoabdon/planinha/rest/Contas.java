@@ -1,98 +1,76 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.jboss.logging.Logger.Level.INFO;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 
-@Path("contas")
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@RestController
+@RequestMapping("contas")
 public class Contas {
 
+    @Autowired
+    private Facade<ContaVO,Integer,String,String> facade;
 
-    @Inject
-    Logger logger;
-
-    @Inject
-    Facade<ContaVO,Integer,String,String> facade;
-
-    @GET
-    @Produces(APPLICATION_JSON)
-    public Response listar() throws EntidadeInexistenteException {
-        logger.log(INFO, "Listando contas");
-        final List<ContaVO> contas = facade.listar();
-        return Response.ok(contas).build();
+    @GetMapping
+    public List<ContaVO> listar() throws EntidadeInexistenteException {
+        log.debug("Listando contas");
+        return facade.listar();
     }
 
-    @GET
-    @Path("{conta_id}")
-    @Produces(APPLICATION_JSON)
-    public Response pegar(@PathParam("conta_id") final Integer idConta)
+    @GetMapping("{conta_id}")
+    public ContaVO pegar(@PathVariable("conta_id") final Integer idConta)
             throws EntidadeInexistenteException {
 
-        logger.logv(INFO, "Pegando conta {0}.",idConta);
+        log.debug("Pegando conta {}.",idConta);
 
-        final ContaVO conta = facade.pega(idConta);
+        return facade.pega(idConta);
 
-        return Response.ok(conta).build();
     }
 
-    @PUT
-    @Path("{conta_id}")
-    @Produces(APPLICATION_JSON)
-    @Consumes(APPLICATION_JSON)
-    public Response atualizar(
-    		@PathParam("conta_id") final Integer idConta,
-    		final ContaVO conta)
-				throws EntidadeInexistenteException, BusinessException {
+    @PutMapping("{conta_id}")
+    public ContaVO atualizar(
+    		@PathVariable("conta_id") final Integer idConta,
+    		@RequestBody final ContaVO conta) throws BusinessException {
 
-        logger.logv(INFO, "Atualizando conta {0} pra {1}.",idConta, conta);
+        log.debug("Atualizando conta {} pra {}.",idConta, conta);
 
         final String nome = conta.getNome();
-		final ContaVO contaAtualizada = facade.atualiza(idConta, nome);
-
-        return Response.ok(contaAtualizada).build();
+        return facade.atualiza(idConta, nome);
     }
 
-    @DELETE
-    @Path("{conta_id}")
-    public Response deletar(@PathParam("conta_id") final Integer idConta)
-			throws EntidadeInexistenteException, BusinessException {
+    @DeleteMapping("{conta_id}")
+    public void deletar(@PathVariable("conta_id") final Integer idConta)
+			throws BusinessException {
 
-        logger.logv(INFO, "Deletando conta de id {0}.",idConta);
-
+        log.debug("Deletando conta de id {}.",idConta);
 		facade.deleta(idConta);
-
-        return Response.ok().build();
     }
 
-    @POST
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    public Response criar(final ContaVO conta) throws BusinessException {
-        logger.logv(INFO, "Criando conta {0}.",conta);
+    @PostMapping
+    public ContaVO criar(@RequestBody final ContaVO conta)
+            throws BusinessException {
+        log.debug("Criando conta {}.",conta);
 
-		final ContaVO contaCriada = facade.cria(conta);
-
-        return Response.ok(contaCriada).build();
+        return facade.cria(conta);
     }
 }

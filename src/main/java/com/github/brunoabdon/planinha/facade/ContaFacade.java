@@ -1,44 +1,45 @@
 package com.github.brunoabdon.planinha.facade;
 
 import static java.util.stream.Collectors.toList;
-import static org.jboss.logging.Logger.Level.DEBUG;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
+import java.util.stream.Stream;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
-import com.github.brunoabdon.planinha.dal.ContaConsultaFiltro;
+import com.github.brunoabdon.planinha.dal.ContaRepository;
+import com.github.brunoabdon.planinha.dal.LancamentoRepository;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@Service
 public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
-    @Inject Logger logger;
+    @Autowired
+    private IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapper;
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private ContaRepository repo;
 
-    @Inject
-    IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapper;
-
-    @Inject
-    ContaConsultaFiltro consultaPorFiltro;
+    @Autowired
+    private LancamentoRepository lancamentoRepo;
 
     @Override
     public ContaVO pega(final Integer id) throws EntidadeInexistenteException{
 
-        logger.logv(DEBUG, "Pegando conta de id {0}.", id);
+        log.debug("Pegando conta de id {}.", id);
 
         final Conta conta = pega_(id);
 
@@ -47,44 +48,53 @@ public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
     private Conta pega_(final Integer id) throws EntidadeInexistenteException {
 
-        logger.logv(DEBUG, "Pegando conta (Entity) de id {0}.", id);
+        log.debug("Pegando conta (Entity) de id {}.", id);
 
         final Integer k = mapper.toKey(id);
 
-        final Conta conta = em.find(Conta.class, k);
-
-        if(conta == null)
-            throw new EntidadeInexistenteException(ContaVO.class, id);
-        return conta;
+        return
+            repo.findById(k)
+                .orElseThrow(
+                    () -> new EntidadeInexistenteException(ContaVO.class, id)
+                );
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public ContaVO cria(final ContaVO conta) throws BusinessException{
+
+        log.debug("Criand conta{}", conta);
 
         final Conta contaEntity = new Conta(conta.getNome());
 
-        em.persist(contaEntity);
+        final Conta contaSalva = repo.save(contaEntity);
 
-        return mapper.toVOSimples(contaEntity);
+        return mapper.toVOSimples(contaSalva);
     }
 
     @Override
     public List<ContaVO> lista(final String parteDoNome){
+
+        log.debug("Listando contas por {}", parteDoNome);
+
+        final Stream<Conta> contas =
+            parteDoNome != null
+                ? this.repo.findByNomeContainingIgnoreCase(parteDoNome)
+                : this.repo.findAll().stream();
         return
-            this.consultaPorFiltro
-                .listar(parteDoNome)
-                .stream()
+            contas
                 .map(mapper::toVOSimples)
                 .collect(toList());
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public ContaVO atualiza(
             final Integer id,
             final String nome)
-        throws EntidadeInexistenteException, BusinessException{
+        throws BusinessException{
+
+        log.debug("Atualizando conta de id {} com {}.",id, nome);
 
         final Integer k = mapper.toKey(id);
 
@@ -96,17 +106,19 @@ public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public void deleta(final Integer id)
-        throws EntidadeInexistenteException, BusinessException{
+        throws BusinessException{
+
+        log.debug("Deletando conta de id {}.",id);
 
         final Conta conta = pega_(id);
 
-        final boolean estaEmUso = this.consultaPorFiltro.estaEmUso(conta);
+        final boolean estaEmUso = this.lancamentoRepo.existsByConta(conta);
 
         //TODO dar a real
         if(estaEmUso) throw new BusinessException();
 
-        em.remove(conta);
+        repo.delete(conta);
     }
 }

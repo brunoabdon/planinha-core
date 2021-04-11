@@ -1,20 +1,16 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.jboss.logging.Logger.Level.INFO;
+import static lombok.AccessLevel.PACKAGE;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
-import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
@@ -22,44 +18,37 @@ import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.FatoVO;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
-@Path("operacoes/{operacao_id}/fato")
-@ApplicationScoped
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter(PACKAGE)
+@RestController
+@RequestMapping("operacoes/{operacao_id}/fato")
 public class Fatos {
 
-    @Inject
-    Logger logger;
+    @Autowired
+    private Facade<Operacao, Integer, ?, FatoVO> facade;
 
-    @Inject
-    Facade<Operacao, Integer, ?, FatoVO> facade;
-
-    @GET
-    @Produces(APPLICATION_JSON)
-    public Response pegar(@PathParam("operacao_id") final Integer idOperacao)
+    @GetMapping
+    public FatoVO pegar(@PathVariable("operacao_id") final Integer idOperacao)
             throws EntidadeInexistenteException {
 
-        logger.logv(INFO, "Pegando fato da operacao {0}.",idOperacao);
+        log.debug("Pegando fato da operação {}.",idOperacao);
 
-        final FatoVO fato = facade.pega(idOperacao).getFato();
-
-        return Response.ok(fato).build();
+        return facade.pega(idOperacao).getFato();
     }
 
-    @PUT
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    public Response atualizar(
-    		@PathParam("operacao_id") final Integer idOperacao,
-    		@Valid final FatoVO patch)
-				throws EntidadeInexistenteException, BusinessException {
+    @PutMapping
+    public FatoVO atualizar(
+            @PathVariable("operacao_id") final Integer idOperacao,
+    		@Valid @RequestBody final FatoVO patch) throws BusinessException {
 
-        logger.logv(
-    		INFO, "Atualizando fato da operacao {0} pra {1}.",
+        log.debug(
+    		"Atualizando fato da operacao {} pra {}.",
     		idOperacao, patch
 		);
 
-        final FatoVO fatoAtualizado =
-    		facade.atualiza(idOperacao, patch).getFato();
-
-        return Response.ok(fatoAtualizado).build();
+        return facade.atualiza(idOperacao, patch).getFato();
     }
 }

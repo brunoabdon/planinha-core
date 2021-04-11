@@ -7,18 +7,26 @@ import javax.validation.constraints.NotNull;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Operacao extends EntidadeBaseInt {
 
 	private static final long serialVersionUID = 7410023178167290123L;
 
 	@NotNull
+	@EqualsAndHashCode.Exclude
 	private FatoVO fato;
 
 	@NotEmpty
+    @EqualsAndHashCode.Exclude
     private List<Movimentacao> movimentacoes;
-
-	public Operacao() {
-	}
 
     public Operacao(
             final Integer id,
@@ -28,23 +36,6 @@ public class Operacao extends EntidadeBaseInt {
         this.fato = fato;
         this.movimentacoes = movimentacoes;
     }
-
-    public FatoVO getFato() {
-		return fato;
-	}
-
-	public void setFato(final FatoVO fato) {
-		this.fato = fato;
-	}
-
-	public List<Movimentacao> getMovimentacoes() {
-		return movimentacoes;
-	}
-
-	public void setMovimentacoes(final List<Movimentacao> movimentacoes) {
-		this.movimentacoes = movimentacoes;
-	}
-
 	@Override
 	public String toString() {
 		return "[Operacao:"+getId()+"|"+ fato + "]";
