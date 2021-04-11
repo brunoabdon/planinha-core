@@ -24,6 +24,8 @@ import java.util.function.BiPredicate;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +74,7 @@ public class Periodo implements Serializable {
     	return new Periodo(dataMinima, dataMaxima);
     }
 
+    @JsonIgnore
     public boolean isFechado() {
         return inicio != null && fim != null;
     }
