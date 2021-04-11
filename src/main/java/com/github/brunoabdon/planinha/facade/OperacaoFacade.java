@@ -187,7 +187,6 @@ public class OperacaoFacade
     }
 
     @Override
-    @Transactional
     public List<Operacao> lista(final Periodo periodo) {
     	log.debug("Listando operações por {}.", periodo);
 
