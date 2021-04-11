@@ -8,12 +8,12 @@ import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 import org.hibernate.annotations.Subselect;
 
-import com.github.brunoabdon.commons.modelo.Identifiable;
+import com.github.brunoabdon.commons.modelo.Entidade;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 
 import lombok.AllArgsConstructor;
@@ -26,8 +26,8 @@ import lombok.ToString;
 /**
  * Entidade virtual que representa o saldo de uma dada {@link Conta} no início
  * de um dado dia.
- * @author bruno
  *
+ * @author bruno
  */
 @Getter
 @Setter
@@ -38,14 +38,16 @@ import lombok.ToString;
 @Entity
 @Subselect(
     "   select "
-    + "   l.conta.id conta_id, "
-    + "   l.fato.dia dia, "
+    + "   c.id id, "
+    + "   f.dia dia, "
     + "   sum(l.valor) valor "
     + " from planinhacore.Lancamento l "
-    + " group by l.conta.id, l.fato.dia"
+    + " join planinhacore.fato f on f.id = l.fato_id "
+    + " join planinhacore.conta c on c.id = l.conta_id "
+   + " group by c.id, f.dia"
 )
 public class SaldoInicial
-    implements Identifiable<SaldoInicial.Id>, Serializable {
+    implements Entidade<SaldoInicial.Id>, Serializable {
 
     private static final long serialVersionUID = -151809088227593872L;
 
@@ -71,13 +73,12 @@ public class SaldoInicial
     @EqualsAndHashCode.Include
     private Id id;
 
+    @MapsId("id")
     @EqualsAndHashCode.Exclude
     @ManyToOne(optional=false, fetch=FetchType.EAGER)
-    @JoinColumn(insertable = false, updatable = false, name = "conta_id")
     private Conta conta;
 
     @EqualsAndHashCode.Exclude
     @Column(precision = 11, scale = 0, nullable = false)
     private int valor;
-
 }

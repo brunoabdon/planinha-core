@@ -40,12 +40,11 @@ import lombok.ToString;
 @ToString
 @Entity
 @Subselect(
-    "  select "
-    + " l.conta.id conta_id, min(l.fato.dia) dia "
-    + "from "
-    + " planinhacore.Lancamento l "
-    + "group by "
-    + " l.conta.id, l.fato.dia"
+  "select c.id id, min(f.dia) dia "
+  + " from planinhacore.lancamento l "
+  + " join planinhacore.fato f on f.id = l.fato_id "
+  + " join planinhacore.conta c on c.id = l.conta_id "
+  + " group by c.id, f.dia "
 )
 public class AberturaDeConta extends EntidadeBaseInt implements Serializable {
 
