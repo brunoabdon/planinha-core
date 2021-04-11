@@ -1,5 +1,7 @@
 package com.github.brunoabdon.planinha.facade.mapper;
 
+import static lombok.AccessLevel.PACKAGE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,10 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
+import lombok.Setter;
+
 @Component
+@Setter(PACKAGE)
 public class MovimentacaoMapper
         implements IdentifiableMapper<
                     Lancamento,

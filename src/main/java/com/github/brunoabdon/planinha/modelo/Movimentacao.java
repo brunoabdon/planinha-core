@@ -1,16 +1,29 @@
 package com.github.brunoabdon.planinha.modelo;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@AllArgsConstructor
 public class Movimentacao
         implements Identifiable<Movimentacao.Id>, Serializable {
 
     private static final long serialVersionUID = 6746391695579473165L;
 
+    @Getter
+    @EqualsAndHashCode
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Id implements Serializable {
 
         private static final long serialVersionUID = -6750023797871359900L;
@@ -19,45 +32,8 @@ public class Movimentacao
 
         private ContaVO conta;
 
-        private Id() {
-        }
-
-        public Id(final Integer operacaoId, final ContaVO conta) {
-            this();
-            this.operacaoId = operacaoId;
-            this.conta = conta;
-        }
-
         public Id(final Integer operacaoId, final Integer idConta) {
-            this();
-            this.operacaoId = operacaoId;
-            this.conta = new ContaVO(idConta);
-        }
-
-        public ContaVO getConta() {
-            return conta;
-        }
-
-        public Integer getOperacaoId() {
-            return operacaoId;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(operacaoId, conta);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null) return false;
-            if (getClass() != obj.getClass()) return false;
-
-            final Id other = (Id) obj;
-
-            return
-                Objects.equals(conta, other.conta)
-                && Objects.equals(operacaoId, other.operacaoId);
+            this(operacaoId, new ContaVO(idConta));
         }
 
         @Override
@@ -67,17 +43,14 @@ public class Movimentacao
     }
 
     @JsonIgnore
+    @EqualsAndHashCode.Include
     private final Id id;
 
+    @EqualsAndHashCode.Exclude
     private int valor;
 
     public Movimentacao() {
         this.id = new Id();
-    }
-
-    public Movimentacao(final Id id, int valor) {
-        this.id = id;
-        this.valor = valor;
     }
 
     public ContaVO getConta() {
@@ -86,33 +59,6 @@ public class Movimentacao
 
     public void setConta(final ContaVO conta) {
         this.id.conta = conta;
-    }
-
-    public int getValor() {
-        return valor;
-    }
-
-    public void setValor(final int valor) {
-        this.valor = valor;
-    }
-
-    @Override
-    public Id getId() {
-        return id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-
-        return Objects.equals(id, ((Movimentacao) obj).id);
     }
 
     @Override

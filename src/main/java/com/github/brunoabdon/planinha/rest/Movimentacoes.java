@@ -21,7 +21,9 @@ import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
 
+import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,16 +32,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("operacoes/{operacao_id}/movimentacoes")
 public class Movimentacoes {
 
+    @Getter
+    @Setter
+    @ToString
     public static class Atualizacao {
         private Integer valor;
-
-        public Integer getValor() {
-            return valor;
-        }
-
-        public void setValor(final Integer valor) {
-            this.valor = valor;
-        }
     }
 
     @Autowired

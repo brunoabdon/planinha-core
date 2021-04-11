@@ -1,5 +1,8 @@
 package com.github.brunoabdon.commons.facade.mappers;
 
+import lombok.Getter;
+
+@Getter
 public class MappingException extends RuntimeException {
 
     private static final long serialVersionUID = -2319006618674023596L;
@@ -18,13 +21,5 @@ public class MappingException extends RuntimeException {
         super(String.format(MESSAGE,tipoOrigem, tipoDestino, msg), cause);
         this.tipoOrigem = tipoOrigem;
         this.tipoDestino = tipoDestino;
-    }
-
-    public Class<?> getTipoOrigem() {
-        return tipoOrigem;
-    }
-
-    public Class<?> getTipoDestino() {
-        return tipoDestino;
     }
 }

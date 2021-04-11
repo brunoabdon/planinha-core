@@ -1,8 +1,29 @@
 package com.github.brunoabdon.planinha.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * TODO documentaçaõ aqui.
+ *
+ * <p>Obs: Usa o {@linkplain #equals(Object) equals(..)} e {@linkplain
+ * #hashCode() hashcode()} de {@link Object}, já que duas instâncias de {@link
+ * ItemDeExtrato} para o mesmo {@linkplain #getFato() fato} com um mesmo
+ * {@linkplain #getValor() valor} não são necessáriamente a mesma entidade
+ * (podem ser de {@linkplain Extrato extratos} distintos).</p>
+ *
+ * @author bruno
+ */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDeExtrato implements Serializable{
 
     private static final long serialVersionUID = 7915709116381425166L;
@@ -11,34 +32,4 @@ public class ItemDeExtrato implements Serializable{
 
     private int valor;
 
-    public ItemDeExtrato() {
-    }
-
-    public ItemDeExtrato(final FatoVO fato, final int valor) {
-        this.fato = fato;
-        this.valor = valor;
-    }
-
-    public ItemDeExtrato(
-    		final LocalDate dia,
-    		final String descricao,
-    		final int valor) {
-        this(new FatoVO(dia, descricao),valor);
-    }
-
-    public FatoVO getFato() {
-        return fato;
-    }
-
-    public void setFato(final FatoVO fato) {
-        this.fato = fato;
-    }
-
-    public int getValor() {
-        return valor;
-    }
-
-    public void setValor(final int valor) {
-        this.valor = valor;
-    }
 }

@@ -29,8 +29,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Setter(PACKAGE)
 @Service
+@Setter(PACKAGE)
 public class MovimentacaoFacade
         implements Facade<Movimentacao, Id, Integer, Integer> {
 
@@ -49,7 +49,7 @@ public class MovimentacaoFacade
     @Autowired
     private IdentifiableMapper<
         Lancamento,Lancamento.Id,Movimentacao,Movimentacao.Id
-        > mapper;
+        > mapperLancamento;
 
     @Autowired
     private IdentifiableMapper<Fato, Integer, Operacao, Integer> mapperOperacao;
@@ -86,7 +86,7 @@ public class MovimentacaoFacade
         final Lancamento lancamentoCriado =
             lancamentoRepository.save(lancamento);
 
-        return mapper.toVO(lancamentoCriado);
+        return mapperLancamento.toVO(lancamentoCriado);
     }
 
     private Conta extraiConta(final Movimentacao movimentacao)
@@ -125,13 +125,13 @@ public class MovimentacaoFacade
 
         final Lancamento lancamento = pega2(id);
 
-        return mapper.toVO(lancamento);
+        return mapperLancamento.toVO(lancamento);
     }
 
     private Lancamento pega2(final Movimentacao.Id id)
             throws EntidadeInexistenteException {
 
-        final Lancamento.Id idLancamento = mapper.toKey(id);
+        final Lancamento.Id idLancamento = mapperLancamento.toKey(id);
 
         return
             lancamentoRepository
@@ -158,7 +158,7 @@ public class MovimentacaoFacade
 
         final Lancamento lancamento = this.pegaLancamento(id);
         lancamento.setValor(valor);
-        return mapper.toVO(lancamento);
+        return mapperLancamento.toVO(lancamento);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class MovimentacaoFacade
     private Lancamento pegaLancamento(final Movimentacao.Id id)
             throws EntidadeInexistenteException {
 
-        final Lancamento.Id k = mapper.toKey(id);
+        final Lancamento.Id k = mapperLancamento.toKey(id);
 
         return
             lancamentoRepository

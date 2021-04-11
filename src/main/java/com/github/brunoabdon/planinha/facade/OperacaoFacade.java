@@ -1,6 +1,7 @@
 package com.github.brunoabdon.planinha.facade;
 
 import static java.util.stream.Collectors.toList;
+import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
@@ -36,8 +37,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Setter(PACKAGE)
 @Service
+@Setter(PACKAGE)
 public class OperacaoFacade
         implements Facade<Operacao, Integer, Periodo, FatoVO>{
 
@@ -48,13 +49,15 @@ public class OperacaoFacade
     private IdentifiableMapper<Conta, Integer, ContaVO, Integer> mapperConta;
 
     @Autowired
-    private ContaRepository contaRepository;
+    private ContaRepository contaRepo;
 
     @Autowired
-    private FatoRepository fatoRepository;
+    private FatoRepository fatoRepo;
 
-
+    @Setter(value = NONE)
     private BiFunction<Fato, Movimentacao, Lancamento> mapeaLancamento;
+
+    @Setter(value = NONE)
     private Function<Integer,Integer> contaKeyMapper;
 
     @PostConstruct
@@ -90,7 +93,7 @@ public class OperacaoFacade
                 .collect(toList());
 
         final long quantasContasEncontradas =
-            contaRepository.countByIdIn(idsContas);
+            contaRepo.countByIdIn(idsContas);
 
         if(quantasContasEncontradas != idsContas.size()) {
             //alguma das movimentacoes faz referencia a uma conta que não existe
@@ -100,7 +103,7 @@ public class OperacaoFacade
             throw new BusinessException();
         }
 
-        final Fato fatoCriado = fatoRepository.save(fato);
+        final Fato fatoCriado = fatoRepo.save(fato);
 
         final List<Lancamento> lancamentos =
             extraiLancamentos(fato, operacao.getMovimentacoes());
@@ -147,7 +150,7 @@ public class OperacaoFacade
         log.debug("Dando find na conta {}",idConta);
 
         return
-            contaRepository
+            contaRepo
                 .findById(idConta)
                 .map(c -> new Lancamento(fato,c,movimentacao.getValor()))
                 .orElseThrow(
@@ -176,7 +179,7 @@ public class OperacaoFacade
         log.trace("Pegando fato de id {}.", id);
 
         return
-            fatoRepository
+            fatoRepo
                 .findById(idFato)
                 .orElseThrow(
                     () -> new EntidadeInexistenteException(Operacao.class, id)
@@ -188,7 +191,7 @@ public class OperacaoFacade
     	log.debug("Listando operações por {}.", periodo);
 
     	return
-	        fatoRepository
+	        fatoRepo
 	        .findByDiaBetween(periodo.getInicio(), periodo.getFim())
               .map(mapper::toVOSimples)
               .collect(toList());
@@ -223,6 +226,6 @@ public class OperacaoFacade
 
     	log.trace("Deletando fato {}.", fato);
 
-    	fatoRepository.delete(fato);
+    	fatoRepo.delete(fato);
     }
 }

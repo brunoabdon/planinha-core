@@ -2,6 +2,11 @@ package com.github.brunoabdon.commons.facade;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class EntidadeInexistenteException extends BusinessException {
 
     private static final long serialVersionUID = 2017539509539091369L;
@@ -16,9 +21,5 @@ public class EntidadeInexistenteException extends BusinessException {
             final Serializable id) {
         super(String.format(ERRO_NOT_FOUND,tipo.getName(),id));
         this.id = id;
-    }
-
-    public Serializable getId() {
-        return id;
     }
 }

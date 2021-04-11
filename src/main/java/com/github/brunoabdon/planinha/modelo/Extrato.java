@@ -11,10 +11,22 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.conv.PeriodoConverter;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@EqualsAndHashCode
+@NoArgsConstructor
 public class Extrato implements Identifiable<Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;
 
+    @Getter
+    @Setter
+    @EqualsAndHashCode
+    @AllArgsConstructor
     public static class Id implements Serializable{
 
         private static final long serialVersionUID = 3587349119460038562L;
@@ -22,44 +34,30 @@ public class Extrato implements Identifiable<Id>, Serializable{
         private ContaVO conta;
         private Periodo periodo;
 
-        public Id(final ContaVO conta, final Periodo periodo) {
-            this.conta = conta;
-            this.periodo = periodo;
-        }
-
-        public Periodo getPeriodo() {
-            return periodo;
-        }
-
-        public void setPeriodo(Periodo periodo) {
-            this.periodo = periodo;
-        }
-
-        public ContaVO getConta() {
-            return conta;
-        }
-
-        public void setConta(ContaVO conta) {
-            this.conta = conta;
-        }
-
         @Override
         public String toString() {
         	return "["+conta+"|"+periodo+"]";
         }
     }
 
+    //TODO testar usado @JsonIgnore no get
     @JsonIgnore
+    @Getter
+    @EqualsAndHashCode.Include
     private Id id;
 
+    @EqualsAndHashCode.Exclude
     private String serialId;
 
+    @Getter
+    @Setter
+    @EqualsAndHashCode.Exclude
     private Number saldoAnterior;
 
+    @Getter
+    @Setter
+    @EqualsAndHashCode.Exclude
     private List<ItemDeExtrato> items;
-
-    public Extrato() {
-    }
 
     public Extrato(final Id id) {
         this.id = id;
@@ -74,34 +72,14 @@ public class Extrato implements Identifiable<Id>, Serializable{
         this.items = itens;
     }
 
-    @Override
-    public Id getId() {
-        return this.id;
-    }
-
-    public List<ItemDeExtrato> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemDeExtrato> items) {
-        this.items = items;
-    }
-
-    public Number getSaldoAnterior() {
-        return saldoAnterior;
-    }
-
-    public void setSaldoAnterior(final Number saldoAnterior) {
-        this.saldoAnterior = saldoAnterior;
-    }
-
+    //TODO precisa de @JsonProperty aqui? E em getPeriodo?
     public ContaVO getConta(){
         return getOptionalAttr(Id::getConta).orElse(null);
     }
 
     @JsonProperty
     public Periodo getPeriodo(){
-        return id == null ? null : id.getPeriodo();
+        return getOptionalAttr(Id::getPeriodo).orElse(null);
     }
 
     private <T> Optional<? extends T> getOptionalAttr(
