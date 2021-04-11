@@ -36,7 +36,7 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
     public X atualiza(
             @NotNull @Valid final K key,
             @NotNull @Valid final A atualizacao)
-        throws EntidadeInexistenteException, BusinessException;
+        throws BusinessException;
 
     @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
     public void deleta(@NotNull @Valid final K key)

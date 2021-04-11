@@ -41,12 +41,12 @@ public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
         log.debug("Pegando conta de id {}.", id);
 
-        final Conta conta = pega_(id);
+        final Conta conta = pega2(id);
 
         return mapper.toVO(conta);
     }
 
-    private Conta pega_(final Integer id) throws EntidadeInexistenteException {
+    private Conta pega2(final Integer id) throws EntidadeInexistenteException {
 
         log.debug("Pegando conta (Entity) de id {}.", id);
 
@@ -98,7 +98,7 @@ public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
         final Integer k = mapper.toKey(id);
 
-        final Conta conta = pega_(k);
+        final Conta conta = pega2(k);
 
         conta.setNome(nome);
 
@@ -112,7 +112,7 @@ public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
         log.debug("Deletando conta de id {}.",id);
 
-        final Conta conta = pega_(id);
+        final Conta conta = pega2(id);
 
         final boolean estaEmUso = this.lancamentoRepo.existsByConta(conta);
 

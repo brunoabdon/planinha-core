@@ -12,12 +12,21 @@ import javax.validation.constraints.Size;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 /**
  * Uma carteira à qual se pode associar e movimentar um valor.
  *
  * @author bruno
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(schema = "planinhacore")
 public class Conta extends EntidadeBaseInt {
@@ -26,15 +35,14 @@ public class Conta extends EntidadeBaseInt {
 
     public static final int NOME_MAX_LEN = 50;
 
+    @EqualsAndHashCode.Exclude
     @Size(max = NOME_MAX_LEN)
     @Column(length = NOME_MAX_LEN, nullable = false, unique = true)
     private String nome;
 
+    @EqualsAndHashCode.Exclude
 	@OneToMany(fetch = LAZY, mappedBy = "conta")
 	private List<Lancamento> movimentacoes;
-
-    public Conta() {
-    }
 
     public Conta(final Integer id) {
         this(id,null);
@@ -47,14 +55,6 @@ public class Conta extends EntidadeBaseInt {
     public Conta(final Integer id, final String nome) {
         this(nome);
         super.setId(id);
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(final String nome) {
-        this.nome = nome;
     }
 
     public static Conta fromString(final String str){

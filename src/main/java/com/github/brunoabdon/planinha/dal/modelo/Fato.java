@@ -14,6 +14,11 @@ import javax.persistence.Table;
 
 import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 /**
  * Um evento no mundo, que acarretará em valores serem movimentados entre
@@ -21,6 +26,10 @@ import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
  *
  * @author bruno
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(schema = "planinhacore")
 public class Fato extends EntidadeBaseInt {
@@ -29,17 +38,17 @@ public class Fato extends EntidadeBaseInt {
 
     private static final long serialVersionUID = -1303184765328707216L;
 
+    @EqualsAndHashCode.Exclude
     @Column(nullable = false)
     private LocalDate dia;
 
+    @EqualsAndHashCode.Exclude
     @Column(nullable = false, length = TAMANHO_MAX_DESCRICAO)
     private String descricao;
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "fato", fetch = LAZY, cascade = {REMOVE, PERSIST})
     private List<Lancamento> lancamentos;
-
-    public Fato() {
-    }
 
     public Fato(final LocalDate dia, final String descricao){
         this.dia = dia;
@@ -48,30 +57,6 @@ public class Fato extends EntidadeBaseInt {
 
     public Fato(final Integer id) {
         super(id);
-    }
-
-    public LocalDate getDia() {
-        return dia;
-    }
-
-    public void setDia(final LocalDate dia) {
-        this.dia = dia;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(final String descricao) {
-        this.descricao = descricao;
-    }
-
-    public List<Lancamento> getLancamentos() {
-        return lancamentos;
-    }
-
-    public void setLancamentos(final List<Lancamento> lancamentos) {
-        this.lancamentos = lancamentos;
     }
 
     @Override

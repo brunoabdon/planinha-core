@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.commons.facade.mappers.IdMappingException;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
 import com.github.brunoabdon.planinha.dal.ContaRepository;
 import com.github.brunoabdon.planinha.dal.FatoRepository;
@@ -103,7 +102,7 @@ public class MovimentacaoFacade
     }
 
     private Fato extraiFato(final Movimentacao movimentacao)
-            throws IdMappingException, EntidadeInexistenteException {
+            throws EntidadeInexistenteException {
 
         final Integer idOperacao = movimentacao.getId().getOperacaoId();
 
@@ -174,7 +173,7 @@ public class MovimentacaoFacade
 
         lancamentos.remove(lancamento);
 
-        if(lancamentos.size() == 0) {
+        if(lancamentos.isEmpty()) {
             log.warn(
                 "Impedindo a remoção de lancamento filho único {}.",
                 lancamento
