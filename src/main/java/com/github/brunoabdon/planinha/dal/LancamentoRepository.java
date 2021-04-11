@@ -33,6 +33,4 @@ public interface LancamentoRepository extends Repositorio<Lancamento, Id> {
 
 
     public long countByConta(final Conta conta);
-
-
 }

@@ -59,6 +59,4 @@ public class AberturaDeConta extends EntidadeBaseInt implements Serializable {
     @Column(nullable = false)
     @EqualsAndHashCode.Exclude
     private LocalDate dia;
-
-
 }
