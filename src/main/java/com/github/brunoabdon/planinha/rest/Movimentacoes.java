@@ -71,7 +71,7 @@ public class Movimentacoes {
     public Movimentacao atualizar(
             @PathParam("operacao_id") final Integer idOperacao,
     		@PathParam("conta_id") final Integer idConta,
-    		@NotNull final Atualizacao atualizacao) throws Exception {
+    		@NotNull final Atualizacao atualizacao) throws BusinessException {
 
         log.debug(
             "Atualizando pra {} a movimentação da conta {} em {}.",
