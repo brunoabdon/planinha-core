@@ -2,9 +2,10 @@ package com.github.brunoabdon.commons.facade;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
 
@@ -19,7 +20,7 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
  */
 public interface Facade <X extends Identifiable<K>, K, F, A >{
 
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public X cria(@NotNull @Valid final X elemento)
         throws BusinessException;
 
@@ -32,13 +33,13 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
         return this.lista(null);
     }
 
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public X atualiza(
             @NotNull @Valid final K key,
             @NotNull @Valid final A atualizacao)
         throws BusinessException;
 
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public void deleta(@NotNull @Valid final K key)
         throws BusinessException;
 }

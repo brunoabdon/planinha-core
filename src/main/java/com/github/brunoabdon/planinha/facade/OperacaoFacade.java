@@ -9,10 +9,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
@@ -75,7 +75,7 @@ public class OperacaoFacade
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public Operacao cria(final Operacao operacao) throws BusinessException {
     	log.debug("Criando operação {}.", operacao);
 
@@ -187,6 +187,7 @@ public class OperacaoFacade
     }
 
     @Override
+    @Transactional
     public List<Operacao> lista(final Periodo periodo) {
     	log.debug("Listando operações por {}.", periodo);
 
@@ -198,7 +199,7 @@ public class OperacaoFacade
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public Operacao atualiza(final Integer key, final FatoVO atualizacao)
             throws BusinessException {
 
@@ -217,7 +218,7 @@ public class OperacaoFacade
     }
 
     @Override
-    @Transactional(rollbackOn={RuntimeException.class,BusinessException.class})
+    @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})
     public void deleta(final Integer key)
     		throws EntidadeInexistenteException {
     	log.debug("Deletando operação de id {}.", key);
