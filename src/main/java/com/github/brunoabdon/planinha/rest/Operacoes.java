@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +62,7 @@ public class Operacoes {
     }
 
     @GetMapping("{operacao_id}")
-    public Operacao pegar(@PathParam("operacao_id") final Integer idOperacao)
+    public Operacao pegar(@PathVariable("operacao_id") final Integer idOperacao)
             throws EntidadeInexistenteException {
 
         log.debug("Pegando operacao {}.",idOperacao);
