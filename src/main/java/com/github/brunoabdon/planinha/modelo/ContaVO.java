@@ -45,6 +45,7 @@ public class ContaVO extends EntidadeBaseInt {
         super.setId(id);
     }
 
+    //TODO ver pra que isso serve mesmo
     public static ContaVO fromString(final String str){
         return EntidadeBaseInt.fromString(ContaVO.class, str);
     }

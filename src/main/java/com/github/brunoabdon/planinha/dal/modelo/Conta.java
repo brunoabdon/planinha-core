@@ -57,6 +57,7 @@ public class Conta extends EntidadeBaseInt {
         super.setId(id);
     }
 
+    //TODO pra que é isso mesmo?
     public static Conta fromString(final String str){
         return EntidadeBaseInt.fromString(Conta.class, str);
     }
