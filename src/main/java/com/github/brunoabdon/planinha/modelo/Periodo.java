@@ -81,29 +81,36 @@ public class Periodo implements Serializable {
 
     public Periodo intersecao(@NotNull final Periodo periodo) {
 
-        final LocalDate maiorInicio = max(this.getInicio(),periodo.getInicio());
-        final LocalDate menorFim = min(this.getFim(),periodo.getFim());
+        final LocalDate maiorInicio =
+            maiorInicio(this.getInicio(),periodo.getInicio());
+        final LocalDate menorFim =
+            menorFim(this.getFim(),periodo.getFim());
 
         return Periodo.of(maiorInicio, menorFim);
     }
 
-    private LocalDate max(final LocalDate data1, final LocalDate data2) {
+    private LocalDate maiorInicio(final LocalDate data1, final LocalDate data2){
         return nullComp(LocalDate::isAfter, data1, data2);
     }
 
-    private LocalDate min(final LocalDate data1, final LocalDate data2) {
+    private LocalDate menorFim(final LocalDate data1, final LocalDate data2) {
         return nullComp(LocalDate::isBefore, data1, data2);
     }
+
     private LocalDate nullComp(
             final BiPredicate<LocalDate, LocalDate> comp,
             final LocalDate data1,
             final LocalDate data2) {
 
-        if(data1 == null || data2 == null) return null;
+        boolean data1nula = data1 == null;
+        boolean data2nula = data2 == null;
+
+        if(data1nula && data2nula) return null;
+
+        if(data1nula != data2nula) return data1nula ? data2 : data1;
 
         return comp.test(data1, data2) ? data1 : data2;
     }
-
 
     @Override
     public String toString() {
