@@ -27,8 +27,10 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
     public X pega(@NotNull @Valid final K key)
         throws EntidadeInexistenteException;
 
+    @Transactional(readOnly = true)
     public List<X> lista(final F filtro) throws EntidadeInexistenteException;
 
+    @Transactional(readOnly = true)
     public default List<X> listar() throws EntidadeInexistenteException{
         return this.lista(null);
     }
