@@ -41,7 +41,7 @@ import lombok.ToString;
     + "   l.conta.id conta_id, "
     + "   l.fato.dia dia, "
     + "   sum(l.valor) valor "
-    + " from Lancamento l "
+    + " from planinhacore.Lancamento l "
     + " group by l.conta.id, l.fato.dia"
 )
 public class SaldoInicial

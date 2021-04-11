@@ -43,7 +43,7 @@ import lombok.ToString;
     "  select "
     + " l.conta.id conta_id, min(l.fato.dia) dia "
     + "from "
-    + " Lancamento l "
+    + " planinhacore.Lancamento l "
     + "group by "
     + " l.conta.id, l.fato.dia"
 )
