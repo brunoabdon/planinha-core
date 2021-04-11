@@ -8,8 +8,10 @@ import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.hibernate.annotations.Subselect;
 
@@ -37,14 +39,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Subselect(
-    "   select "
-    + "   c.id id, "
-    + "   f.dia dia, "
-    + "   sum(l.valor) valor "
-    + " from planinhacore.Lancamento l "
-    + " join planinhacore.fato f on f.id = l.fato_id "
-    + " join planinhacore.conta c on c.id = l.conta_id "
-   + " group by c.id, f.dia"
+      " select c.id id, f.dia dia, sum(l_ant.valor) valor "
+    + " from planinhacore.conta c "
+    + " join planinhacore.lancamento l "
+    + " on l.conta_id = c.id "
+    + " join planinhacore.fato f "
+    + " on l.fato_id = f.id "
+    + " left join planinhacore.lancamento l_ant on l_ant.conta_id = c.id "
+    + " left join planinhacore.fato f_ant on f_ant.id = l_ant.fato_id "
+    + " where f_ant.dia < f.dia "
+    + " group by c.id, f.dia "
 )
 public class SaldoInicial
     implements Entidade<SaldoInicial.Id>, Serializable {
@@ -62,7 +66,7 @@ public class SaldoInicial
 
         private static final long serialVersionUID = -1734494257092861534L;
 
-        @Column(updatable = false, name = "conta_id")
+        @Column(updatable = false, name = "id")
         private Integer contaId;
 
         @Column(nullable = false)
@@ -74,6 +78,7 @@ public class SaldoInicial
     private Id id;
 
     @MapsId("id")
+    @JoinColumn(name="id")
     @EqualsAndHashCode.Exclude
     @ManyToOne(optional=false, fetch=FetchType.EAGER)
     private Conta conta;
