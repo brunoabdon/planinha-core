@@ -190,7 +190,8 @@ public class OperacaoFacade
 
     @Override
     public Page<Operacao> lista(final Periodo periodo, final Pageable pageable){
-    	log.debug("Listando operações por {}.", periodo);
+
+    	log.debug("Listando operações por {} ({}).", periodo, pageable);
 
     	return
 	        fatoRepo

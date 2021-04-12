@@ -42,7 +42,7 @@ public class Contas {
             final Pageable pageable)
                 throws EntidadeInexistenteException {
 
-        log.debug("Listando contas");
+        log.debug("Listando contas por {} ({}).",parteDoNome,pageable);
 
         return facade.lista(parteDoNome,pageable);
     }

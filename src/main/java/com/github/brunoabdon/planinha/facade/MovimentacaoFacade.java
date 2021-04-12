@@ -166,7 +166,10 @@ public class MovimentacaoFacade
                 final Pageable pageable)
             throws EntidadeInexistenteException {
 
-        log.debug("Listando movimentações da operação de id {}.",idOperacao);
+        log.debug(
+            "Listando movimentações da operação de id {} ({}).",
+            idOperacao, pageable
+        );
 
         final List<Movimentacao> movimentacoes =
             operacaoFacade.pega(idOperacao).getMovimentacoes();

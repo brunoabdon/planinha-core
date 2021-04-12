@@ -42,7 +42,7 @@ public class Extratos {
             final Pageable pageable)
                 throws EntidadeInexistenteException {
 
-        log.debug("Listando extratos da conta {}.", idConta);
+        log.debug("Listando extratos da conta {} ({}).", idConta, pageable);
 
         final Page<Extrato> extratosDaConta = facade.lista(idConta, pageable);
 

@@ -122,7 +122,9 @@ public class ExtratoFacade
     @Override
     public Page<Extrato> lista(final Integer idConta, final Pageable pageable) {
 
-    	log.debug("Listando extratos da conta de id {}.", idConta);
+    	log.debug(
+	        "Listando extratos da conta de id {} ({}).", idConta, pageable
+        );
 
         return
             contaRepository
