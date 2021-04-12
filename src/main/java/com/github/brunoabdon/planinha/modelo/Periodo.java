@@ -74,11 +74,26 @@ public class Periodo implements Serializable {
     	return new Periodo(dataMinima, dataMaxima);
     }
 
+    /**
+     * Diz se este {@link Periodo} tem um um {@linkplain #getInicio() início} e
+     * {@linkplain #getFim() fim} determinados - isto é, direntes de {@code
+     * null}.
+     * @return {@code true} sse não forem {@code null} o {@linkplain
+     * #getInicio() início} nem o {@linkplain #getFim() fim}.
+     */
     @JsonIgnore
     public boolean isFechado() {
         return inicio != null && fim != null;
     }
 
+    /**
+     * Retorna um {@link Periodo} que contem apenas os dias presentes neste
+     * período e no período dado.
+     *
+     * @param periodo Um {@link Periodo}.
+     *
+     * @return A interceção entre este período e o períoodo dado.
+     */
     public Periodo intersecao(@NotNull final Periodo periodo) {
 
         final LocalDate maiorInicio =
