@@ -21,9 +21,11 @@ server:
   servlet:
     context-path: /planinha
     
-    
 logging:
   level:
     ROOT: INFO
     '[com.github.brunoabdon]': TRACE
-    
+    '[org.hibernate.SQL]': WARN #ERROR
+    '[org.hibernate.type.descriptor.sql.BasicBinder]': WARN #TRACE
+    '[org.springframework.jdbc.core.JdbcTemplate]': WARN #DEBUG
+    '[org.springframework.jdbc.core.StatementCreatorUtils]': TRACE
