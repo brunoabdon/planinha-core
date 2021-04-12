@@ -7,6 +7,8 @@ import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +41,11 @@ public class Operacoes {
             @RequestParam(name="mes", required = false)
             final YearMonth mes,
 
+            @DateTimeFormat(iso = ISO.DATE)
             @RequestParam(name = "dataMinima", required = false)
             final LocalDate dataMinima,
 
+            @DateTimeFormat(iso = ISO.DATE)
             @RequestParam(name = "dataMaxima", required = false)
             final LocalDate dataMaxima)
 		        throws EntidadeInexistenteException {
