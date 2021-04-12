@@ -55,16 +55,12 @@ public class TimeUtils {
 
         long quantidadeDeMeses = quantosMesesEntre(diaInicio, diaFinal);
 
-        return streamMensal(diaInicio).limit(quantidadeDeMeses);
+        return streamDeTantosMeses(diaInicio, quantidadeDeMeses);
     }
 
-    public Stream<LocalDate> streamMensalAteHoje(
-            final LocalDate diaInicio){
-
-        final LocalDate hoje = LocalDate.now();
-
-        long quantidadeDeMeses = quantosMesesEntre(diaInicio, hoje);
-
+    public Stream<LocalDate> streamDeTantosMeses(
+            final LocalDate diaInicio,
+            long quantidadeDeMeses) {
         return streamMensal(diaInicio).limit(quantidadeDeMeses);
     }
 }

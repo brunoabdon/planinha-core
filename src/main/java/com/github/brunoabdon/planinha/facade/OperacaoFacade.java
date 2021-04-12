@@ -11,6 +11,8 @@ import java.util.function.Function;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdMappingException;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.dal.ContaRepository;
 import com.github.brunoabdon.planinha.dal.FatoRepository;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
@@ -28,7 +31,6 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.FatoVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.pivovarit.function.ThrowingBiFunction;
 import com.pivovarit.function.ThrowingFunction;
 import com.pivovarit.function.exception.WrappedException;
@@ -187,14 +189,14 @@ public class OperacaoFacade
     }
 
     @Override
-    public List<Operacao> lista(final Periodo periodo) {
-    	log.debug("Listando operações por {}.", periodo);
+    public Page<Operacao> lista(final Periodo periodo, final Pageable pageable){
+
+    	log.debug("Listando operações por {} ({}).", periodo, pageable);
 
     	return
 	        fatoRepo
-	        .findByPeriodo(periodo)
-              .map(mapper::toVOSimples)
-              .collect(toList());
+	            .findByPeriodo(periodo,pageable)
+	            .map(mapper::toVOSimples);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.github.brunoabdon.commons.facade;
 
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
@@ -28,11 +28,12 @@ public interface Facade <X extends Identifiable<K>, K, F, A >{
         throws EntidadeInexistenteException;
 
     @Transactional(readOnly = true)
-    public List<X> lista(final F filtro) throws EntidadeInexistenteException;
+    public Page<X> lista(final F filtro, final Pageable pageable)
+            throws EntidadeInexistenteException;
 
     @Transactional(readOnly = true)
-    public default List<X> listar() throws EntidadeInexistenteException{
-        return this.lista(null);
+    public default Page<X> lista() throws EntidadeInexistenteException{
+        return this.lista(null, Pageable.unpaged());
     }
 
     @Transactional(rollbackFor={RuntimeException.class,BusinessException.class})

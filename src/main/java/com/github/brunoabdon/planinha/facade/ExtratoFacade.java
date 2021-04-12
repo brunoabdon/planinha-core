@@ -3,12 +3,16 @@ package com.github.brunoabdon.planinha.facade;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 
+import java.time.Clock;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.github.brunoabdon.commons.facade.BusinessException;
@@ -16,6 +20,7 @@ import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
 import com.github.brunoabdon.commons.facade.mappers.Mapper;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.dal.AberturaDeContaRepository;
 import com.github.brunoabdon.planinha.dal.ContaRepository;
 import com.github.brunoabdon.planinha.dal.LancamentoRepository;
@@ -28,7 +33,6 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.github.brunoabdon.planinha.util.TimeUtils;
 
 import lombok.Setter;
@@ -60,6 +64,9 @@ public class ExtratoFacade
 
     @Autowired
     private TimeUtils timeUtils;
+
+    //TODO usar um bean @autowired
+    private Clock clock = Clock.systemDefaultZone();
 
     @Override
     public Extrato cria(final Extrato extrato) throws BusinessException {
@@ -113,32 +120,37 @@ public class ExtratoFacade
     }
 
     @Override
-    public List<Extrato> lista(final Integer idConta) {
+    public Page<Extrato> lista(final Integer idConta, final Pageable pageable) {
 
-    	log.debug("Listando extratos da conta de id {}.", idConta);
+    	log.debug(
+	        "Listando extratos da conta de id {} ({}).", idConta, pageable
+        );
 
         return
             contaRepository
                 .findById(idConta)
-                .map(this::lista)
-                .orElseGet(Collections::emptyList);
+                .map(c -> lista(c,pageable))
+                .orElseGet(Page::empty);
     }
 
-    private List<Extrato> lista(final Conta conta) {
+    private Page<Extrato> lista(final Conta conta, final Pageable pageable) {
 
         log.debug("Listando extratos da conta {}.", conta);
 
         return
             aberturaDeContaRepo
                 .findByConta(conta)
-                .map(this::lista)
-                .orElseGet(Collections::emptyList);
+                .map(abertura -> this.lista(abertura, pageable))
+                .orElseGet(Page::empty);
     }
 
-    private List<Extrato> lista(final AberturaDeConta aberturaDeConta){
+    private Page<Extrato> lista(
+            final AberturaDeConta aberturaDeConta,
+            final Pageable pageable){
+
         log.debug(
-            "Listando extratos desde a abertura da conta {}.",
-            aberturaDeConta
+            "Listando extratos desde a abertura da conta {} ({}).",
+            aberturaDeConta, pageable
         );
 
         final LocalDate diaInauguracaoDaConta = aberturaDeConta.getDia();
@@ -149,12 +161,27 @@ public class ExtratoFacade
         final Function<Periodo,Extrato.Id> toIdExtrato =
             p -> new Extrato.Id(contaVO, p);
 
-        return
-            timeUtils.streamMensalAteHoje(diaInauguracaoDaConta)
-               .map(Periodo::mesDoDia)
-               .map(toIdExtrato)
-               .map(Extrato::new)
-               .collect(toList());
+        final LocalDate hoje = LocalDate.now(clock);
+
+        final long quantosMesesAteHoje =
+            timeUtils.quantosMesesEntre(diaInauguracaoDaConta, hoje);
+
+        log.trace(
+            "Hoje {} já passaram {} meses de {}, quando foi inaugurada {}.",
+            hoje, quantosMesesAteHoje, diaInauguracaoDaConta, conta
+        );
+
+        final List<Extrato> extratos =
+            timeUtils
+                .streamDeTantosMeses(diaInauguracaoDaConta,quantosMesesAteHoje)
+                .skip(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .map(Periodo::mesDoDia)
+                .map(toIdExtrato)
+                .map(Extrato::new)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(extratos, pageable, quantosMesesAteHoje);
     }
 
     @Override

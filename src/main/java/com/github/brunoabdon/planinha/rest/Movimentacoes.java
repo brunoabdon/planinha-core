@@ -2,11 +2,10 @@ package com.github.brunoabdon.planinha.rest;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,12 +43,13 @@ public class Movimentacoes {
     private Facade<Movimentacao, Id, Integer, Integer> facade;
 
     @GetMapping
-    public List<Movimentacao> listar(
+    public Page<Movimentacao> listar(
             @PathVariable("operacao_id") final Integer idOperacao)
                 throws EntidadeInexistenteException {
 
         log.debug("Listando movimentações da operação {}.",idOperacao);
-        return facade.lista(idOperacao);
+
+        return facade.lista(idOperacao,null);
     }
 
     @GetMapping("{conta_id}")

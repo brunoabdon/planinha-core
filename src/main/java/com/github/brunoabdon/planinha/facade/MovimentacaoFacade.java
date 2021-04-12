@@ -8,6 +8,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,10 +146,35 @@ public class MovimentacaoFacade
                 );
     }
 
+    /**
+     * Lista todas as operações de uma {@link Operacao}, dado o seu {@linkplain
+     * Operacao#getId() id}.
+     *
+     * @param idOperacao O id da operação que se deseja listar as movimentações.
+     * @param pageable ignorado.
+     *
+     * @return As movimentações de uma operação.
+     *
+     * @throws EntidadeInexistenteException Se não existir uma operação com o
+     * id passado.
+     *
+     * @see Facade#lista(Object, Pageable).
+     */
     @Override
-    public List<Movimentacao> lista(final Integer idOperacao)
+    public Page<Movimentacao> lista(
+                final Integer idOperacao,
+                final Pageable pageable)
             throws EntidadeInexistenteException {
-        return operacaoFacade.pega(idOperacao).getMovimentacoes();
+
+        log.debug(
+            "Listando movimentações da operação de id {} ({}).",
+            idOperacao, pageable
+        );
+
+        final List<Movimentacao> movimentacoes =
+            operacaoFacade.pega(idOperacao).getMovimentacoes();
+
+        return new PageImpl<>(movimentacoes);
     }
 
     @Override
