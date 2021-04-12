@@ -51,7 +51,7 @@ public class Operacoes {
 		        throws EntidadeInexistenteException {
 
         log.debug(
-    		"Listando operações por {},{}->{}.",
+    		"Listando operações por no mês {} entre {} e {}.",
     		mes, dataMinima, dataMaxima
 		);
 
