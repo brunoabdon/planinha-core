@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,7 +72,8 @@ public class Movimentacoes {
     public Movimentacao atualizar(
             @PathVariable("operacao_id") final Integer idOperacao,
             @PathVariable("conta_id") final Integer idConta,
-    		@PathVariable final Atualizacao atualizacao) throws BusinessException {
+    		@RequestBody final Atualizacao atualizacao)
+		        throws BusinessException {
 
         log.debug(
             "Atualizando pra {} a movimentação da conta {} em {}.",
@@ -102,7 +104,8 @@ public class Movimentacoes {
     @PostMapping
     public Movimentacao criar(
             @PathVariable("operacao_id") final Integer idOperacao,
-            @NotNull final Movimentacao payload) throws BusinessException {
+            @NotNull @RequestBody  final Movimentacao payload)
+                throws BusinessException {
 
         log.debug(
             "Criando movimentação {} na operação {}.",
