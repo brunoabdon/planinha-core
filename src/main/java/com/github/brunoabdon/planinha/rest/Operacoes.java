@@ -4,9 +4,11 @@ import static lombok.AccessLevel.PACKAGE;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.modelo.Operacao;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,7 @@ public class Operacoes {
     private Facade<Operacao, Integer, Periodo, ?> facade;
 
     @GetMapping
-    public List<Operacao> listar(
+    public Page<Operacao> listar(
             @RequestParam(name="mes", required = false)
             final YearMonth mes,
 
@@ -47,7 +49,10 @@ public class Operacoes {
 
             @DateTimeFormat(iso = ISO.DATE)
             @RequestParam(name = "dataMaxima", required = false)
-            final LocalDate dataMaxima)
+            final LocalDate dataMaxima,
+
+            @PageableDefault(sort = "dia")
+            final Pageable pageable)
 		        throws EntidadeInexistenteException {
 
         log.debug(
@@ -62,7 +67,7 @@ public class Operacoes {
 
 		final Periodo periodo = periodoMes.intersecao(periodoDatas);
 
-		return facade.lista(periodo);
+		return facade.lista(periodo,pageable);
     }
 
     @GetMapping("{operacao_id}")

@@ -11,6 +11,8 @@ import java.util.function.Function;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -187,14 +189,13 @@ public class OperacaoFacade
     }
 
     @Override
-    public List<Operacao> lista(final Periodo periodo) {
+    public Page<Operacao> lista(final Periodo periodo, final Pageable pageable){
     	log.debug("Listando operações por {}.", periodo);
 
     	return
 	        fatoRepo
-	        .findByPeriodo(periodo)
-              .map(mapper::toVOSimples)
-              .collect(toList());
+	            .findByPeriodo(periodo,pageable)
+	            .map(mapper::toVOSimples);
     }
 
     @Override
