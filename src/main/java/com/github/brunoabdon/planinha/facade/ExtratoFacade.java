@@ -78,7 +78,6 @@ public class ExtratoFacade
 		final Periodo periodo = key.getPeriodo();
 		final LocalDate dataInicial = periodo.getInicio();
 
-
 		final int saldoAnterior =
 	        saldoInicialRepo
 	            .findById(new SaldoInicial.Id(idConta, dataInicial))

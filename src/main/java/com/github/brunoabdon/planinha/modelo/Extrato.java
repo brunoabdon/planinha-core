@@ -1,11 +1,14 @@
 package com.github.brunoabdon.planinha.modelo;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
@@ -19,6 +22,7 @@ import lombok.Setter;
 
 @EqualsAndHashCode
 @NoArgsConstructor
+@JsonInclude(NON_NULL)
 public class Extrato implements Identifiable<Id>, Serializable{
 
     private static final long serialVersionUID = 3530634103009951958L;

@@ -24,6 +24,8 @@ import java.util.function.BiPredicate;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -72,35 +74,58 @@ public class Periodo implements Serializable {
     	return new Periodo(dataMinima, dataMaxima);
     }
 
+    /**
+     * Diz se este {@link Periodo} tem um um {@linkplain #getInicio() início} e
+     * {@linkplain #getFim() fim} determinados - isto é, direntes de {@code
+     * null}.
+     * @return {@code true} sse não forem {@code null} o {@linkplain
+     * #getInicio() início} nem o {@linkplain #getFim() fim}.
+     */
+    @JsonIgnore
     public boolean isFechado() {
         return inicio != null && fim != null;
     }
 
+    /**
+     * Retorna um {@link Periodo} que contem apenas os dias presentes neste
+     * período e no período dado.
+     *
+     * @param periodo Um {@link Periodo}.
+     *
+     * @return A interceção entre este período e o períoodo dado.
+     */
     public Periodo intersecao(@NotNull final Periodo periodo) {
 
-        final LocalDate maiorInicio = max(this.getInicio(),periodo.getInicio());
-        final LocalDate menorFim = min(this.getFim(),periodo.getFim());
+        final LocalDate maiorInicio =
+            maiorInicio(this.getInicio(),periodo.getInicio());
+        final LocalDate menorFim =
+            menorFim(this.getFim(),periodo.getFim());
 
         return Periodo.of(maiorInicio, menorFim);
     }
 
-    private LocalDate max(final LocalDate data1, final LocalDate data2) {
+    private LocalDate maiorInicio(final LocalDate data1, final LocalDate data2){
         return nullComp(LocalDate::isAfter, data1, data2);
     }
 
-    private LocalDate min(final LocalDate data1, final LocalDate data2) {
+    private LocalDate menorFim(final LocalDate data1, final LocalDate data2) {
         return nullComp(LocalDate::isBefore, data1, data2);
     }
+
     private LocalDate nullComp(
             final BiPredicate<LocalDate, LocalDate> comp,
             final LocalDate data1,
             final LocalDate data2) {
 
-        if(data1 == null || data2 == null) return null;
+        boolean data1nula = data1 == null;
+        boolean data2nula = data2 == null;
+
+        if(data1nula && data2nula) return null;
+
+        if(data1nula != data2nula) return data1nula ? data2 : data1;
 
         return comp.test(data1, data2) ? data1 : data2;
     }
-
 
     @Override
     public String toString() {

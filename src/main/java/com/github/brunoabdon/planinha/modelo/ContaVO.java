@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 /**
  * Uma carteira à qual se pode associar e movimentar um valor.
  *
@@ -46,6 +45,7 @@ public class ContaVO extends EntidadeBaseInt {
         super.setId(id);
     }
 
+    //TODO ver pra que isso serve mesmo
     public static ContaVO fromString(final String str){
         return EntidadeBaseInt.fromString(ContaVO.class, str);
     }
