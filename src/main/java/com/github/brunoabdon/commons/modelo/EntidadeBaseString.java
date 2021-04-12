@@ -20,12 +20,25 @@ package com.github.brunoabdon.commons.modelo;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Classe base pra {@link Entidade}s com {@link Entidade#getId() id} do tipo
  * {@link String}.
  *
  * @author bruno abdon
  */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of="id")
 @MappedSuperclass
 public class EntidadeBaseString implements Entidade<String>{
 
@@ -33,21 +46,5 @@ public class EntidadeBaseString implements Entidade<String>{
 
 	@Id
     private String id;
-
-    public EntidadeBaseString() {}
-
-    public EntidadeBaseString(final String id) {
-        this.id = id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
 
 }

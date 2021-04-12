@@ -1,6 +1,7 @@
 package com.github.brunoabdon.planinha.facade.mapper;
 
 import static java.util.stream.Collectors.toList;
+import static lombok.AccessLevel.PACKAGE;
 
 import java.util.List;
 
@@ -15,10 +16,12 @@ import com.github.brunoabdon.planinha.modelo.FatoVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@Setter(PACKAGE)
 public class OperacaoMapper
         implements SimpleIdentifiableMapper<Fato, Operacao, Integer>{
 

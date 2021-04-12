@@ -29,12 +29,12 @@ import lombok.ToString;
  * @author bruno
  *
  */
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Subselect(
     "   select "
@@ -68,12 +68,15 @@ public class SaldoInicial
     }
 
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private Id id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(optional=false, fetch=FetchType.EAGER)
     @JoinColumn(insertable = false, updatable = false, name = "conta_id")
     private Conta conta;
 
+    @EqualsAndHashCode.Exclude
     @Column(precision = 11, scale = 0, nullable = false)
     private int valor;
 

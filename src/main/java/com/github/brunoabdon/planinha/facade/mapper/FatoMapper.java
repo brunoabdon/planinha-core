@@ -8,7 +8,8 @@ import com.github.brunoabdon.planinha.modelo.FatoVO;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j@Component
+@Slf4j
+@Component
 public class FatoMapper implements Mapper<Fato, FatoVO> {
 
     @Override

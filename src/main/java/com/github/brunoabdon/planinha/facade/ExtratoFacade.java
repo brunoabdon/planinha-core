@@ -35,8 +35,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Setter(PACKAGE)
 @Service
+@Setter(PACKAGE)
 public class ExtratoFacade
         implements Facade<Extrato, Extrato.Id, Integer, Void> {
 
@@ -56,10 +56,10 @@ public class ExtratoFacade
     private SaldoInicialRepository  saldoInicialRepo;
 
     @Autowired
-    private AberturaDeContaRepository aberturaDeContaRepository;
+    private AberturaDeContaRepository aberturaDeContaRepo;
 
     @Autowired
-    private TimeUtils tmu;
+    private TimeUtils timeUtils;
 
     @Override
     public Extrato cria(final Extrato extrato) throws BusinessException {
@@ -130,11 +130,10 @@ public class ExtratoFacade
         log.debug("Listando extratos da conta {}.", conta);
 
         return
-            aberturaDeContaRepository
+            aberturaDeContaRepo
                 .findByConta(conta)
                 .map(this::lista)
                 .orElseGet(Collections::emptyList);
-
     }
 
     private List<Extrato> lista(final AberturaDeConta aberturaDeConta){
@@ -152,7 +151,7 @@ public class ExtratoFacade
             p -> new Extrato.Id(contaVO, p);
 
         return
-            tmu.streamMensalAteHoje(diaInauguracaoDaConta)
+            timeUtils.streamMensalAteHoje(diaInauguracaoDaConta)
                .map(Periodo::mesDoDia)
                .map(toIdExtrato)
                .map(Extrato::new)

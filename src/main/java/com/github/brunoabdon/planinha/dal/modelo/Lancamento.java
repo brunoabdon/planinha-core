@@ -27,7 +27,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 @Entity
 @Table(schema = "planinhacore")
 public class Lancamento implements Identifiable<Lancamento.Id>, Serializable {
@@ -36,7 +36,7 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    @EqualsAndHashCode(of = {"fatoId","contaId"})
+    @EqualsAndHashCode
     @Embeddable
     public static class Id implements Serializable {
 
@@ -55,16 +55,20 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable {
     }
 
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private Id id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(insertable = false, updatable = false, name = "fato_id")
     private Fato fato;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(optional=false, fetch=FetchType.EAGER)
     @JoinColumn(insertable = false, updatable = false, name = "conta_id")
     private Conta conta;
 
+    @EqualsAndHashCode.Exclude
     @Column(precision = 11, scale = 0, nullable = false)
     private int valor;
 

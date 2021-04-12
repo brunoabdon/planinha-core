@@ -23,8 +23,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Setter(PACKAGE)
 @Service
+@Setter(PACKAGE)
 public class ContaFacade implements Facade<ContaVO,Integer,String,String> {
 
     @Autowired
