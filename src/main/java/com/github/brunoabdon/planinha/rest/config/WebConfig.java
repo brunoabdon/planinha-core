@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.github.brunoabdon.commons.modelo.conv.PeriodoConverter;
 import com.github.brunoabdon.commons.modelo.conv.YearMonthConveter;
-import com.github.brunoabdon.planinha.modelo.conv.PeriodoConverter;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

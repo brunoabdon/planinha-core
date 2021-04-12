@@ -11,8 +11,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.brunoabdon.commons.modelo.Identifiable;
+import com.github.brunoabdon.commons.modelo.Periodo;
+import com.github.brunoabdon.commons.modelo.conv.PeriodoConverter;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
-import com.github.brunoabdon.planinha.modelo.conv.PeriodoConverter;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

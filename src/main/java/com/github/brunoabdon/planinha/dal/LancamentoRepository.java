@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.github.brunoabdon.commons.dal.Repositorio;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento.Id;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @Repository
 public interface LancamentoRepository extends Repositorio<Lancamento, Id> {

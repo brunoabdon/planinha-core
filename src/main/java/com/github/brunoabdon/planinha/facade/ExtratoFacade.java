@@ -16,6 +16,7 @@ import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.facade.mappers.IdentifiableMapper;
 import com.github.brunoabdon.commons.facade.mappers.Mapper;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.dal.AberturaDeContaRepository;
 import com.github.brunoabdon.planinha.dal.ContaRepository;
 import com.github.brunoabdon.planinha.dal.LancamentoRepository;
@@ -28,7 +29,6 @@ import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
 import com.github.brunoabdon.planinha.modelo.ItemDeExtrato;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 import com.github.brunoabdon.planinha.util.TimeUtils;
 
 import lombok.Setter;

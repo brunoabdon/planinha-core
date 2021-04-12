@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.modelo.conv;
+package com.github.brunoabdon.commons.modelo.conv;
 
 import static java.time.LocalDate.parse;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.github.brunoabdon.planinha.modelo.Periodo;
+import com.github.brunoabdon.commons.modelo.Periodo;
 
 import lombok.NoArgsConstructor;
 

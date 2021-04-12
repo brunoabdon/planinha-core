@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.github.brunoabdon.commons.dal.Repositorio;
+import com.github.brunoabdon.commons.modelo.Periodo;
 import com.github.brunoabdon.planinha.dal.modelo.Fato;
-import com.github.brunoabdon.planinha.modelo.Periodo;
 
 @Repository
 public interface FatoRepository extends Repositorio<Fato, Integer> {
