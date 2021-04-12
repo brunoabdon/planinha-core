@@ -192,7 +192,7 @@ public class OperacaoFacade
 
     	return
 	        fatoRepo
-	        .findByDiaBetween(periodo.getInicio(), periodo.getFim())
+	        .findByPeriodo(periodo)
               .map(mapper::toVOSimples)
               .collect(toList());
     }
