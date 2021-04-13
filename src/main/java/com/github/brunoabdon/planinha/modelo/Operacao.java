@@ -7,8 +7,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
-import com.github.brunoabdon.commons.modelo.IdentifiableBaseInt;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +17,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class Operacao
-        extends IdentifiableBaseInt
         implements Identifiable<Integer>, Serializable {
 
 	private static final long serialVersionUID = 7410023178167290123L;
+
+    @NotNull
+    @EqualsAndHashCode.Include
+    private Integer id;
 
 	@NotNull
 	@EqualsAndHashCode.Exclude
@@ -32,14 +35,6 @@ public class Operacao
     @EqualsAndHashCode.Exclude
     private List<Movimentacao> movimentacoes;
 
-    public Operacao(
-            final Integer id,
-            final FatoVO fato,
-            final List<Movimentacao> movimentacoes) {
-        super(id);
-        this.fato = fato;
-        this.movimentacoes = movimentacoes;
-    }
 	@Override
 	public String toString() {
 		return "[Operacao:"+getId()+"|"+ fato + "]";

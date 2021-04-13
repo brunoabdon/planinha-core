@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.github.brunoabdon.commons.modelo.IdentifiableBaseInt;
+import com.github.brunoabdon.commons.modelo.Identifiable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,12 +21,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ContaVO extends IdentifiableBaseInt implements Serializable {
+public class ContaVO implements Identifiable<Integer>, Serializable {
 
     private static final long serialVersionUID = 7321886996603362113L;
 
     private static final int TAMANHO_MAX_NOME = 70;
+
+    @EqualsAndHashCode.Include
+    private Integer id;
 
     @NotEmpty
     @NotBlank
@@ -39,7 +41,7 @@ public class ContaVO extends IdentifiableBaseInt implements Serializable {
     }
 
     public ContaVO(final Integer id, final String nome) {
-        super(id);
+        this.id = id;
         this.nome = nome;
     }
 
