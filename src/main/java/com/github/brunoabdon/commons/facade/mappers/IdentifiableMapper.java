@@ -32,5 +32,5 @@ public interface IdentifiableMapper<
      * @throws IdMappingException se não for possível determinar a chave do
      * {@link Identifiable}.
      */
-    public I toKey(final J j) throws IdMappingException;
+    I toKey(final J j) throws IdMappingException;
 }

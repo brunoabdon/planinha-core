@@ -12,6 +12,6 @@ import com.github.brunoabdon.planinha.dal.modelo.virtual.AberturaDeConta;
 public interface AberturaDeContaRepository
     extends Repositorio<AberturaDeConta, Integer> {
 
-    public Optional<AberturaDeConta> findByConta(final Conta conta);
+    Optional<AberturaDeConta> findByConta(final Conta conta);
 
 }

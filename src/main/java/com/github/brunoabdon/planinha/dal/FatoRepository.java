@@ -16,9 +16,9 @@ import com.github.brunoabdon.planinha.dal.modelo.Fato;
 @Repository
 public interface FatoRepository extends Repositorio<Fato, Integer> {
 
-    public static final Logger log = getLogger(FatoRepository.class);
+    Logger log = getLogger(FatoRepository.class);
 
-    public default Page<Fato> findByPeriodo(
+    default Page<Fato> findByPeriodo(
             final Periodo periodo, final Pageable pageable) {
 
         log.debug("Pesquisando fatos pelo perído {} ({}).", periodo, pageable);
@@ -49,15 +49,15 @@ public interface FatoRepository extends Repositorio<Fato, Integer> {
         return fatos;
     }
 
-    public Page<Fato> findByDiaGreaterThanEqual(
+    Page<Fato> findByDiaGreaterThanEqual(
             final LocalDate dia,
             final Pageable pageable);
 
-    public Page<Fato> findByDiaLessThanEqual(
+    Page<Fato> findByDiaLessThanEqual(
             final LocalDate dia,
             final Pageable pageable);
 
-    public Page<Fato> findByDiaBetween(
+    Page<Fato> findByDiaBetween(
             final LocalDate dataMinima,
             final LocalDate dataMaxima,
             final Pageable pageable);

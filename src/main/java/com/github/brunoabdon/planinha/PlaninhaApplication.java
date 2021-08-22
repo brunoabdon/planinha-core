@@ -13,5 +13,4 @@ public class PlaninhaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PlaninhaApplication.class, args);
 	}
-
 }

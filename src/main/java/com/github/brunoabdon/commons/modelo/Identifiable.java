@@ -25,6 +25,6 @@ package com.github.brunoabdon.commons.modelo;
  */
 public interface Identifiable<K> {
 
-    public K getId();
+    K getId();
 
 }

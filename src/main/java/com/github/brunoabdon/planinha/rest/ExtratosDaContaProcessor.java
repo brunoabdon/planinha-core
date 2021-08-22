@@ -23,5 +23,4 @@ public class ExtratosDaContaProcessor
 
         return model;
     }
-
 }

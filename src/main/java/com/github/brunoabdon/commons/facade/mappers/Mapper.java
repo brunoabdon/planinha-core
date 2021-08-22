@@ -15,7 +15,7 @@ public interface Mapper<T,V> {
      * @param t um {@code T}
      * @return um v.
      */
-    public V toVO(final T t);
+    V toVO(final T t);
 
     /**
      * Transforma um {@code T} na versão simplificada (com menos atributos) de
@@ -24,8 +24,7 @@ public interface Mapper<T,V> {
      * @param t um {@code T}
      * @return um {@code V} simplificado.
      */
-    public default V toVOSimples(final T t) {
+    default V toVOSimples(final T t) {
         return toVO(t);
     }
-
 }
