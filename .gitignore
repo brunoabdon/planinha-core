@@ -34,3 +34,6 @@ nbactions.xml
 /.apt_generated/
 /.apt_generated_tests/
 .factorypath
+
+
+.idea/
