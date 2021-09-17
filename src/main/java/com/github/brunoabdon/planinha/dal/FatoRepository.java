@@ -35,7 +35,7 @@ public interface FatoRepository extends Repositorio<Fato, Integer> {
             );
             fatos = this.findByDiaBetween(inicio,fim,pageable);
         } else if(Periodo.SEMPRE.equals(periodo)) {
-            log.trace("Pesquisando fatos em qualquer dia.",pageable);
+            log.trace("Pesquisando fatos em qualquer dia. ({})",pageable);
             fatos = findAll(pageable);
         } else if(inicio != null){
             log.trace(
