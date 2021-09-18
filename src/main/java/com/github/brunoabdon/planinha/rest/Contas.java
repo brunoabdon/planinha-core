@@ -48,18 +48,8 @@ public class Contas {
     @Autowired
     private Facade<ContaVO,Integer,String,String> facade;
 
-    private RepresentationModelAssembler<ContaVO, ContaModel>
-        contaAssembler =
-            new IdentifiableModelAssembler<ContaVO, ContaModel>(
-                    Contas.class, ContaModel.class){
-
-            @Override
-            public void fillModel(final ContaModel model, final ContaVO conta){
-
-                model.setId(conta.getId());
-                model.setNome(conta.getNome());
-            }
-        };
+    @Autowired
+    private RepresentationModelAssembler<ContaVO, ContaModel> contaAssembler;
 
     @GetMapping
     public ResponseEntity<PagedModel<ContaModel>> listar(
