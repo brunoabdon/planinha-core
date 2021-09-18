@@ -3,6 +3,7 @@ package com.github.brunoabdon.planinha.rest.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -28,6 +29,6 @@ public class OperacaoModel extends RepresentationModel<OperacaoModel>
     private FatoModel fato;
 
     @EqualsAndHashCode.Exclude
-    private List<MovimentacaoModel> movimentacoes;
+    private CollectionModel<MovimentacaoModel> movimentacoes;
 
 }
