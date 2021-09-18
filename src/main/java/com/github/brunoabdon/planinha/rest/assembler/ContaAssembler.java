@@ -1,4 +1,4 @@
-package com.github.brunoabdon.planinha.rest;
+package com.github.brunoabdon.planinha.rest.assembler;
 
 import com.github.brunoabdon.commons.rest.assembler.IdentifiableModelAssembler;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
