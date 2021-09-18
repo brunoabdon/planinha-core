@@ -1,24 +1,17 @@
 package com.github.brunoabdon.planinha.rest.modelfiller;
 
+import com.github.brunoabdon.commons.rest.assembler.ChildrenRepresentationModelAssembler;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
-import com.github.brunoabdon.planinha.rest.Movimentacoes;
 import com.github.brunoabdon.planinha.rest.model.FatoModel;
 import com.github.brunoabdon.planinha.rest.model.MovimentacaoModel;
 import com.github.brunoabdon.planinha.rest.model.OperacaoModel;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
 public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao> {
@@ -29,7 +22,7 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
 
     @Setter
     @Autowired
-    private RepresentationModelAssembler<Movimentacao,MovimentacaoModel>
+    private ChildrenRepresentationModelAssembler<Operacao,Movimentacao,MovimentacaoModel>
             movimentacoesAssembler;
 
     @Override
@@ -38,24 +31,19 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
             final Operacao operacaoValue) {
 
         //id
-        operacaoModel.setId(operacaoValue.getId());
+        final Integer id = operacaoValue.getId();
+        operacaoModel.setId(id);
 
         //fato
         final FatoModel fatoModel = fatoAssembler.toModel(operacaoValue);
         operacaoModel.setFato(fatoModel);
 
         //movimentacoes
-        final Collection<Movimentacao> movimentacoes =
-            operacaoValue.getMovimentacoes();
-
         final CollectionModel<MovimentacaoModel> movimentacaoModel =
-            movimentacoesAssembler.toCollectionModel(movimentacoes);
-
-        movimentacaoModel.add(
-            linkTo(
-                Movimentacoes.class,operacaoValue.getId()
-            ).withSelfRel()
-        );
+            movimentacoesAssembler.toCollectionModel(
+                operacaoValue,
+                operacaoValue.getMovimentacoes()
+            );
 
         operacaoModel.setMovimentacoes(movimentacaoModel);
     }

@@ -2,6 +2,7 @@ package com.github.brunoabdon.planinha.rest.model;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Relation(collectionRelation = "movimentacoes", itemRelation = "movimentacao")
 public class MovimentacaoModel extends RepresentationModel<MovimentacaoModel> implements Serializable {

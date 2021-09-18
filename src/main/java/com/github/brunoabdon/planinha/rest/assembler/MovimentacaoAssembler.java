@@ -1,39 +1,57 @@
 package com.github.brunoabdon.planinha.rest.assembler;
 
-import com.github.brunoabdon.commons.rest.assembler.IdentifiableModelAssembler;
+import com.github.brunoabdon.commons.rest.assembler.ChildrenRepresentationModelAssembler;
+import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
+import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.rest.Movimentacoes;
+import com.github.brunoabdon.planinha.rest.model.ContaModel;
 import com.github.brunoabdon.planinha.rest.model.MovimentacaoModel;
-import org.springframework.hateoas.Link;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
+import static lombok.AccessLevel.PACKAGE;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
-public class MovimentacaoAssembler extends IdentifiableModelAssembler<Movimentacao, MovimentacaoModel> {
+public class MovimentacaoAssembler implements ChildrenRepresentationModelAssembler<Operacao,Movimentacao, MovimentacaoModel> {
 
-    protected MovimentacaoAssembler() {
-        super(Movimentacoes.class, MovimentacaoModel.class);
+    @Autowired
+    @Setter(PACKAGE)
+    private RepresentationModelAssembler<ContaVO, ContaModel> contaAssembler;
+
+    @Override
+    public MovimentacaoModel toModel(
+            final Operacao parent, final Movimentacao movimentacao) {
+        final ContaVO conta = movimentacao.getConta();
+        final ContaModel contaModel = contaAssembler.toModel(conta);
+        final int valor = movimentacao.getValor();
+
+        return
+            new MovimentacaoModel(valor,contaModel)
+            .add(
+                linkToListInParent(parent).slash(conta.getId()).withSelfRel()
+            );
     }
 
     @Override
-    protected MovimentacaoModel createModelWithId(
-            final Object id,
-            final Movimentacao movimentacao,
-            final Object... parameters) {
+    public CollectionModel<MovimentacaoModel> toCollectionModel(
+            final Operacao operacao,
+            final Iterable<? extends Movimentacao> movimentacaos) {
 
-        Assert.notNull(movimentacao, "Movimentacao não pode ser nula!");
-        Assert.notNull(id, "Id must not be null!");
+        return
+            ChildrenRepresentationModelAssembler.super.toCollectionModel(operacao, movimentacaos)
+            .add(
+                linkToListInParent(operacao).withSelfRel()
+            );
 
-        final MovimentacaoModel movimentacaoModel = instantiateModel(movimentacao);
-
-        final Link self = buildSelfLink(movimentacao);
-
-        return movimentacaoModel.add(self);
     }
 
-    private Link buildSelfLink(final Movimentacao movimentacao) {
-        return linkTo(Movimentacao.class,movimentacao.getId()).withSelfRel();
+    private WebMvcLinkBuilder linkToListInParent(final Operacao operacao) {
+        return linkTo(Movimentacoes.class, operacao.getId());
     }
 }
