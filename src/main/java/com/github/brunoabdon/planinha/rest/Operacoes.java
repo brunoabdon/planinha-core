@@ -117,11 +117,13 @@ public class Operacoes {
     }
 
     @PostMapping
-    public Operacao criar(@RequestBody final Operacao operacao)
+    public OperacaoModel criar(@RequestBody final Operacao operacao)
             throws BusinessException {
 
         log.debug("Criando operação {}.", operacao);
 
-        return facade.cria(operacao);
+        final Operacao operacaoVO = facade.cria(operacao);
+
+        return operacaoAssembler.toModel(operacaoVO);
     }
 }
