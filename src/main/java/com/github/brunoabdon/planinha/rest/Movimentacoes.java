@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Setter(PACKAGE)
 @RestController
-@RequestMapping("operacoes/{operacao_id}/movimentacoes")
+@RequestMapping("/operacoes/{operacao_id}/movimentacoes")
 public class Movimentacoes {
 
     @Getter

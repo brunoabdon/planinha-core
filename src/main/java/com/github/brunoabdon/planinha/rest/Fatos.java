@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Setter(PACKAGE)
 @RestController
-@RequestMapping("operacoes/{operacao_id}/fato")
+@RequestMapping("/operacoes/{operacao_id}/fato")
 public class Fatos {
 
     @Autowired

@@ -39,7 +39,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Slf4j
 @Setter(PACKAGE)
 @RestController
-@RequestMapping("operacoes")
+@RequestMapping("/operacoes")
 public class Operacoes {
 
     @Autowired
