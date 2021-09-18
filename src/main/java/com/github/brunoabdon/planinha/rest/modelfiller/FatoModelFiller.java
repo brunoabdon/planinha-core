@@ -7,7 +7,7 @@ import com.github.brunoabdon.planinha.rest.model.FatoModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FatoFiller implements ModelFiller<FatoModel, Operacao> {
+public class FatoModelFiller implements ModelFiller<FatoModel, Operacao> {
 
     @Override
     public void fillModel(final FatoModel model, final Operacao value) {
