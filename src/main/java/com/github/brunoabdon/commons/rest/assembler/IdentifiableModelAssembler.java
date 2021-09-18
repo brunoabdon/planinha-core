@@ -2,6 +2,7 @@ package com.github.brunoabdon.commons.rest.assembler;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 
@@ -10,14 +11,13 @@ public abstract class IdentifiableModelAssembler<
     D extends RepresentationModel<?>>
         extends RepresentationModelAssemblerSupport<I, D>{
 
-    private final ModelFiller<D, I> modelFiller;
+    @Autowired
+    private ModelFiller<D, I> modelFiller;
 
     protected IdentifiableModelAssembler(
-        final Class<?> controllerClass,
-        final Class<D> resourceType,
-        final ModelFiller<D,I> modelFiller) {
+            final Class<?> controllerClass,
+            final Class<D> resourceType) {
         super(controllerClass, resourceType);
-        this.modelFiller = modelFiller;
     }
 
     @Override
