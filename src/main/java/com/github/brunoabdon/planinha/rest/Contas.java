@@ -1,9 +1,12 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static lombok.AccessLevel.PACKAGE;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
+import com.github.brunoabdon.commons.facade.BusinessException;
+import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.planinha.modelo.ContaVO;
+import com.github.brunoabdon.planinha.rest.model.ContaModel;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,15 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.brunoabdon.commons.facade.BusinessException;
-import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.commons.rest.assembler.IdentifiableModelAssembler;
-import com.github.brunoabdon.planinha.modelo.ContaVO;
-import com.github.brunoabdon.planinha.rest.model.ContaModel;
-
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import static lombok.AccessLevel.PACKAGE;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Slf4j
 @Setter(PACKAGE)
