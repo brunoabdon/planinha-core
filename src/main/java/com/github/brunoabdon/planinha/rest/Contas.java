@@ -65,11 +65,10 @@ public class Contas {
             linkTo(methodOn(Contas.class).listar(parteDoNome, pageable))
             .withSelfRel();
 
-        return
-            new ResponseEntity<>(
-                pgAsmblr.toModel(page,contaAssembler, self),
-                HttpStatus.OK
-            );
+        final PagedModel<ContaModel> pageModel =
+            pgAsmblr.toModel(page, contaAssembler, self);
+
+        return new ResponseEntity<>(pageModel,HttpStatus.OK);
     }
 
     @GetMapping("{conta_id}")
