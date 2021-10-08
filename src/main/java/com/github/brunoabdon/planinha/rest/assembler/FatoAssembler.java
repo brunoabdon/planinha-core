@@ -4,14 +4,15 @@ import com.github.brunoabdon.planinha.modelo.FatoVO;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.rest.Fatos;
 import com.github.brunoabdon.planinha.rest.model.FatoModel;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Setter;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import static lombok.AccessLevel.PACKAGE;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-@Slf4j
 @Component
+@Setter(PACKAGE)
 public class FatoAssembler implements RepresentationModelAssembler<Operacao, FatoModel> {
 
     @Override
