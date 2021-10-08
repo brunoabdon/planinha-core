@@ -13,7 +13,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import static lombok.AccessLevel.PACKAGE;
+
 @Component
+@Setter(PACKAGE)
 public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao> {
 
     @Setter
