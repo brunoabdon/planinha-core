@@ -2,12 +2,17 @@ package com.github.brunoabdon.commons.rest.assembler;
 
 import com.github.brunoabdon.commons.modelo.Identifiable;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
+
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 
+import static lombok.AccessLevel.PACKAGE;
+
 @Slf4j
+@Setter(PACKAGE)
 public abstract class IdentifiableModelAssembler<
     I extends Identifiable<?>,
     D extends RepresentationModel<?>>
