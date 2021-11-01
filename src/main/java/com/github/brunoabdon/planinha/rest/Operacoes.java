@@ -4,6 +4,7 @@ import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.modelo.Periodo;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.planinha.modelo.Operacao;
 import com.github.brunoabdon.planinha.rest.model.OperacaoModel;
 import lombok.Setter;
@@ -17,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,7 +49,7 @@ public class Operacoes {
     private Facade<Operacao, Integer, Periodo, ?> facade;
 
     @Autowired
-    private RepresentationModelAssembler<Operacao, OperacaoModel> operacaoAssembler;
+    private RepresentationModelsAssembler<Operacao, OperacaoModel> operacaoAssembler;
 
     @GetMapping
     public ResponseEntity<PagedModel<OperacaoModel>> listar(
@@ -104,7 +104,7 @@ public class Operacoes {
 
         final Operacao operacao = facade.pega(idOperacao);
 
-        return operacaoAssembler.toModel(operacao);
+        return operacaoAssembler.toFullModel(operacao);
     }
 
     @DeleteMapping("{id}")
@@ -124,6 +124,6 @@ public class Operacoes {
 
         final Operacao operacaoVO = facade.cria(operacao);
 
-        return operacaoAssembler.toModel(operacaoVO);
+        return operacaoAssembler.toFullModel(operacaoVO);
     }
 }

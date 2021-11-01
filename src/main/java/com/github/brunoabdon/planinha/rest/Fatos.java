@@ -4,9 +4,9 @@ import static lombok.AccessLevel.PACKAGE;
 
 import javax.validation.Valid;
 
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.planinha.rest.model.FatoModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,7 +33,7 @@ public class Fatos {
     private Facade<Operacao, Integer, ?, FatoVO> facade;
 
     @Autowired
-    private RepresentationModelAssembler<Operacao,FatoModel> assembler;
+    private RepresentationModelsAssembler<Operacao,FatoModel> assembler;
 
     @GetMapping
     public FatoModel pegar(@PathVariable("operacao_id") final Integer idOperacao)
@@ -43,7 +43,7 @@ public class Fatos {
 
         final Operacao operacao = facade.pega(idOperacao);
 
-        return assembler.toModel(operacao);
+        return assembler.toFullModel(operacao);
     }
 
     @PutMapping
@@ -58,6 +58,6 @@ public class Fatos {
 
         final Operacao operacao = facade.atualiza(idOperacao, patch);
 
-        return assembler.toModel(operacao);
+        return assembler.toFullModel(operacao);
     }
 }

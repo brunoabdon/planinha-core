@@ -3,6 +3,7 @@ package com.github.brunoabdon.planinha.rest;
 import com.github.brunoabdon.commons.facade.BusinessException;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.rest.model.ContaModel;
 import lombok.Setter;
@@ -15,7 +16,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,7 +46,7 @@ public class Contas {
     private Facade<ContaVO,Integer,String,String> facade;
 
     @Autowired
-    private RepresentationModelAssembler<ContaVO, ContaModel> contaAssembler;
+    private RepresentationModelsAssembler<ContaVO, ContaModel> contaAssembler;
 
     @GetMapping
     public ResponseEntity<PagedModel<ContaModel>> listar(
@@ -80,7 +80,7 @@ public class Contas {
 
         final ContaVO contaVO = facade.pega(idConta);
 
-        return asModel(contaVO);
+        return contaAssembler.toFullModel(contaVO);
     }
 
     @PutMapping("{conta_id}")
@@ -94,12 +94,7 @@ public class Contas {
 
         final ContaVO contaVO = facade.atualiza(idConta, nome);
 
-        return asModel(contaVO);
-    }
-
-
-    private ContaModel asModel(final ContaVO vo) {
-        return contaAssembler.toModel(vo);
+        return contaAssembler.toFullModel(contaVO);
     }
 
     @DeleteMapping("{conta_id}")
@@ -118,6 +113,6 @@ public class Contas {
 
         final ContaVO contaVO = facade.cria(conta);
 
-        return asModel(contaVO);
+        return contaAssembler.toFullModel(contaVO);
     }
 }

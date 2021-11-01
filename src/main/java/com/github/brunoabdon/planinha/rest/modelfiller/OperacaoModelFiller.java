@@ -1,6 +1,7 @@
 package com.github.brunoabdon.planinha.rest.modelfiller;
 
 import com.github.brunoabdon.commons.rest.assembler.ChildrenRepresentationModelAssembler;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
@@ -10,7 +11,6 @@ import com.github.brunoabdon.planinha.rest.model.OperacaoModel;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import static lombok.AccessLevel.PACKAGE;
@@ -21,7 +21,7 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
 
     @Setter
     @Autowired
-    private RepresentationModelAssembler<Operacao,FatoModel> fatoAssembler;
+    private RepresentationModelsAssembler<Operacao,FatoModel> fatoAssembler;
 
     @Setter
     @Autowired
@@ -50,4 +50,5 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
 
         operacaoModel.setMovimentacoes(movimentacaoModel);
     }
+
 }

@@ -3,6 +3,7 @@ package com.github.brunoabdon.planinha.rest;
 import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
 import com.github.brunoabdon.commons.facade.Facade;
 import com.github.brunoabdon.commons.modelo.Periodo;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Extrato;
 import com.github.brunoabdon.planinha.modelo.Extrato.Id;
@@ -18,7 +19,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +41,7 @@ public class Extratos {
     private PagedResourcesAssembler<Extrato> pgAsmblr;
 
     @Autowired
-    private RepresentationModelAssembler<Extrato, ExtratoModel> extratoAssembler;
+    private RepresentationModelsAssembler<Extrato, ExtratoModel> extratoAssembler;
 
     @Autowired
     private Facade<ContaVO,Integer,?,?> contaFacade;
@@ -93,6 +93,6 @@ public class Extratos {
 
         final Extrato extrato = facade.pega(id);
 
-        return extratoAssembler.toModel(extrato);
+        return extratoAssembler.toFullModel(extrato);
     }
 }
