@@ -12,7 +12,7 @@ public abstract class RepresentationModelsAssemblerSupport<T, D extends Represen
      * @param controllerClass must not be {@literal null}.
      * @param resourceType    must not be {@literal null}.
      */
-    public RepresentationModelsAssemblerSupport(
+    protected RepresentationModelsAssemblerSupport(
             final Class<?> controllerClass, final Class<D> resourceType) {
         super(controllerClass, resourceType);
     }
