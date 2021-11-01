@@ -3,6 +3,7 @@ package com.github.brunoabdon.planinha.rest.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -11,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
 
 @Getter
 @Setter
@@ -28,6 +31,7 @@ public class OperacaoModel extends RepresentationModel<OperacaoModel>
     @EqualsAndHashCode.Exclude
     private FatoModel fato;
 
+    @JsonInclude(NON_ABSENT)
     @EqualsAndHashCode.Exclude
     private CollectionModel<MovimentacaoModel> movimentacoes;
 

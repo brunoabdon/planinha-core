@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,6 +38,7 @@ public class ExtratoModel extends RepresentationModel<ExtratoModel>
     @EqualsAndHashCode.Exclude
     private ContaModel conta;
 
+    @JsonInclude(NON_ABSENT)
     @EqualsAndHashCode.Exclude
     private CollectionModel<ItemDeExtratoModel> itens;
 
