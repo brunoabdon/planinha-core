@@ -88,5 +88,4 @@ public class Lancamento implements Identifiable<Lancamento.Id>, Serializable {
     public String toString() {
         return "[Lancamento|" + id + "|val:" + valor + "]";
     }
-
 }

@@ -1,11 +1,23 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static lombok.AccessLevel.PACKAGE;
-
+import com.github.brunoabdon.commons.facade.BusinessException;
+import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
+import com.github.brunoabdon.planinha.modelo.ContaVO;
+import com.github.brunoabdon.planinha.rest.model.ContaModel;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.ExposesResourceFor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,25 +28,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.brunoabdon.commons.facade.BusinessException;
-import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.planinha.modelo.ContaVO;
-
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import static lombok.AccessLevel.PACKAGE;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Slf4j
 @Setter(PACKAGE)
 @RestController
-@RequestMapping("contas")
+@ExposesResourceFor(ContaVO.class)
+@RequestMapping("/contas")
 public class Contas {
+
+    @Autowired
+    private PagedResourcesAssembler<ContaVO> pgAsmblr;
 
     @Autowired
     private Facade<ContaVO,Integer,String,String> facade;
 
+    @Autowired
+    private RepresentationModelsAssembler<ContaVO, ContaModel> contaAssembler;
+
     @GetMapping
-    public Page<ContaVO> listar(
+    public ResponseEntity<PagedModel<ContaModel>> listar(
             @RequestParam(name="parteDoNome", required = false)
             final String parteDoNome,
 
@@ -44,28 +59,42 @@ public class Contas {
 
         log.debug("Listando contas por {} ({}).",parteDoNome,pageable);
 
-        return facade.lista(parteDoNome,pageable);
+        final Page<ContaVO> page = facade.lista(parteDoNome,pageable);
+
+        final Link self =
+            linkTo(methodOn(Contas.class).listar(parteDoNome, pageable))
+            .withSelfRel();
+
+        final PagedModel<ContaModel> pageModel =
+            pgAsmblr.toModel(page, contaAssembler, self);
+
+        return new ResponseEntity<>(pageModel,HttpStatus.OK);
     }
 
     @GetMapping("{conta_id}")
-    public ContaVO pegar(@PathVariable("conta_id") final Integer idConta)
+    public ContaModel pegar(
+            @PathVariable("conta_id") final Integer idConta)
             throws EntidadeInexistenteException {
 
         log.debug("Pegando conta {}.",idConta);
 
-        return facade.pega(idConta);
+        final ContaVO contaVO = facade.pega(idConta);
 
+        return contaAssembler.toFullModel(contaVO);
     }
 
     @PutMapping("{conta_id}")
-    public ContaVO atualizar(
+    public ContaModel atualizar(
     		@PathVariable("conta_id") final Integer idConta,
     		@RequestBody final ContaVO conta) throws BusinessException {
 
         log.debug("Atualizando conta {} pra {}.",idConta, conta);
 
         final String nome = conta.getNome();
-        return facade.atualiza(idConta, nome);
+
+        final ContaVO contaVO = facade.atualiza(idConta, nome);
+
+        return contaAssembler.toFullModel(contaVO);
     }
 
     @DeleteMapping("{conta_id}")
@@ -73,14 +102,17 @@ public class Contas {
 			throws BusinessException {
 
         log.debug("Deletando conta de id {}.",idConta);
+
 		facade.deleta(idConta);
     }
 
     @PostMapping
-    public ContaVO criar(@RequestBody final ContaVO conta)
+    public ContaModel criar(@RequestBody final ContaVO conta)
             throws BusinessException {
         log.debug("Criando conta {}.",conta);
 
-        return facade.cria(conta);
+        final ContaVO contaVO = facade.cria(conta);
+
+        return contaAssembler.toFullModel(contaVO);
     }
 }

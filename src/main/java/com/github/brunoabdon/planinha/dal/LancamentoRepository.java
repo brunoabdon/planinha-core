@@ -14,9 +14,9 @@ import com.github.brunoabdon.planinha.dal.modelo.Lancamento.Id;
 @Repository
 public interface LancamentoRepository extends Repositorio<Lancamento, Id> {
 
-    public boolean existsByConta(final Conta conta);
+    boolean existsByConta(final Conta conta);
 
-    public default List<Lancamento> findByContaPeriodo(
+    default List<Lancamento> findByContaPeriodo(
             final Conta conta, final Periodo periodo) {
         return
             this.findByContaAndFatoDiaBetween(
@@ -26,11 +26,11 @@ public interface LancamentoRepository extends Repositorio<Lancamento, Id> {
             );
     }
 
-    public List<Lancamento> findByContaAndFatoDiaBetween(
+    List<Lancamento> findByContaAndFatoDiaBetween(
             final Conta conta,
             final LocalDate dataMinima,
             final LocalDate dataMaxima);
 
 
-    public long countByConta(final Conta conta);
+    long countByConta(final Conta conta);
 }

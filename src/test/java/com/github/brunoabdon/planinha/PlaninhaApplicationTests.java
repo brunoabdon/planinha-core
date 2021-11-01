@@ -9,5 +9,4 @@ class PlaninhaApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

@@ -10,9 +10,9 @@ import com.github.brunoabdon.planinha.dal.modelo.Conta;
 @Repository
 public interface ContaRepository extends Repositorio<Conta, Integer> {
 
-    public Page<Conta> findByNomeContainingIgnoreCase(
+    Page<Conta> findByNomeContainingIgnoreCase(
         final String parteDoNome, final Pageable pageable);
 
-    public long countByIdIn(final Iterable<Integer> ids);
+    long countByIdIn(final Iterable<Integer> ids);
 
 }

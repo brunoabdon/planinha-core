@@ -160,7 +160,6 @@ public class OperacaoFacade
                         Conta.class,idConta
                     )
                 );
-
     }
 
     @Override

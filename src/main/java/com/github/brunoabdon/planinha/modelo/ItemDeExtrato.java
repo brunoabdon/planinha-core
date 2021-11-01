@@ -13,8 +13,8 @@ import lombok.ToString;
  *
  * <p>Obs: Usa o {@linkplain #equals(Object) equals(..)} e {@linkplain
  * #hashCode() hashcode()} de {@link Object}, já que duas instâncias de {@link
- * ItemDeExtrato} para o mesmo {@linkplain #getFato() fato} com um mesmo
- * {@linkplain #getValor() valor} não são necessáriamente a mesma entidade
+ * ItemDeExtrato} para a mesma {@linkplain #getOperacao()} operacao} com um
+ * mesmo {@linkplain #getValor() valor} não são necessáriamente a mesma entidade
  * (podem ser de {@linkplain Extrato extratos} distintos).</p>
  *
  * @author bruno
@@ -28,7 +28,7 @@ public class ItemDeExtrato implements Serializable{
 
     private static final long serialVersionUID = 7915709116381425166L;
 
-    private FatoVO fato;
+    private Operacao operacao;
 
     private int valor;
 

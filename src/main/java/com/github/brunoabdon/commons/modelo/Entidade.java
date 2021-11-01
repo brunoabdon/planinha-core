@@ -18,5 +18,5 @@ public interface Entidade<K> extends Identifiable<K>, Serializable {
 	 *
 	 * @param id A chave a ser setda.
 	 */
-    public void setId(final K id);
+    void setId(final K id);
 }

@@ -4,6 +4,8 @@ import static lombok.AccessLevel.PACKAGE;
 
 import javax.validation.Valid;
 
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
+import com.github.brunoabdon.planinha.rest.model.FatoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,23 +26,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Setter(PACKAGE)
 @RestController
-@RequestMapping("operacoes/{operacao_id}/fato")
+@RequestMapping("/operacoes/{operacao_id}/fato")
 public class Fatos {
 
     @Autowired
     private Facade<Operacao, Integer, ?, FatoVO> facade;
 
+    @Autowired
+    private RepresentationModelsAssembler<Operacao,FatoModel> assembler;
+
     @GetMapping
-    public FatoVO pegar(@PathVariable("operacao_id") final Integer idOperacao)
+    public FatoModel pegar(@PathVariable("operacao_id") final Integer idOperacao)
             throws EntidadeInexistenteException {
 
         log.debug("Pegando fato da operação {}.",idOperacao);
 
-        return facade.pega(idOperacao).getFato();
+        final Operacao operacao = facade.pega(idOperacao);
+
+        return assembler.toFullModel(operacao);
     }
 
     @PutMapping
-    public FatoVO atualizar(
+    public FatoModel atualizar(
             @PathVariable("operacao_id") final Integer idOperacao,
     		@Valid @RequestBody final FatoVO patch) throws BusinessException {
 
@@ -49,6 +56,8 @@ public class Fatos {
     		idOperacao, patch
 		);
 
-        return facade.atualiza(idOperacao, patch).getFato();
+        final Operacao operacao = facade.atualiza(idOperacao, patch);
+
+        return assembler.toFullModel(operacao);
     }
 }
