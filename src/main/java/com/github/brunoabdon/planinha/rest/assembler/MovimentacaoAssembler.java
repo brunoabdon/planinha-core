@@ -1,6 +1,7 @@
 package com.github.brunoabdon.planinha.rest.assembler;
 
 import com.github.brunoabdon.commons.rest.assembler.ChildrenRepresentationModelAssembler;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.planinha.modelo.ContaVO;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
 import com.github.brunoabdon.planinha.modelo.Operacao;
@@ -10,7 +11,6 @@ import com.github.brunoabdon.planinha.rest.model.MovimentacaoModel;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class MovimentacaoAssembler implements ChildrenRepresentationModelAssembl
 
     @Autowired
     @Setter(PACKAGE)
-    private RepresentationModelAssembler<ContaVO, ContaModel> contaAssembler;
+    private RepresentationModelsAssembler<ContaVO, ContaModel> contaAssembler;
 
     @Override
     public MovimentacaoModel toModel(

@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PACKAGE;
 public abstract class IdentifiableModelAssembler<
     I extends Identifiable<?>,
     D extends RepresentationModel<?>>
-        extends RepresentationModelAssemblerSupport<I, D>{
+        extends RepresentationModelsAssemblerSupport<I, D>{
 
     @Autowired
     private ModelFiller<D, I> modelFiller;
