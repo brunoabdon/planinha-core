@@ -46,6 +46,6 @@ public class OperacaoMapper
 
         final FatoVO fatoVO = mapperFato.toVOSimples(fato);
 
-        return new Operacao(id, fatoVO,movimentacoes);
+        return new Operacao(id, fatoVO, movimentacoes);
     }
 }
