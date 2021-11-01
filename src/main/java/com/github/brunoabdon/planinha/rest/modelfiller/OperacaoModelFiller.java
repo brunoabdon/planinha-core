@@ -1,6 +1,5 @@
 package com.github.brunoabdon.planinha.rest.modelfiller;
 
-import com.github.brunoabdon.commons.rest.assembler.ChildrenRepresentationModelAssembler;
 import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
 import com.github.brunoabdon.commons.rest.modelfiller.ModelFiller;
 import com.github.brunoabdon.planinha.modelo.Movimentacao;
@@ -25,7 +24,7 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
 
     @Setter
     @Autowired
-    private ChildrenRepresentationModelAssembler<Operacao,Movimentacao,MovimentacaoModel>
+    private RepresentationModelsAssembler<Movimentacao,MovimentacaoModel>
             movimentacoesAssembler;
 
     @Override
@@ -44,7 +43,6 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
         //movimentacoes
         final CollectionModel<MovimentacaoModel> movimentacaoModel =
             movimentacoesAssembler.toCollectionModel(
-                operacaoValue,
                 operacaoValue.getMovimentacoes()
             );
 
