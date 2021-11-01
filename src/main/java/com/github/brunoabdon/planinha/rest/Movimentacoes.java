@@ -1,11 +1,23 @@
 package com.github.brunoabdon.planinha.rest;
 
-import static lombok.AccessLevel.PACKAGE;
-
-import javax.validation.constraints.NotNull;
-
+import com.github.brunoabdon.commons.facade.BusinessException;
+import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
+import com.github.brunoabdon.commons.facade.Facade;
+import com.github.brunoabdon.commons.rest.assembler.RepresentationModelsAssembler;
+import com.github.brunoabdon.planinha.modelo.Movimentacao;
+import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
+import com.github.brunoabdon.planinha.rest.model.MovimentacaoModel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.brunoabdon.commons.facade.BusinessException;
-import com.github.brunoabdon.commons.facade.EntidadeInexistenteException;
-import com.github.brunoabdon.commons.facade.Facade;
-import com.github.brunoabdon.planinha.modelo.Movimentacao;
-import com.github.brunoabdon.planinha.modelo.Movimentacao.Id;
+import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
+import static lombok.AccessLevel.PACKAGE;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Slf4j
 @Setter(PACKAGE)
@@ -42,18 +49,35 @@ public class Movimentacoes {
     @Autowired
     private Facade<Movimentacao, Id, Integer, Integer> facade;
 
+    @Autowired
+    private PagedResourcesAssembler<Movimentacao> pgAsmblr;
+
+    @Autowired
+    private RepresentationModelsAssembler<Movimentacao,MovimentacaoModel> movimentacaoAssembler;
+
     @GetMapping
-    public Page<Movimentacao> listar(
+    public ResponseEntity<PagedModel<MovimentacaoModel>> listar(
             @PathVariable("operacao_id") final Integer idOperacao)
                 throws EntidadeInexistenteException {
 
         log.debug("Listando movimentações da operação {}.",idOperacao);
 
-        return facade.lista(idOperacao,null);
+        final Page<Movimentacao> page =
+            facade.lista(idOperacao, null);
+
+        final Link self =
+            linkTo(
+                methodOn(Movimentacoes.class).listar(idOperacao)
+            ).withSelfRel();
+
+        final PagedModel<MovimentacaoModel> pageModel =
+            pgAsmblr.toModel(page, movimentacaoAssembler, self);
+
+        return new ResponseEntity<>(pageModel, HttpStatus.OK);
     }
 
     @GetMapping("{conta_id}")
-    public Movimentacao pegar(
+    public MovimentacaoModel pegar(
             @PathVariable("operacao_id") final Integer idOperacao,
             @PathVariable("conta_id") final Integer idConta)
                 throws EntidadeInexistenteException {
@@ -65,11 +89,13 @@ public class Movimentacoes {
 
         final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
-        return facade.pega(id);
+        final Movimentacao movimentacao = facade.pega(id);
+
+        return movimentacaoAssembler.toFullModel(movimentacao);
     }
 
     @PutMapping("{conta_id}")
-    public Movimentacao atualizar(
+    public MovimentacaoModel atualizar(
             @PathVariable("operacao_id") final Integer idOperacao,
             @PathVariable("conta_id") final Integer idConta,
     		@RequestBody final Atualizacao atualizacao)
@@ -82,7 +108,10 @@ public class Movimentacoes {
 
         final Movimentacao.Id id = new Movimentacao.Id(idOperacao,idConta);
 
-        return facade.atualiza(id, atualizacao.getValor());
+        final Movimentacao movimentacao =
+            facade.atualiza(id, atualizacao.getValor());
+
+        return movimentacaoAssembler.toFullModel(movimentacao);
     }
 
     @DeleteMapping("{conta_id}")
@@ -92,7 +121,7 @@ public class Movimentacoes {
                 throws BusinessException {
 
         log.debug(
-            "Deletando a movimentação da conta {0} em {1}.",
+            "Deletando a movimentação da conta {} em {}.",
             idConta, idOperacao
         );
 
@@ -102,7 +131,7 @@ public class Movimentacoes {
     }
 
     @PostMapping
-    public Movimentacao criar(
+    public MovimentacaoModel criar(
             @PathVariable("operacao_id") final Integer idOperacao,
             @NotNull @RequestBody  final Movimentacao payload)
                 throws BusinessException {
@@ -117,6 +146,8 @@ public class Movimentacoes {
         final Movimentacao movimentacao =
             new Movimentacao(id, payload.getValor());
 
-        return facade.cria(movimentacao);
+        final Movimentacao movimentacaoCriada = facade.cria(movimentacao);
+
+        return movimentacaoAssembler.toFullModel(movimentacaoCriada);
     }
 }
