@@ -13,7 +13,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * TODO documentaçaõ aqui.
+ * Um evento que envolve a movimentaçaõ de valores em contas. Por exemplo, um
+ * <em>almoço</em> pode envolver um débito numa carteira, uma <em>viagem de
+ * metrô</em> emvolve um débito no cartão de transporte, um <em>salário</em>
+ * envolve um crédito numa conta correente e um <em>saque</em> emvolve um débito
+ * em uma conta corrente junto com um crédito na carteira.
+ *
  *
  * <p>Obs: Usa o {@linkplain #equals(Object) equals(..)} e {@linkplain
  * #hashCode() hashcode()} de {@link Object}, já que duas instâncias de {@link

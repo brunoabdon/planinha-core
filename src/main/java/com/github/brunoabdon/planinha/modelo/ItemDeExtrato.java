@@ -9,7 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * TODO documentaçaõ aqui.
+ * O que se é listado por um {@link Extrato} de uma {@link ContaVO}: Indica uma
+ * {@linkplain #getOperacao() operação} que movimentou determinado {@linkplain
+ * #getValor()} na conta de que se trata o extrato.
  *
  * <p>Obs: Usa o {@linkplain #equals(Object) equals(..)} e {@linkplain
  * #hashCode() hashcode()} de {@link Object}, já que duas instâncias de {@link
