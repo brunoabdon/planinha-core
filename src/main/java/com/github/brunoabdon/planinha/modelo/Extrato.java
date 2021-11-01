@@ -45,7 +45,6 @@ public class Extrato implements Identifiable<Id>, Serializable{
         }
     }
 
-    //TODO testar usado @JsonIgnore no get
     @JsonIgnore
     @Getter
     @EqualsAndHashCode.Include
@@ -77,7 +76,6 @@ public class Extrato implements Identifiable<Id>, Serializable{
         this.items = itens;
     }
 
-    //TODO precisa de @JsonProperty aqui? E em getPeriodo?
     public ContaVO getConta(){
         return getOptionalAttr(Id::getConta).orElse(null);
     }
