@@ -37,7 +37,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
-        log.info("Configurando CORS promiscuo.");
-        registry.addMapping("/**");
+        registry
+            .addMapping("/**")
+            .allowedOrigins("http://localhost:19006")
+            .allowedHeaders("Host","Origin","Content-Type","User-Agent","Authorization","Accept","Prefer","Link")
+            .allowedMethods("DELETE","GET","OPTIONS","POST","PUT","HEAD")
+            .exposedHeaders("Location","Link")
+        ;
+        log.info("Configurando CORS: {}.", registry);
     }
 }
