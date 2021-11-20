@@ -49,6 +49,8 @@ public class Extratos {
     @Autowired
     private Facade<Extrato, Extrato.Id, Integer, ?> facade;
 
+    //TODO registrar handlers pra usar Periodo como tipo do argumento:
+    //o.s.w.s.c.a.WebMvcConfigurer.addArgumentResolvers(...)
     @Autowired
     private Converter<String, Periodo> periodoConverter;
 

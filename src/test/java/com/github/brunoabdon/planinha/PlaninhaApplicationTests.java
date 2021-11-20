@@ -9,6 +9,6 @@ class PlaninhaApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Assertions.assertAll();
+		Assertions.assertDoesNotThrow(() -> {});
 	}
 }
