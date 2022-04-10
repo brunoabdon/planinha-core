@@ -25,7 +25,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @MappedSuperclass
-public class EntidadeBaseInt implements Entidade<Integer> {
+public class EntidadeDeIdInteger implements Entidade<Integer> {
 
     private static final long serialVersionUID = 5533865547017401869L;
 

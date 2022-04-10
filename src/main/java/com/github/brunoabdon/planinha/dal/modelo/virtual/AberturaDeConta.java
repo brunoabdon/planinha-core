@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import com.github.brunoabdon.commons.modelo.EntidadeDeIdInteger;
 import org.hibernate.annotations.Subselect;
 
-import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
 import com.github.brunoabdon.planinha.dal.modelo.Conta;
 import com.github.brunoabdon.planinha.dal.modelo.Fato;
 import com.github.brunoabdon.planinha.dal.modelo.Lancamento;
@@ -46,7 +46,7 @@ import lombok.ToString;
   + " join planinhacore.conta c on c.id = l.conta_id "
   + " group by c.id "
 )
-public class AberturaDeConta extends EntidadeBaseInt implements Serializable {
+public class AberturaDeConta extends EntidadeDeIdInteger implements Serializable {
 
     private static final long serialVersionUID = -1395595938556997349L;
 

@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
+import com.github.brunoabdon.commons.modelo.EntidadeDeIdInteger;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +32,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(schema = "planinhacore")
-public class Fato extends EntidadeBaseInt {
+public class Fato extends EntidadeDeIdInteger {
 
     private static final int TAMANHO_MAX_DESCRICAO = 70;
 

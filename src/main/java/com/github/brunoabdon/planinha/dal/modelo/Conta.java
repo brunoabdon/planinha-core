@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import com.github.brunoabdon.commons.modelo.EntidadeBaseInt;
+import com.github.brunoabdon.commons.modelo.EntidadeDeIdInteger;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +29,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(schema = "planinhacore")
-public class Conta extends EntidadeBaseInt {
+public class Conta extends EntidadeDeIdInteger {
 
     private static final long serialVersionUID = 7321886996603362113L;
 
