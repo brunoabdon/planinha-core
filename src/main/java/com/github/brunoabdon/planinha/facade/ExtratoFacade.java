@@ -91,7 +91,6 @@ public class ExtratoFacade
 	            .map(SaldoInicial::getValor)
 	            .orElse(0);
 
-
 		final List<ItemDeExtrato> itens =
 			lancamentoRepo
 			    .findByContaPeriodo(conta, periodo)

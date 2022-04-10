@@ -85,14 +85,14 @@ public class Operacoes {
         final Link self =
             linkTo(
                 methodOn(Operacoes.class).listar(
-                    mes,dataMinima,dataMaxima, pageable
+                    mes, dataMinima, dataMaxima, pageable
                 )
             ).withSelfRel();
 
         return
             new ResponseEntity<>(
-                    pgAsmblr.toModel(page,operacaoAssembler, self),
-                    HttpStatus.OK
+                pgAsmblr.toModel(page,operacaoAssembler, self),
+                HttpStatus.OK
             );
     }
 

@@ -48,5 +48,4 @@ public class OperacaoModelFiller implements ModelFiller<OperacaoModel, Operacao>
 
         operacaoModel.setMovimentacoes(movimentacaoModel);
     }
-
 }
