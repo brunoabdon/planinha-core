@@ -37,7 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
-        log.debug("Confuguranod CORS promiscuo.");
+        log.debug("Confugurando CORS promiscuo.");
         registry.addMapping("/**");
     }
 }
