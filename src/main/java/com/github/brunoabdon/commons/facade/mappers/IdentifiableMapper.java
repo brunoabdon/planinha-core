@@ -8,10 +8,10 @@ import com.github.brunoabdon.commons.modelo.Identifiable;
  * Um {@link Mapper} entre dois {@link Identifiable}s.
  *
  * @param <T> O tipo {@link Identifiable} que será mapeado.
- * @param <I> O tipo da {@linkplain Identifiable#getKey() chave} do {@link
+ * @param <I> O tipo da {@linkplain Identifiable#getId() chave} do {@link
  * Identifiable} {@code T}.
  * @param <V> O tipo {@link Identifiable} ao qual será mapeado.
- * @param <J> O tipo da {@linkplain Identifiable#getKey() chave} do {@link
+ * @param <J> O tipo da {@linkplain Identifiable#getId() chave} do {@link
  * Identifiable} {@code V}.
  *
  * @author Bruno Abdon
@@ -24,7 +24,7 @@ public interface IdentifiableMapper<
                 > extends Mapper<T, V> {
 
     /**
-     * Diz qual é a {@linkplain Identifiable#getKey() chave} do {@link
+     * Diz qual é a {@linkplain Identifiable#getId()}  chave} do {@link
      * Identifiable} de saída {@code V} a partir da chave do de entrada, {@code
      * T}.
      * @param j Um {@code J}.
